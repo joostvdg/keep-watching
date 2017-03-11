@@ -3,7 +3,7 @@ echo "##############"
 echo "## MAVEN PACKAGE"
 echo "##############"
 echo "## START DB"
-docker-compose create db
+docker-compose create
 docker-compose start db
 sleep 10
 echo "## CHECK DB IP"

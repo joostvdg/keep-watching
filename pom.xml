@@ -19,7 +19,6 @@
     </parent>
 
     <modules>
-        <module>api</module>
         <module>backend</module>
     </modules>
 

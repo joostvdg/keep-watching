@@ -186,8 +186,8 @@
                                     <inputSchema>public</inputSchema>
                                 </database>
                                 <target>
-                                    <packageName>org.jooq.util.maven.example</packageName>
-                                    <directory>target/generated-sources/jooq</directory>
+                                    <packageName>com.github.joostvdg.keepwatching.model</packageName>
+                                    <directory>gensrc/main/java</directory>
                                 </target>
                             </generator>
                         </configuration>

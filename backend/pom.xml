@@ -101,6 +101,7 @@
                         <version>${org.jooq.version}</version>
                         <executions>
                             <execution>
+                                <phase>generate-resources</phase>
                                 <goals>
                                     <goal>generate</goal>
                                 </goals>
@@ -148,6 +149,7 @@
                         <version>${org.jooq.version}</version>
                         <executions>
                             <execution>
+                                <phase>generate-resources</phase>
                                 <goals>
                                     <goal>generate</goal>
                                 </goals>

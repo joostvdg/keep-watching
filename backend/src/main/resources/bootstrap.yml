@@ -2,7 +2,7 @@
 spring:
     profiles: compose
     datasource:
-      url: jdbc:postgresql://keep-watching-db:5432/kw
+      url: jdbc:postgresql://keepwatching_db_1:5432/kw
       username: docker
       password: docker
 ---

@@ -1,0 +1,25 @@
+machine:
+  services:
+    - docker
+  java:
+    version: oraclejdk8
+
+general:
+  artifacts:
+    - "backend/target/keep-watching-be.jar"
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+  override:
+    - mvn dependency:resolve
+    - docker info
+
+deployment:
+  release:
+    branch: master
+    commands:
+      - mvn package
+      - docker build --rm=false -t caladreas/keep-watching-be backend
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push caladreas/keep-watching-be

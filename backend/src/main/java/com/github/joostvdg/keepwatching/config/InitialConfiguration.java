@@ -1,6 +1,8 @@
 package com.github.joostvdg.keepwatching.config;
 
 import com.github.joostvdg.keepwatching.exceptions.ExceptionTranslator;
+import org.jooq.conf.RenderNameStyle;
+import org.jooq.conf.Settings;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
@@ -32,6 +34,10 @@ public class InitialConfiguration {
         DefaultConfiguration jooqConfiguration = new DefaultConfiguration();
 
         jooqConfiguration.set(connectionProvider());
+        Settings settings =new Settings();
+        settings.setRenderNameStyle(RenderNameStyle.LOWER);
+        settings.setRenderSchema(true);
+        jooqConfiguration.set(settings);
         jooqConfiguration.set(new DefaultExecuteListenerProvider(new ExceptionTranslator()));
 
         return jooqConfiguration;

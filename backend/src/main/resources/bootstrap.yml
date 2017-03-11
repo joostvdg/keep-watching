@@ -1,0 +1,14 @@
+---
+spring:
+    profiles: compose
+    datasource:
+      url: jdbc:postgresql://keep-watching-db:5432/kw
+      username: docker
+      password: docker
+---
+spring:
+    profiles: swarm
+    datasource:
+      url: jdbc:postgresql://keep-watching-db:5432/kw
+      username: docker
+      password: docker

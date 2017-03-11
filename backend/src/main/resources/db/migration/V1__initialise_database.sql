@@ -3,7 +3,7 @@
 -- Create tables
 CREATE TABLE IF NOT EXISTS Movies
 (
-    id BIGINT NOT NULL auto_increment,
+    id SERIAL PRIMARY KEY,
     movie_name VARCHAR(255),
     producer VARCHAR(255),
     director VARCHAR(255),
@@ -15,8 +15,7 @@ CREATE TABLE IF NOT EXISTS Movies
     cinema_worthy BOOLEAN,
     genre VARCHAR(64),
     want BOOLEAN,
-    imdb VARCHAR(255),
-    PRIMARY KEY(id)
+    imdb VARCHAR(255)
 );
 
 

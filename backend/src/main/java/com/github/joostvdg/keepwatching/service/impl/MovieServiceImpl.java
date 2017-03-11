@@ -53,7 +53,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie getMovieById(Long movieId){
-        Record record = dsl.select().from(MOVIES).where(MOVIES.ID.eq(movieId)).fetchOne();
+        Record record = dsl.select().from(MOVIES).where(MOVIES.ID.eq(movieId.intValue())).fetchOne();
         logger.info(String.format("Found for id %d", movieId));
         logger.info(record.toString());
         return record == null ? null : getMovieEntity(record);

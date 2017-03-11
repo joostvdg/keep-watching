@@ -7,6 +7,7 @@ docker-compose pull
 docker-compose up -d db
 sleep 15
 docker logs keepwatching_db_1
+docker-compose start db
 sleep 5
 docker logs keepwatching_db_1
 echo "## CHECK DB IP"

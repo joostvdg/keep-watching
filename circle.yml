@@ -12,14 +12,18 @@ dependencies:
   cache_directories:
     - "~/docker"
   override:
-    - mvn dependency:resolve
+    - mvn dependency:resolve -P db-h2
     - docker info
+
+test:
+  override:
+    - mvn integration-test -P db-h2
 
 deployment:
   release:
     branch: master
     commands:
-      - mvn package
+      - mvn package -P db-h2
       - docker build --rm=false -t caladreas/keep-watching-be backend
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push caladreas/keep-watching-be

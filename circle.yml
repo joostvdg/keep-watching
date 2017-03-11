@@ -17,13 +17,13 @@ dependencies:
 
 test:
   override:
-    - ./test.sh
+    - sh ./test.sh
 
 deployment:
   release:
     branch: master
     commands:
-      - ./build.sh
+      - sh ./build.sh
       - docker build --rm=false -t caladreas/keep-watching-be backend
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push caladreas/keep-watching-be

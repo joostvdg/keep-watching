@@ -3,8 +3,12 @@ echo "##############"
 echo "## MAVEN PACKAGE"
 echo "##############"
 echo "## START DB"
+docker-compose pull
 docker-compose up -d db
-sleep 10
+sleep 15
+docker logs keepwatching_db_1
+sleep 5
+docker logs keepwatching_db_1
 echo "## CHECK DB IP"
 DB_IP=$(docker inspect --format '{{.NetworkSettings.Networks.keepwatching_default.IPAddress}}' keepwatching_db_1)
 echo "# IP=${DB_IP}"

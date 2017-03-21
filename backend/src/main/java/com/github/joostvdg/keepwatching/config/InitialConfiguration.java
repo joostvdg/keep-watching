@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class InitialConfiguration {
+
     @Autowired
     private DataSource dataSource;
 

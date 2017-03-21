@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -41,6 +43,15 @@ public class MoviesServiceTest {
         assertNotNull(movie);
         assertEquals("Logan", movie.getName());
         assertEquals(id, (Long)movie.getId());
+        assertEquals("James Mangold", movie.getDirector());
+        assertEquals("Hugh Jackman,Patrick Stewart", movie.getNotableActors());
+        assertEquals("2017", movie.getReleaseYear());
+        assertEquals("Action,Drama,Sci-Fi", movie.getGenre());
+        assertEquals("http://www.imdb.com/title/tt3315342/", movie.getImdbLink());
+        assertEquals(LocalDate.of(2017, Month.MARCH, 2), movie.getReleaseDate());// '2017-03-02'
+        assertEquals(false, movie.isSeen());
+        assertEquals(true, movie.isCinemaWorthy());
+        assertEquals(true, movie.isWanted());
     }
 
     @Test

@@ -51,8 +51,9 @@ public class MovieServiceImpl implements MovieService {
 
         MoviesRecord moviesRecord = dsl.insertInto(MOVIES)
                 .set(MOVIES.MOVIE_NAME, movie.getName())
-                .set(MOVIES.STUDIO, movie.getName())
-                .set(MOVIES.NOTABLE_ACTORS, movie.getName())
+                .set(MOVIES.STUDIO, movie.getStudio())
+                .set(MOVIES.DIRECTOR, movie.getDirector())
+                .set(MOVIES.NOTABLE_ACTORS, movie.getNotableActors())
                 .set(MOVIES.RELEASE_YEAR, movie.getReleaseYear())
                 .set(MOVIES.RELEASE_DATE, releaseDate)
                 .set(MOVIES.SEEN, movie.isSeen())
@@ -60,7 +61,6 @@ public class MovieServiceImpl implements MovieService {
                 .set(MOVIES.GENRE, movie.getGenre())
                 .set(MOVIES.WANT, movie.isWanted())
                 .set(MOVIES.IMDB, movie.getImdbLink())
-
                 .returning(MOVIES.ID)
                 .fetchOne();
         movie.setId(moviesRecord.getId());
@@ -91,6 +91,33 @@ public class MovieServiceImpl implements MovieService {
         } else {
             logger.warn(String.format("Did not find a movie with id %d, so cannot delete.", id));
         }
+    }
+
+    @Override
+    public void updateMovie(Movie movie) {
+        assert movie != null;
+        assert movie.getName() != null;
+        assert movie.getId() >= 0;
+        java.sql.Date releaseDate = null;
+        if (movie.getReleaseDate() != null) {
+            releaseDate = new Date(movie.getReleaseDate().toEpochDay());
+        }
+
+        Long movieId = movie.getId();
+        dsl.update(MOVIES)
+                .set(MOVIES.MOVIE_NAME, movie.getName())
+                .set(MOVIES.STUDIO, movie.getStudio())
+                .set(MOVIES.DIRECTOR, movie.getDirector())
+                .set(MOVIES.NOTABLE_ACTORS, movie.getNotableActors())
+                .set(MOVIES.RELEASE_YEAR, movie.getReleaseYear())
+                .set(MOVIES.RELEASE_DATE, releaseDate)
+                .set(MOVIES.SEEN, movie.isSeen())
+                .set(MOVIES.CINEMA_WORTHY, movie.isCinemaWorthy())
+                .set(MOVIES.GENRE, movie.getGenre())
+                .set(MOVIES.WANT, movie.isWanted())
+                .set(MOVIES.IMDB, movie.getImdbLink())
+                .where(MOVIES.ID.eq(movieId.intValue()))
+        .execute();
     }
 
     private Movie getMovieEntity(Record record){

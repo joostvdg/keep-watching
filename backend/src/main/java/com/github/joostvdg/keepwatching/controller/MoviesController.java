@@ -50,6 +50,19 @@ public class MoviesController {
     }
 
     @RequestMapping(
+            value = {""},
+            produces = {"application/json", "text/plain; charset=utf-8"},
+            method = {RequestMethod.PUT}
+    )
+    @ResponseBody
+    public ResponseEntity<Movie> updateMovie(@ApiParam("Movie to update") @RequestBody Movie movie)  {
+        logger.info(String.format("Movies::PUT %s", movie.getName()));
+        logger.info(movie.toString());
+        movieService.updateMovie(movie);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(
             value = {"/{movieId}"},
             produces = {"application/json", "text/plain; charset=utf-8"},
             method = {RequestMethod.DELETE}

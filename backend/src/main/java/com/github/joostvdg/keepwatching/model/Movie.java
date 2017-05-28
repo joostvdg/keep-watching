@@ -285,6 +285,7 @@ public class Movie {
         return "Movie{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", director='" + director + '\'' +
                 ", studio='" + studio + '\'' +
                 ", notableActors='" + notableActors + '\'' +
                 ", releaseYear='" + releaseYear + '\'' +

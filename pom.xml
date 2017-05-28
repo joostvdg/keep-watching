@@ -34,14 +34,14 @@
         <org.jooq.version>3.9.1</org.jooq.version>
         <spring.boot.version>1.5.1.RELEASE</spring.boot.version>
 
-        <sonar.login>7c1d37fc9d0ed9d4de5ca2a46b3dccdb1637d310</sonar.login>
-        <sonar.host.url>https://ci.flusso.nl/sonar/</sonar.host.url>
     </properties>
 
     <developers>
         <developer>
             <name>Joost van der Griendt</name>
             <email>joostvdg@gmail.com</email>
+            <timezone>CEST</timezone>
+            <url>github.com/joostvdg</url>
         </developer>
     </developers>
 

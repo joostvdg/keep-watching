@@ -75,6 +75,24 @@ public class MovieServiceImpl implements MovieService {
         return record == null ? null : getMovieEntity(record);
     }
 
+    @java.lang.Override
+    public void deleteMovieById(Long id) {
+        if (id == null || id < 1) {
+            logger.warn(String.format("No valid value for the id (%d), so cannot delete.", id));
+            return;
+        }
+
+        Record record = dsl.select().from(MOVIES).where(MOVIES.ID.eq(id.intValue())).fetchOne();
+        if (record != null) {
+            logger.info(String.format("Found for id %d, going to delete it.", id));
+            dsl.delete(MOVIES)
+                    .where(MOVIES.ID.eq(id.intValue()))
+                    .execute();
+        } else {
+            logger.warn(String.format("Did not find a movie with id %d, so cannot delete.", id));
+        }
+    }
+
     private Movie getMovieEntity(Record record){
         Long id = record.getValue(MOVIES.ID, Long.class);
         String name = record.getValue(MOVIES.MOVIE_NAME, String.class);

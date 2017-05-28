@@ -27,7 +27,6 @@ public class MoviesController {
         return ResponseEntity.ok().body(movieService.getAllMovies());
     }
 
-
     @RequestMapping(
             value = {"/{id}"},
             produces = {"application/json", "text/plain; charset=utf-8"},
@@ -45,9 +44,20 @@ public class MoviesController {
             method = {RequestMethod.POST}
     )
     @ResponseBody
-    public ResponseEntity<Movie> newWatchItem(@ApiParam("Movie to add") @RequestBody Movie movie)  {
+    public ResponseEntity<Movie> newMovie(@ApiParam("Movie to add") @RequestBody Movie movie)  {
         logger.info(String.format("Movies::POST %s", movie.getName()));
         return ResponseEntity.ok().body(movieService.newMovie(movie));
     }
 
+    @RequestMapping(
+            value = {"/{movieId}"},
+            produces = {"application/json", "text/plain; charset=utf-8"},
+            method = {RequestMethod.DELETE}
+    )
+    @ResponseBody
+    public ResponseEntity deleteMovieById(@PathVariable Long movieId)  {
+        logger.info(String.format("Movies::DELETE %s", movieId));
+        movieService.deleteMovieById(movieId);
+        return ResponseEntity.ok().build();
+    }
 }

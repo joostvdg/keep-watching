@@ -10,6 +10,18 @@ services:
       - POSTGRES_PASSWORD=docker
       - POSTGRES_USER=docker
       - POSTGRES_DB=kw
+  db-local:
+    image: postgres
+    expose:
+      - 5432
+    ports:
+      - 15432:5432
+    environment:
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_USER=docker
+      - POSTGRES_DB=kw
+    volumes:
+      - /home/joost/stack/docker/volumes/kw/postgres:/var/lib/postgresql/data
 
   backend:
     image: caladreas/keep-watching-be
@@ -19,3 +31,31 @@ services:
       - 8080:8080
     links:
         - db
+
+#    driver_opts:
+#      type: nfs
+#      o: addr=192.168.178.42,rw
+#      device: :/nfs/docker
+
+#    driver: nfs
+#     driver_opts:
+#       share: 192.168.178.42:/nfs/docker
+
+# DaxM6y4WZEE304qb
+# nfs://192.168.178.42/nfs/docker
+#docker volume create --driver local \
+#    --opt type=nfs \
+#    --opt o=addr=192.168.178.42,rw \
+#    --opt device=:/nfs/docker \
+#    keepwatching_dblocal
+# docker run -d -P --name web -v keepwatching_dblocal:/webapp training/webapp python app.py
+# docker exec -it web bash
+
+#docker volume create --driver local \
+#    --opt type=nfs \
+#    --opt o=addr=192.168.178.42,rw \
+#   --opt device=:/nfs/docker \
+#   keepwatching_dblocal
+# sudo docker-volume-netshare nfs
+
+#mount -t nfs -o proto=tcp,port=2049 192.168.178.42:/nfs/docker /mnt/wolkje/

@@ -39,12 +39,6 @@ pipeline {
             steps {
                 sh 'docker build --tag=keep-watching-be .'
             }
-            post {
-                success {
-                    sh 'docker tag keep-watching-be ci.flusso.nl:18443/joostvdg/keep-watching-be'
-                    sh 'docker push ci.flusso.nl:18443/joostvdg/keep-watching-be'
-                }
-            }
         }
     }
     post {

@@ -22,3 +22,10 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+backend/node_modules/
+
+backend/gensrc/
+
+backend/src/main/resources/static/built/
+
+backend/src/main/resources/static/js/

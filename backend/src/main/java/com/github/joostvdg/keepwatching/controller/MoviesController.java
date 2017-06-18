@@ -1,14 +1,16 @@
 package com.github.joostvdg.keepwatching.controller;
 
 import com.github.joostvdg.keepwatching.model.Movie;
-import com.github.joostvdg.keepwatching.service.impl.MovieService;
+import com.github.joostvdg.keepwatching.service.MovieService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Collection;
 
 @RestController
@@ -22,7 +24,11 @@ public class MoviesController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Collection<Movie>> getMovies(){
+    public ResponseEntity<Collection<Movie>> getMovies(Principal principal){
+        if (principal == null) {
+            logger.warn("No principle");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         logger.info("Movies::GET");
         return ResponseEntity.ok().body(movieService.getAllMovies());
     }

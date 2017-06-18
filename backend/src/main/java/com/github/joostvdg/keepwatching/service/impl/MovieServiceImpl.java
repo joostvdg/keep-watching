@@ -2,6 +2,7 @@ package com.github.joostvdg.keepwatching.service.impl;
 
 import com.github.joostvdg.keepwatching.model.Movie;
 import com.github.joostvdg.keepwatching.model.tables.records.MoviesRecord;
+import com.github.joostvdg.keepwatching.service.MovieService;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,0 +1,19 @@
+package com.github.joostvdg.keepwatching.service;
+
+
+import com.github.joostvdg.keepwatching.model.Movie;
+
+import java.util.List;
+
+public interface MovieService {
+
+    List<Movie> getAllMovies();
+
+    Movie newMovie(Movie movie);
+
+    Movie getMovieById(Long id);
+
+    void deleteMovieById(Long id);
+
+    void updateMovie(Movie movie);
+}

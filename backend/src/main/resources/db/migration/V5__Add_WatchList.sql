@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS Watcher
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    identifier VARCHAR(255) UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS WatchList
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE,
+    user_id int4 REFERENCES Watcher(id)
+);

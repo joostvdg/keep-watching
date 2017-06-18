@@ -1,7 +1,6 @@
 package com.github.joostvdg.keepwatching.service;
 
 import com.github.joostvdg.keepwatching.model.Movie;
-import com.github.joostvdg.keepwatching.service.impl.MovieService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

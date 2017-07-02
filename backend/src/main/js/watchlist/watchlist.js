@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Cookies from 'universal-cookie';
-import {Redirect} from 'react-router-dom'
 
 import Button from 'react-bootstrap/lib/Button';
 import Modal from 'react-bootstrap/lib/Modal';
@@ -34,7 +33,7 @@ export class WatchList extends React.Component {
             <tr>
                 <th>{watchList.name}</th>
                 <td><ShowWatchListModal watchList={watchList}/></td>
-                <td><ShowWatchListEditModal watchList={watchList} edit="true"/></td>
+                <td><ShowWatchListEditModal watchList={watchList} edit="true" /></td>
                 <td><DeleteButton watchList={watchList} /></td>
             </tr>
         );
@@ -84,15 +83,12 @@ export class ShowWatchLists extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            watchLists: '',
-            updated: false
+            watchLists: ''
         };
         this.fetchData = this.fetchData.bind(this);
     }
 
     componentDidMount() {
-        this.setState({ updated: false });
-        console.log('ShowWatchLists didMount');
         let client = rest.wrap(mime);
         client({ path: '/watchlist',
             headers: {'Accept': 'application/json'}}).then(response => {
@@ -111,9 +107,8 @@ export class ShowWatchLists extends React.Component {
     render() {
         const watchLists = this.state.watchLists;
         const arr = watchLists instanceof Array ? watchLists : [watchLists];
-        console.log(watchLists);
         const watchListItems = arr.map((watchList) =>
-            <WatchList watchList={watchList} key={watchList.id}/>
+            <WatchList watchList={watchList} key={watchList.id} />
         );
         const title = (
             <h3>WatchLists</h3>
@@ -123,13 +118,11 @@ export class ShowWatchLists extends React.Component {
             name: ''
         };
 
-        console.log("updated=" + this.state.updated);
-
         return (
             <div>
                 <Panel header={title} bsStyle="primary">
                     <ButtonToolbar>
-                        <ShowWatchListEditModal watchList={newWatchList} updated={this.state.updated} />
+                        <ShowWatchListEditModal watchList={newWatchList} />
                         <Button bsStyle="info" bsSize="large" onClick={this.fetchData}><Glyphicon glyph="refresh"/></Button>
                     </ButtonToolbar>
 
@@ -161,8 +154,7 @@ export class ShowWatchListEditModal extends React.Component {
         this.state = {
             showModal: false,
             watchList:  props.watchList,
-            edit: props.edit,
-            updated: props.updated
+            edit: props.edit
         };
         this.close = this.close.bind(this);
         this.open = this.open.bind(this);
@@ -188,19 +180,14 @@ export class ShowWatchListEditModal extends React.Component {
         this.setState({
             watchList: updatedWatchList
         });
-        console.log('Change registered ' + updatedWatchList)
     }
 
     handleSubmit1(event) {
-        console.log("handling submit");
-        console.log(this.state.watchList);
         event.preventDefault();
 
         const cookies = new Cookies();
         const xsrfToken = cookies.get('XSRF-TOKEN');
         // https://hacks.mozilla.org/2016/03/referrer-and-cache-control-apis-for-fetch/
-        //             referrer: "http://localhost:8080/",
-
         fetch('/watchlist', {
             method: this.state.edit ? 'PUT' : 'POST',
             headers: {
@@ -218,7 +205,6 @@ export class ShowWatchListEditModal extends React.Component {
         });
 
         this.setState({ showModal: false });
-        this.setState({ updated: true });
         this.setState({ watchList: {name: ''} });
     }
 

@@ -3,9 +3,11 @@ package com.github.joostvdg.keepwatching.service.impl;
 import com.github.joostvdg.keepwatching.model.Movie;
 import com.github.joostvdg.keepwatching.model.tables.records.MoviesRecord;
 import com.github.joostvdg.keepwatching.service.MovieService;
+import com.github.joostvdg.keepwatching.service.WatcherService;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.SQLDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,12 @@ public class MovieServiceImpl implements MovieService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     // JOOQ DSL Context
-    @Autowired
     private DSLContext dsl;
+
+    public MovieServiceImpl(DSLContext dsl) {
+        this.dsl = dsl;
+        this.dsl.configuration().set(SQLDialect.POSTGRES_9_5);
+    }
 
     @Override
     public List<Movie> getAllMovies(){

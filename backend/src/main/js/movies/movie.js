@@ -1,6 +1,8 @@
 /*jshint esversion: 6 */
 
 import React from 'react';
+import Cookies from 'universal-cookie';
+
 import Button from 'react-bootstrap/lib/Button';
 import Modal from 'react-bootstrap/lib/Modal';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
@@ -166,15 +168,25 @@ export class ShowMovieEditModal extends React.Component {
     }
 
     handleSubmit(event) {
+        event.preventDefault();
+
+        const cookies = new Cookies();
+        const xsrfToken = cookies.get('XSRF-TOKEN');
+        console.log(xsrfToken);
+
         console.log("handling submit");
-        console.log(event);
         console.log(this.state.movie);
+
         fetch('/movies', {
             method: this.state.edit ? 'PUT' : 'POST',
             headers: {
-                'Accept': 'application/json',
+                'Accept': 'application/json, application/xml, text/plain, text/html, */*',
                 'Content-Type': 'application/json',
+                'X-XSRF-TOKEN': xsrfToken
             },
+            credentials: 'same-origin',
+            mode: 'cors',
+            redirect: 'follow',
             body: JSON.stringify({
                 id: this.state.movie.id,
                 name: this.state.movie.name,
@@ -190,6 +202,7 @@ export class ShowMovieEditModal extends React.Component {
                 wanted: this.state.movie.wanted,
             })
         });
+
         this.state = {
             showModal: false,
             movie : {

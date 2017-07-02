@@ -21,8 +21,8 @@ export class ShowWatcher extends React.Component {
         let client = rest.wrap(mime);
         client({ path: '/user',
             headers: {'Accept': 'application/json'}}).then(response => {
-            this.setState({name: response.entity.userAuthentication.details.name});
-            this.setState({id: response.entity.userAuthentication.details.id});
+            this.setState({name: response.entity.name});
+            this.setState({id: response.entity.principle});
         });
     }
 

@@ -26,8 +26,11 @@ public class WatcherController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
     private WatcherService watcherService;
+
+    public WatcherController(WatcherService watcherService) {
+        this.watcherService = watcherService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
@@ -53,7 +56,7 @@ public class WatcherController {
             method = {RequestMethod.POST}
     )
     @ResponseBody
-    public ResponseEntity<Watcher> newMovie(@ApiParam("Watcher to add") @RequestBody Watcher watcher)  {
+    public ResponseEntity<Watcher> newWatcher(@ApiParam("Watcher to add") @RequestBody Watcher watcher)  {
         logger.info(String.format("Watchers::POST %s", watcher.getName()));
         return ResponseEntity.ok().body(watcherService.newWatcher(watcher));
     }

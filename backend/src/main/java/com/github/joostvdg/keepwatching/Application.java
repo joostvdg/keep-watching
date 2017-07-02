@@ -1,12 +1,12 @@
 package com.github.joostvdg.keepwatching;
 
+
 import com.github.joostvdg.keepwatching.config.OAuthClientResources;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DefaultConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -18,18 +18,15 @@ import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
-import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.filter.CompositeFilter;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.Filter;
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 @EnableSwagger2
@@ -58,6 +55,7 @@ public class Application extends WebSecurityConfigurerAdapter {
                 .antMatchers("/","/login**", "/webjars/**"," /view**", "/authenticated").permitAll()
                 .anyRequest().authenticated()
                 .and().logout().logoutSuccessUrl("/").permitAll()
+                .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().csrf().ignoringAntMatchers("/logout")
                 .and().addFilterBefore(ssoFilter(github(), "/view/github.html"), BasicAuthenticationFilter.class)
                 .addFilterBefore(ssoFilter(facebook(), "/view/facebook.html"), BasicAuthenticationFilter.class);
@@ -93,5 +91,19 @@ public class Application extends WebSecurityConfigurerAdapter {
         registration.setFilter(filter);
         registration.setOrder(-100);
         return registration;
+    }
+
+    private CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setHeaderName("X-XSRF-TOKEN");
+        return repository;
+    }
+
+    @Bean
+    public DefaultConfiguration configuration() {
+        DefaultConfiguration jooqConfiguration = new DefaultConfiguration();
+        SQLDialect dialect = SQLDialect.POSTGRES_9_5;
+        jooqConfiguration.set(dialect);
+        return jooqConfiguration;
     }
 }

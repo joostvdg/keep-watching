@@ -5,18 +5,16 @@ import com.github.joostvdg.keepwatching.model.Watcher;
 
 import java.util.List;
 
-/**
- * Created by joost on 5-6-17.
- */
 public interface WatchListService {
 
-    List<WatchList> getAllMovies(Watcher watcher);
+    List<WatchList> getAllWatchLists(Watcher watcher);
 
-    WatchList newWatchList(WatchList watchList);
+    WatchList newWatchList(WatchList watchList, Watcher watcher);
 
     WatchList getWatchListById(Long id);
 
-    // void deleteWatchListById(Long id);
+    boolean updateWatchList(WatchList watchList, Watcher watcher);
 
-    // void updateWatchList(WatchList watchList);
+    void deleteWatchListById(Long id, Watcher watcher);
+
 }

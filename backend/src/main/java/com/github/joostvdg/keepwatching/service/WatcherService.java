@@ -2,6 +2,7 @@ package com.github.joostvdg.keepwatching.service;
 
 import com.github.joostvdg.keepwatching.model.Watcher;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -14,6 +15,12 @@ public interface WatcherService {
     Watcher newWatcher(Watcher movie);
 
     Watcher getWatcherById(Long id);
+
+    void addNewWatcherIfNotExists(String identifier);
+
+    Watcher getWatcherByIdentifier(String identifier);
+
+    Watcher getWatcherFromPrincipal(Principal principal);
 
     // void deleteWatcherById(Long id);
 

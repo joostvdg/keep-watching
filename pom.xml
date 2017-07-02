@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.1.RELEASE</version>
+        <version>1.5.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -32,7 +32,7 @@
         <swagger.version>1.5.12</swagger.version>
         <springfox.version>2.6.1</springfox.version>
         <org.jooq.version>3.9.1</org.jooq.version>
-        <spring.boot.version>1.5.1.RELEASE</spring.boot.version>
+        <spring.boot.version>1.5.3.RELEASE</spring.boot.version>
 
     </properties>
 
@@ -41,7 +41,7 @@
             <name>Joost van der Griendt</name>
             <email>joostvdg@gmail.com</email>
             <timezone>CEST</timezone>
-            <url>github.com/joostvdg</url>
+            <url>http://github.com/joostvdg</url>
         </developer>
     </developers>
 

@@ -20,6 +20,8 @@ public class Movie {
     private boolean isWanted;
     private String imdbLink;
 
+    private long watchListId;
+
     /**
      * Instantiates a new Movie.
      */
@@ -265,6 +267,14 @@ public class Movie {
         this.imdbLink = imdbLink;
     }
 
+    public long getWatchListId() {
+        return watchListId;
+    }
+
+    public void setWatchListId(long watchListId) {
+        this.watchListId = watchListId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -295,6 +305,7 @@ public class Movie {
                 ", genre='" + genre + '\'' +
                 ", isWanted=" + isWanted +
                 ", imdbLink='" + imdbLink + '\'' +
+                ", watchListId='" + watchListId + '\'' +
                 '}';
     }
 }

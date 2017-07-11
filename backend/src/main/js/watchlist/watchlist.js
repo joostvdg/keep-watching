@@ -15,6 +15,8 @@ import Table from 'react-bootstrap/lib/Table';
 import Panel from 'react-bootstrap/lib/Panel';
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 
+import {ShowMovieList} from '../movies/movies'
+
 const rest = require('rest');
 const mime = require('rest/interceptor/mime');
 
@@ -52,8 +54,6 @@ class DeleteButton extends React.Component {
 
     deleteWatchList() {
         const id = this.state.watchList.id;
-        console.log("Going to delete watchList: " + id);
-
         const cookies = new Cookies();
         const xsrfToken = cookies.get('XSRF-TOKEN');
 
@@ -154,7 +154,8 @@ export class ShowWatchListEditModal extends React.Component {
         this.state = {
             showModal: false,
             watchList:  props.watchList,
-            edit: props.edit
+            edit: props.edit,
+            showMovies: true
         };
         this.close = this.close.bind(this);
         this.open = this.open.bind(this);
@@ -189,7 +190,7 @@ export class ShowWatchListEditModal extends React.Component {
         const xsrfToken = cookies.get('XSRF-TOKEN');
         // https://hacks.mozilla.org/2016/03/referrer-and-cache-control-apis-for-fetch/
         fetch('/watchlist', {
-            method: this.state.edit ? 'PUT' : 'POST',
+            method: this.state.edit ? 'POST' : 'PUT',
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, */*',
                 'Content-Type': 'application/json',
@@ -215,7 +216,7 @@ export class ShowWatchListEditModal extends React.Component {
                     <Glyphicon glyph={this.state.edit ? 'edit' : 'plus'}/>
                 </Button>
 
-                <Modal show={this.state.showModal} onHide={this.close}>
+                <Modal bsSize="large" show={this.state.showModal} onHide={this.close}>
                     <Modal.Header closeButton>
                         <Modal.Title>New WatchList</Modal.Title>
                     </Modal.Header>
@@ -233,6 +234,7 @@ export class ShowWatchListEditModal extends React.Component {
                             </FormGroup>
                             <Button type="submit">{this.state.edit ? 'Update' : 'Create'}</Button>
                         </Form>
+
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.close}>Close</Button>
@@ -268,9 +270,9 @@ export class ShowWatchListModal extends React.Component {
                     <Glyphicon glyph="zoom-in" />
                 </Button>
 
-                <Modal show={this.state.showModal} onHide={this.close}>
+                <Modal bsSize="large" show={this.state.showModal} onHide={this.close}>
                     <Modal.Header closeButton>
-                        <Modal.Title>WatchList</Modal.Title>
+                        <Modal.Title>{this.props.watchList.name}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <ShowWatchList watchList={this.props.watchList} />
@@ -287,13 +289,8 @@ export class ShowWatchListModal extends React.Component {
 export function ShowWatchList(props) {
     const watchList = props.watchList;
     return (
-        <table>
-            <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{watchList.name}</td>
-            </tr>
-            </tbody>
-        </table>
+        <div>
+            <ShowMovieList watchListId={watchList.id} />
+        </div>
     );
 }

@@ -1,6 +1,8 @@
 package com.github.joostvdg.keepwatching.service.impl;
 
 import com.github.joostvdg.keepwatching.model.Movie;
+import com.github.joostvdg.keepwatching.model.WatchList;
+import com.github.joostvdg.keepwatching.model.Watcher;
 import com.github.joostvdg.keepwatching.model.tables.records.MoviesRecord;
 import com.github.joostvdg.keepwatching.service.MovieService;
 import com.github.joostvdg.keepwatching.service.WatcherService;
@@ -37,9 +39,10 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> getAllMovies(){
+    public List<Movie> getAllMovies(WatchList watchList){
         List<Movie> movies = new ArrayList<>();
-        Result<Record> result = dsl.select().from(MOVIES).fetch();
+        Integer watchlistId = ((Long)watchList.getId()).intValue();
+        Result<Record> result = dsl.select().from(MOVIES).where(MOVIES.WATCHLIST_ID.eq(watchlistId)).fetch();
         for (Record r : result) {
             movies.add(getMovieEntity(r));
         }
@@ -47,7 +50,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie newMovie(Movie movie) {
+    public Movie newMovie(Movie movie, WatchList watchList) {
         assert movie != null;
         assert movie.getName() != null;
         java.sql.Date releaseDate = null;
@@ -55,6 +58,7 @@ public class MovieServiceImpl implements MovieService {
             releaseDate = new Date(movie.getReleaseDate().toEpochDay());
         }
 
+        Integer watchListId = ((Long)watchList.getId()).intValue();
         MoviesRecord moviesRecord = dsl.insertInto(MOVIES)
                 .set(MOVIES.MOVIE_NAME, movie.getName())
                 .set(MOVIES.STUDIO, movie.getStudio())
@@ -67,6 +71,7 @@ public class MovieServiceImpl implements MovieService {
                 .set(MOVIES.GENRE, movie.getGenre())
                 .set(MOVIES.WANT, movie.isWanted())
                 .set(MOVIES.IMDB, movie.getImdbLink())
+                .set(MOVIES.WATCHLIST_ID, watchListId)
                 .returning(MOVIES.ID)
                 .fetchOne();
         movie.setId(moviesRecord.getId());
@@ -76,26 +81,26 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie getMovieById(Long movieId){
         Record record = dsl.select().from(MOVIES).where(MOVIES.ID.eq(movieId.intValue())).fetchOne();
-        logger.info(String.format("Found for id %d", movieId));
-        logger.info(record.toString());
+        logger.info("Found for id %d", movieId);
         return record == null ? null : getMovieEntity(record);
     }
 
     @java.lang.Override
-    public void deleteMovieById(Long id) {
+    public void deleteMovieById(Long id, Long watchListId) {
         if (id == null || id < 1) {
-            logger.warn(String.format("No valid value for the id (%d), so cannot delete.", id));
+            logger.warn("No valid value for the id (%d), so cannot delete.", id);
             return;
         }
 
         Record record = dsl.select().from(MOVIES).where(MOVIES.ID.eq(id.intValue())).fetchOne();
         if (record != null) {
-            logger.info(String.format("Found for id %d, going to delete it.", id));
+            logger.info("Found for id %d, going to delete it.", id);
             dsl.delete(MOVIES)
                     .where(MOVIES.ID.eq(id.intValue()))
+                    .and(MOVIES.WATCHLIST_ID.eq(watchListId.intValue()))
                     .execute();
         } else {
-            logger.warn(String.format("Did not find a movie with id %d, so cannot delete.", id));
+            logger.warn("Did not find a movie with id %d, so cannot delete.", id);
         }
     }
 
@@ -153,6 +158,7 @@ public class MovieServiceImpl implements MovieService {
         if (record.getValue(MOVIES.SEEN, Boolean.class) != null) {
             movie.setSeen(record.getValue(MOVIES.SEEN, Boolean.class));
         }
+        movie.setWatchListId(record.getValue(MOVIES.WATCHLIST_ID, Integer.class));
 
         return movie;
     }

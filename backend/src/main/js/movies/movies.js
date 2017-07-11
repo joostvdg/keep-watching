@@ -16,14 +16,15 @@ export class ShowMovieList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            movies: ''
+            movies: '',
+            watchListId: props.watchListId
         };
         this.fetchData = this.fetchData.bind(this);
     }
 
     componentDidMount() {
         let client = rest.wrap(mime);
-        client({ path: '/movies',
+        client({ path: '/watchlist/' + this.state.watchListId + '/movies',
             headers: {'Accept': 'application/json'}}).then(response => {
             this.setState({movies: response.entity});
         });
@@ -31,7 +32,7 @@ export class ShowMovieList extends React.Component {
 
     fetchData(){
         let client = rest.wrap(mime);
-        client({ path: '/movies',
+        client({ path: '/watchlist/' + this.state.watchListId + '/movies',
             headers: {'Accept': 'application/json'}}).then(response => {
             this.setState({movies: response.entity});
         });
@@ -40,9 +41,8 @@ export class ShowMovieList extends React.Component {
     render() {
         const movieList = this.state.movies;
         const arr = movieList instanceof Array ? movieList : [movieList];
-        console.log(movieList);
         const movies = arr.map((movie) =>
-            <Movie movie={movie} key={movie.id}/>
+            <Movie movie={movie} key={movie.id} watchlistId={movie.watchlistId} />
         );
         const title = (
             <h3>Movies</h3>
@@ -59,14 +59,15 @@ export class ShowMovieList extends React.Component {
             imdbLink: '',
             seen: '',
             cinemaWorthy: '',
-            wanted: ''
+            wanted: '',
+            watchlistId: ''
         };
 
         return (
             <div>
                 <Panel header={title} bsStyle="primary">
                     <ButtonToolbar>
-                        <ShowMovieEditModal movie={newMovie} />
+                        <ShowMovieEditModal movie={newMovie} watchlistId={this.state.watchListId} />
                         <Button bsStyle="info" bsSize="large" onClick={this.fetchData}><Glyphicon glyph="refresh"/></Button>
 
                     </ButtonToolbar>

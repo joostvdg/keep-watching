@@ -72,16 +72,6 @@ class Home extends React.Component {
     }
 }
 
-class FacebookLogin extends React.Component {
-    render(){
-        return (
-            <div>
-                <p>Login via Facebook successful!</p>
-            </div>
-        );
-    }
-}
-
 class Logout extends React.Component {
 
     componentDidMount() {
@@ -168,6 +158,7 @@ class Navigation extends React.Component {
 class MainPage extends React.Component {
 
     render(){
+        // TODO: introduce default watchlist so we can have the movies page init with this
         return (
             <Grid >
                 <Router >
@@ -178,7 +169,6 @@ class MainPage extends React.Component {
                         <Route path="/movies"  component={ShowMovieList}/>
                         <Route path="/profile" component={ShowWatcher}/>
                         <Route path="/watchlist" component={ShowWatchLists}/>
-                        <Route exact path="/view/facebook.html" component={FacebookLogin} />
                     </div>
                 </Router>
             </Grid>

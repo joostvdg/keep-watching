@@ -11,7 +11,7 @@ public interface WatchListService {
 
     WatchList newWatchList(WatchList watchList, Watcher watcher);
 
-    WatchList getWatchListById(Long id);
+    WatchList getWatchListById(Long id, Watcher watcher);
 
     boolean updateWatchList(WatchList watchList, Watcher watcher);
 

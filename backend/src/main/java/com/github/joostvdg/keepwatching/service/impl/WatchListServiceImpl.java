@@ -67,11 +67,14 @@ public class WatchListServiceImpl implements WatchListService {
     }
 
     @Override
-    public WatchList getWatchListById(Long id) {
+    public WatchList getWatchListById(Long id,Watcher watcher) {
         assert id != null;
         assert id > 0;
         Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.ID.eq(id.intValue())).fetchOne();
-        return record == null ? null : getWatchListEntity(record);
+        if (record == null || record.getValue(WATCHLIST.USER_ID, Long.class) != watcher.getId()) {
+            return null;
+        }
+        return getWatchListEntity(record);
     }
 
     @Override

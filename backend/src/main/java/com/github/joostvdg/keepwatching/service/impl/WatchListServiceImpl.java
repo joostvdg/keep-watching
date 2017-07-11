@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.joostvdg.keepwatching.model.tables.Watchlist.WATCHLIST;
+import static com.github.joostvdg.keepwatching.model.tables.WatchlistShares.WATCHLIST_SHARES;
 
 @Transactional
 @Service("watchListService")
@@ -118,6 +119,39 @@ public class WatchListServiceImpl implements WatchListService {
         } else {
             logger.warn("Did not find a watchlist with id {}, so cannot delete.", id);
         }
+    }
+
+    @Override
+    public WatchList getWatchListByName(String watchlistName, Watcher watcher) {
+        assert watchlistName != null;
+        assert !watchlistName.isEmpty();
+
+        Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.NAME.eq(watchlistName)).fetchOne();
+
+        if (record == null) {
+            return null;
+        }
+
+        // now check if we're allowed to see it
+
+        if (record.getValue(WATCHLIST.USER_ID, Long.class) == watcher.getId()) {
+            return getWatchListEntity(record);
+        }
+
+        // maybe it was shared with us
+        Integer watchlistId = record.getValue(WATCHLIST.ID, Integer.class);
+        Integer watcherId = ((Long)watcher.getId()).intValue();
+        int count = dsl.selectCount()
+            .from(WATCHLIST_SHARES)
+            .where(WATCHLIST_SHARES.WATCHLIST_ID.eq(watchlistId))
+            .and(WATCHLIST_SHARES.WATCHER_ID.eq(watcherId))
+            .fetchOne(0, int.class);
+
+        if (count > 0) {
+            return getWatchListEntity(record);
+        }
+        return null;
+
     }
 
     private WatchList getWatchListEntity(Record record){

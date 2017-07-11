@@ -17,4 +17,5 @@ public interface WatchListService {
 
     void deleteWatchListById(Long id, Watcher watcher);
 
+    WatchList getWatchListByName(String watchlistName, Watcher watcher);
 }

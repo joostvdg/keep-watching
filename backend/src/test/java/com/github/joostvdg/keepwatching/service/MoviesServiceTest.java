@@ -1,6 +1,10 @@
 package com.github.joostvdg.keepwatching.service;
 
 import com.github.joostvdg.keepwatching.model.Movie;
+import com.github.joostvdg.keepwatching.model.WatchList;
+import com.github.joostvdg.keepwatching.model.Watcher;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
@@ -19,20 +24,53 @@ import static org.junit.Assert.*;
 @Transactional
 public class MoviesServiceTest {
 
-
     @Autowired
     private MovieService movieService;
 
-    @Test
-    public void findAllMovies()  {
-        List<Movie> movies = movieService.getAllMovies();
-        assertNotNull(movies);
-        assertTrue(!movies.isEmpty());
-        for (Movie movie : movies) {
-            System.err.println(movie);
+    @Autowired
+    private WatchListService watchListService;
+
+    @Autowired
+    private WatcherService watcherService;
+
+    private WatchList watchList;
+
+    @PostConstruct
+    public void setup(){
+        String identifier = "12345";
+        Watcher watcher = watcherService.getWatcherByIdentifier(identifier);
+        if (watcher == null) {
+            watcher = new Watcher();
+            watcher.setName("Pietje");
+            watcher.setIdentifier(identifier);
+            watcher = watcherService.newWatcher(watcher);
         }
 
-        assertEquals("Logan", movies.get(0).getName());
+        watchList = watchListService.getWatchListById(1L, watcher);
+        if (watchList == null) {
+            watchList = new WatchList();
+            watchList.setName("list1");
+            watchList.setOwner(watcher);
+            watchList = watchListService.newWatchList(watchList, watcher);
+        }
+    }
+
+    @Test
+    public void findAllMovies()  {
+        List<Movie> movies = movieService.getAllMovies(watchList);
+        assertNotNull(movies);
+        assertTrue(movies.isEmpty());
+    }
+
+    @Test
+    public void shouldReturnMoviesForWatchListOne()  {
+        String name = "John Wick 2";
+        Movie movie = new Movie(name);
+        movie.setWatchListId(watchList.getId());
+        Movie moviePersisted = movieService.newMovie(movie, watchList);
+        List<Movie> movies = movieService.getAllMovies(watchList);
+        assertNotNull(movies);
+        assertTrue(!movies.isEmpty());
     }
 
     @Test
@@ -57,7 +95,8 @@ public class MoviesServiceTest {
     public void shouldCreateNewMovie(){
         String name = "John Wick 2";
         Movie movie = new Movie(name);
-        Movie moviePersisted = movieService.newMovie(movie);
+        movie.setWatchListId(watchList.getId());
+        Movie moviePersisted = movieService.newMovie(movie, watchList);
 
         assertNotNull(moviePersisted);
         assertEquals(name, moviePersisted.getName());

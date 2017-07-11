@@ -15,20 +15,6 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 const rest = require('rest');
 const mime = require('rest/interceptor/mime');
 
-/*
- "id": 1,
- "name": "Logan",
- "studio": "",
- "director": "James Mangold",
- "notableActors": "Hugh Jackman,Patrick Stewart",
- "releaseYear": "2017",
- "releaseDate": "2017-03-02",
- "genre": "Action,Drama,Sci-Fi",
- "imdbLink": "http://www.imdb.com/title/tt3315342/",
- "seen": false,
- "cinemaWorthy": true,
- "wanted": true
- */
 
 export function ShowMovie(props) {
     const movie = props.movie;
@@ -86,16 +72,32 @@ class DeleteButton extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            movie: props.movie
+            movie: props.movie,
+            watchlistId: props.watchlistId
         };
         this.deleteMovie = this.deleteMovie.bind(this);
     }
 
     deleteMovie() {
+        event.preventDefault();
         const id = this.state.movie.id;
-        console.log("Going to delete movie: " + id);
+        const watchlistId = this.state.watchlistId;
+        const cookies = new Cookies();
+        const xsrfToken = cookies.get('XSRF-TOKEN');
+
         let client = rest.wrap(mime);
-        client({ path: '/movies/'+id, method: 'DELETE' });
+        client({
+            path: '/watchlist/' + watchlistId  + '/movies/'+id,
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json, application/xml, text/plain, text/html, */*',
+                'Content-Type': 'application/json',
+                'X-XSRF-TOKEN': xsrfToken
+            },
+            credentials: 'same-origin',
+            mode: 'cors',
+            redirect: 'follow',
+        });
     }
 
     render() {
@@ -115,6 +117,7 @@ export class Movie extends React.Component {
 
     render() {
         const movie = this.state.movie;
+        console.log(movie);
         return (
             <tr>
                 <th>{movie.name}</th>
@@ -127,7 +130,7 @@ export class Movie extends React.Component {
                     glyph="film"/></Button></th>
                 <td><ShowMovieModal movie={movie}/></td>
                 <td><ShowMovieEditModal movie={movie} edit="true"/></td>
-                <td><DeleteButton movie={movie} /></td>
+                <td><DeleteButton movie={movie} watchlistId={movie.watchListId} /></td>
             </tr>
         );
     }
@@ -139,7 +142,8 @@ export class ShowMovieEditModal extends React.Component {
         this.state = {
             showModal: false,
             movie:  props.movie,
-            edit: props.edit
+            edit: props.edit,
+            watchlistId: props.watchlistId
         };
         this.close = this.close.bind(this);
         this.open = this.open.bind(this);
@@ -172,13 +176,10 @@ export class ShowMovieEditModal extends React.Component {
 
         const cookies = new Cookies();
         const xsrfToken = cookies.get('XSRF-TOKEN');
-        console.log(xsrfToken);
 
-        console.log("handling submit");
-        console.log(this.state.movie);
-
-        fetch('/movies', {
-            method: this.state.edit ? 'PUT' : 'POST',
+        // TODO: do we need this? method: this.state.edit ? 'PUT' : 'POST',
+        fetch('/watchlist/' + this.state.watchlistId + '/movies', {
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, */*',
                 'Content-Type': 'application/json',
@@ -200,32 +201,34 @@ export class ShowMovieEditModal extends React.Component {
                 seen: this.state.movie.seen,
                 cinemaWorthy: this.state.movie.cinemaWorthy,
                 wanted: this.state.movie.wanted,
+                watchlistId: this.state.movie.watchlistId
             })
         });
 
-        this.state = {
-            showModal: false,
+        this.setState({ showModal: false });
+        this.setState({
             movie : {
-                    id: '',
-                    name: '',
-                    studio: '',
-                    director: '',
-                    notableActors: '',
-                    releaseYear: '',
-                    releaseDate: '',
-                    genre: '',
-                    imdbLink: '',
-                    seen: '',
-                    cinemaWorthy: '',
-                    wanted: ''
+                id: '',
+                name: '',
+                studio: '',
+                director: '',
+                notableActors: '',
+                releaseYear: '',
+                releaseDate: '',
+                genre: '',
+                imdbLink: '',
+                seen: '',
+                cinemaWorthy: '',
+                wanted: '',
+                watchlistId: ''
             }
-        }
+        });
     }
 
     render() {
         return (
             <div>
-                <Button bsStyle="success" bsSize={this.state.edit ? 'small' : 'large'} onClick={this.open}>
+                <Button bsStyle="success" bsSize='small' onClick={this.open}>
                     <Glyphicon glyph={this.state.edit ? 'edit' : 'plus'}/>
                 </Button>
 
@@ -251,7 +254,7 @@ export class ShowMovieEditModal extends React.Component {
                                 <FormControl.Feedback />
                             </FormGroup>
                             <FormGroup controlId="newMovieInputNotableActors">
-                                <ControlLabel>Notable Actions (comma separated list)</ControlLabel>
+                                <ControlLabel>Notable Actors (comma separated list)</ControlLabel>
                                 <FormControl type="text" value={this.state.movie.notableActors} name="notableActors" placeholder="notableActors" onChange={this.handleChange} />
                                 <FormControl.Feedback />
                             </FormGroup>

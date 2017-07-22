@@ -2,7 +2,9 @@ package com.github.joostvdg.keepwatching.controller;
 
 import com.github.joostvdg.keepwatching.model.Movie;
 import com.github.joostvdg.keepwatching.model.WatchList;
+import com.github.joostvdg.keepwatching.model.WatchListShare;
 import com.github.joostvdg.keepwatching.model.Watcher;
+import com.github.joostvdg.keepwatching.model.external.WatchListShareDTO;
 import com.github.joostvdg.keepwatching.service.MovieService;
 import com.github.joostvdg.keepwatching.service.WatchListService;
 import com.github.joostvdg.keepwatching.service.WatcherService;
@@ -122,6 +124,53 @@ public class WatchListController {
         WatchList watchList = watchListService.getWatchListById(watchListId, watcher);
         logger.info("Watchlist::Movies::GET");
         return ResponseEntity.ok().body(movieService.getAllMovies(watchList));
+    }
+
+    @RequestMapping(
+        value = {"/{watchListId}/shares"},
+        produces = {"application/json", "text/plain; charset=utf-8"},
+        method = {RequestMethod.GET}
+    )
+    @ResponseBody
+    public ResponseEntity<Collection<WatchListShare>> getWatcherSharedWith(Principal principal, @PathVariable("watchListId") long watchListId){
+        if (principal == null) {return notAuthorizedResponse;}
+        logger.info("Watchlist::Shares::GET");
+        Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
+        WatchList watchList = watchListService.getWatchListById(watchListId, watcher);
+        return ResponseEntity.ok().body(watchListService.getSharedWith(watchList, watcher));
+    }
+
+    @RequestMapping(
+        value = {"/{watchListId}/shares"},
+        produces = {"application/json", "text/plain; charset=utf-8"},
+        method = {RequestMethod.PUT}
+    )
+    @ResponseBody
+    public ResponseEntity getWatcherSharedWith(Principal principal, @PathVariable("watchListId") long watchListId, @ApiParam("Share to create") @RequestBody WatchListShareDTO watchListShare){
+        if (principal == null) {return notAuthorizedResponse;}
+        logger.info("Watchlist::Shares::PUT");
+
+        assert watchListId > 0;
+        assert watchListShare != null;
+        assert watchListShare.getWatchListId() != null;
+        assert watchListShare.getWatchListId().equals(watchListId);
+        assert watchListShare.getWatchListId() > 0;
+        assert watchListShare.getSharerIdentifier() != null;
+
+        Watcher sharer = watcherService.getWatcherByIdentifier(watchListShare.getSharerIdentifier());
+        Watcher owner = watcherService.getWatcherFromPrincipal(principal);
+        WatchList watchList = watchListService.getWatchListById(watchListId, owner);
+        boolean hasWriteRights = false;
+        if (watchListShare.isHasWriteAccess()) {
+            hasWriteRights = true;
+        }
+
+        assert sharer != null;
+        assert owner != null;
+        assert watchList != null;
+
+        watchListService.shareWatchList(watchList, owner, sharer, hasWriteRights);
+        return ResponseEntity.accepted().build();
     }
 
     @RequestMapping(

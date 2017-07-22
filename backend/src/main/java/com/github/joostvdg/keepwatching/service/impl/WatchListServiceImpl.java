@@ -94,11 +94,28 @@ public class WatchListServiceImpl implements WatchListService {
         }
 
         int userId = ((Long)watcher.getId()).intValue();
-        int updateCount = dsl.update(WATCHLIST)
+        int rightsCount = dsl.selectCount()
+            .from(WATCHLIST)
+            .where(WATCHLIST.ID.eq(id))
+            .and(WATCHLIST.USER_ID.eq(userId))
+            .or(WATCHLIST.ID.in(
+                dsl.select(WATCHLIST_SHARES.WATCHLIST_ID)
+                .from(WATCHLIST_SHARES)
+                .where(WATCHLIST_SHARES.WATCHLIST_ID.eq(id))
+                .and(WATCHLIST_SHARES.WATCHER_ID.eq(userId))
+                .and(WATCHLIST_SHARES.WRITE_ACCESS.eq(true))
+            )).fetchOne(0, int.class);
+
+        int updateCount;
+        if (rightsCount > 0) {
+            updateCount = dsl.update(WATCHLIST)
                 .set(WATCHLIST.NAME, watchList.getName())
-                .set(WATCHLIST.USER_ID, userId)
                 .where(WATCHLIST.ID.eq(id))
                 .execute();
+        } else {
+            logger.warn("User {} has no rights to update watchlist {}", userId, id);
+            return false;
+        }
         return updateCount == 1;
     }
 

@@ -14,12 +14,51 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import Table from 'react-bootstrap/lib/Table';
 import Panel from 'react-bootstrap/lib/Panel';
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
+import Badge from 'react-bootstrap/lib/Badge';
 
 import {ShowMovieList} from '../movies/movies'
 
 const rest = require('rest');
 const mime = require('rest/interceptor/mime');
 
+
+class MoviesWatched extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            watchList: props.watchList,
+            moviesCount: 0
+        };
+    }
+
+    componentDidMount() {
+        let movies = [];
+
+        const id = this.state.watchList.id;
+        let client = rest.wrap(mime);
+        client({
+            path: '/watchlist/' + id + '/movies',
+            headers: {'Accept': 'application/json'}
+        }).then(response => {
+            let moviesCount = 0;
+            if (response) {
+                console.log(response);
+                moviesCount = response.entity.length;
+            }
+            this.setState({moviesCount: moviesCount});
+        });
+
+    }
+
+
+    render(){
+        return (
+            <p>
+                <Glyphicon glyph="film"/><Badge>{this.state.moviesCount}</Badge>
+            </p>
+        );
+    }
+}
 
 export class WatchList extends React.Component {
     constructor(props) {
@@ -34,6 +73,7 @@ export class WatchList extends React.Component {
         return (
             <tr>
                 <th>{watchList.name}</th>
+                <td><MoviesWatched watchList={watchList} /></td>
                 <td><ShowWatchListModal watchList={watchList}/></td>
                 <td><ShowWatchListEditModal watchList={watchList} edit="true" /></td>
                 <td><DeleteButton watchList={watchList} /></td>
@@ -130,6 +170,7 @@ export class ShowWatchLists extends React.Component {
                         <thead >
                         <tr>
                             <th>Name</th>
+                            <th>In List</th>
                             <th><Glyphicon glyph="zoom-in" /></th>
                             <th><Glyphicon glyph="edit" /></th>
                             <th><Glyphicon glyph="trash" /></th>

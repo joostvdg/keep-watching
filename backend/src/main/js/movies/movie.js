@@ -117,7 +117,6 @@ export class Movie extends React.Component {
 
     render() {
         const movie = this.state.movie;
-        console.log(movie);
         return (
             <tr>
                 <th>{movie.name}</th>

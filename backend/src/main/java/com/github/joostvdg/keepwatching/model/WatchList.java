@@ -12,6 +12,24 @@ public class WatchList {
     private String name;
     private Watcher owner;
 
+    /**
+     * default empty constructor.
+     * TODO: do we need this?
+     */
+    public WatchList() {
+        super();
+    }
+
+    /**
+     * The constructor to use to create a new instance.
+     * @param name the name of the watchList
+     * @param watcher the watcher that is the owner of the list
+     */
+    public WatchList(String name, Watcher watcher) {
+        setName(name);
+        setOwner(watcher);
+    }
+
     @Override
     public String toString() {
         return "WatchList{" +

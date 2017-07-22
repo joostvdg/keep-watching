@@ -88,7 +88,6 @@ public class MoviesServiceTest {
         assertEquals("2017", movie.getReleaseYear());
         assertEquals("Action,Drama,Sci-Fi", movie.getGenre());
         assertEquals("http://www.imdb.com/title/tt3315342/", movie.getImdbLink());
-//        assertEquals(LocalDate.of(2017, Month.MARCH, 2), movie.getReleaseDate());// '2017-03-02'
         assertEquals(true, movie.isSeen());
         assertEquals(true, movie.isCinemaWorthy());
         assertEquals(true, movie.isWanted());

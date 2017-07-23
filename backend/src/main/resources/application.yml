@@ -3,3 +3,25 @@ spring:
       url: jdbc:h2:~/jooq
       username: sa
       password:
+
+facebook:
+  client:
+    clientId: 1686544878318686
+    clientSecret: 3936e2aafc1c13759a35f592bef7ab39
+    accessTokenUri: https://graph.facebook.com/oauth/access_token
+    userAuthorizationUri: https://www.facebook.com/dialog/oauth
+    tokenName: oauth_token
+    authenticationScheme: query
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://graph.facebook.com/me
+
+github:
+  client:
+    clientId: cadc112d448ee253c0b6
+    clientSecret: 271a547335a2f7f52d51d76aecd9cc78fdcf79d2
+    accessTokenUri: https://github.com/login/oauth/access_token
+    userAuthorizationUri: https://github.com/login/oauth/authorize
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://api.github.com/user

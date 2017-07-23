@@ -3,8 +3,6 @@ package com.github.joostvdg.keepwatching.service;
 import com.github.joostvdg.keepwatching.model.Movie;
 import com.github.joostvdg.keepwatching.model.WatchList;
 import com.github.joostvdg.keepwatching.model.Watcher;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -60,7 +56,15 @@ public class MoviesServiceTest {
     public void findAllMovies()  {
         List<Movie> movies = movieService.getAllMovies(watchList);
         assertNotNull(movies);
+        assertTrue(movies.isEmpty());
+        String name = "John Wick 2";
+        Movie movie = new Movie(name);
+        movie.setWatchListId(watchList.getId());
+        movieService.newMovie(movie, watchList);
+        movies = movieService.getAllMovies(watchList);
+        assertNotNull(movies);
         assertFalse(movies.isEmpty());
+        assertEquals(1, movies.size());
     }
 
     @Test
@@ -74,23 +78,6 @@ public class MoviesServiceTest {
         assertNotNull(moviePersisted);
         assertNotNull(moviePersisted.getId());
         assertTrue(!movies.isEmpty());
-    }
-
-    @Test
-    public void shouldReturnExistingMovie(){
-        Long id = new Long(1);
-        Movie movie = movieService.getMovieById(id);
-        assertNotNull(movie);
-        assertEquals("Logan", movie.getName());
-        assertEquals(id, (Long)movie.getId());
-        assertEquals("James Mangold", movie.getDirector());
-        assertEquals("Hugh Jackman,Patrick Stewart", movie.getNotableActors());
-        assertEquals("2017", movie.getReleaseYear());
-        assertEquals("Action,Drama,Sci-Fi", movie.getGenre());
-        assertEquals("http://www.imdb.com/title/tt3315342/", movie.getImdbLink());
-        assertEquals(true, movie.isSeen());
-        assertEquals(true, movie.isCinemaWorthy());
-        assertEquals(true, movie.isWanted());
     }
 
     @Test

@@ -1,13 +1,5 @@
 ---
 spring:
-    profiles: aws
-    datasource:
-      url: kw.c66kjyfxzqqs.eu-central-1.rds.amazonaws.com:5432
-      username: docker
-      password: keep-watching
-
----
-spring:
     profiles: compose
     datasource:
       url: jdbc:postgresql://keepwatching_db_1:5432/kw

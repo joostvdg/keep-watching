@@ -1,8 +1,8 @@
 spring:
     datasource:
-      url: jdbc:h2:~/jooq
-      username: sa
-      password:
+      url: jdbc:postgresql:kw.c66kjyfxzqqs.eu-central-1.rds.amazonaws.com:5432/kw
+      username: docker
+      password: keep-watching
 
 facebook:
   client:

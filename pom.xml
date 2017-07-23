@@ -55,12 +55,6 @@
                 <scope>runtime</scope>
                 <version>9.4-1206-jdbc42</version>
             </dependency>
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>1.4.193</version>
-            </dependency>
-
 
             <!-- JACKSON -->
             <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jdk8 -->

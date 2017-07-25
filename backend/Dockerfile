@@ -1,8 +1,11 @@
 FROM anapsix/alpine-java:jdk8
 ADD target/keep-watching-be*.jar app.jar
 RUN bash -c 'touch /app.jar'
-ENV DB_URL="localhost:5432"
-ENV DB_USER="docker"
-ENV DB_PASS="docker"
-EXPOSE 8080
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","-Ddb.url=jdbc:postgresql://${DB_URL}","-Dspring.datasource.url=jdbc:postgresql://${DB_URL}","-Ddb.password=${DB_PASS}","-Dspring.datasource.password=${DB_PASS}","-Ddb.user=${DB_USER}","-Dspring.datasource.username=${DB_USER}","/app.jar"]
+ENV JDBC_DATABASE_URL="jdbc:postgresql://localhost:5432"
+ENV JDBC_DATABASE_USERNAME="docker"
+ENV JDBC_DATABASE_PASSWORD="docker"
+ENV PORT=8080
+EXPOSE $PORT
+COPY entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["java","-Djava.security.egd=file:/dev/./urandom","-jar","-Dserver.port=$PORT","-Ddb.url=${JDBC_DATABASE_URL}","-Dspring.datasource.url=jdbc:postgresql://${JDBC_DATABASE_URL}","-Ddb.password=${JDBC_DATABASE_PASSWORD}","-Dspring.datasource.password=${JDBC_DATABASE_PASSWORD}","-Ddb.user=${JDBC_DATABASE_USERNAME}","-Dspring.datasource.username=${JDBC_DATABASE_USERNAME}","/app.jar"]

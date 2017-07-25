@@ -5,7 +5,6 @@ ENV JDBC_DATABASE_URL="jdbc:postgresql://localhost:5432"
 ENV JDBC_DATABASE_USERNAME="docker"
 ENV JDBC_DATABASE_PASSWORD="docker"
 ENV PORT=8080
-EXPOSE $PORT
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["java","-Djava.security.egd=file:/dev/./urandom","-jar","-Dserver.port=$PORT","-Ddb.url=${JDBC_DATABASE_URL}","-Dspring.datasource.url=jdbc:postgresql://${JDBC_DATABASE_URL}","-Ddb.password=${JDBC_DATABASE_PASSWORD}","-Dspring.datasource.password=${JDBC_DATABASE_PASSWORD}","-Ddb.user=${JDBC_DATABASE_USERNAME}","-Dspring.datasource.username=${JDBC_DATABASE_USERNAME}","/app.jar"]
+CMD ["java","-Djava.security.egd=file:/dev/./urandom","-jar","-Dserver.port=${PORT}","-Ddb.url=${JDBC_DATABASE_URL}","-Dspring.datasource.url=${JDBC_DATABASE_URL}","-Ddb.password=${JDBC_DATABASE_PASSWORD}","-Dspring.datasource.password=${JDBC_DATABASE_PASSWORD}","-Ddb.user=${JDBC_DATABASE_USERNAME}","-Dspring.datasource.username=${JDBC_DATABASE_USERNAME}","/app.jar"]

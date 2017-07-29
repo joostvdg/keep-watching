@@ -33,8 +33,8 @@ import javax.servlet.Filter;
 @ComponentScan(basePackages = "com.github.joostvdg.keepwatching")
 @EnableTransactionManagement
 @EnableAutoConfiguration
-//@EnableOAuth2Sso
 @EnableOAuth2Client
+//@EnableConfigServer
 public class Application extends WebSecurityConfigurerAdapter {
 
     private OAuth2ClientContext oauth2ClientContext;

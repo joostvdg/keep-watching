@@ -1,0 +1,51 @@
+# Meta
+site_name: Keep-Watching
+site_url: https://joostvdg.github.io/keep-watching
+# Copyright
+copyright: 'Copyright &copy; 2017 Joost van der Griendt'
+repo_name: 'joostvdg/keep-watching'
+repo_url: 'https://github.com/joostvdg/keep-watching'
+
+# Pages
+pages:
+- Home: index.md
+- Circle CI: circle-ci.md
+- Heroku: heroku.md
+- Spring:
+    - Spring Boot: spring/spring-boot.md
+    - Security: spring/security.md
+    - ReactJS: spring/reactjs.md
+    - Database: spring/database.md
+
+# Theme
+theme: 'material'
+
+# Extra Options
+extra:
+  palette:
+    primary: 'orange'
+    accent: 'red'
+  font:
+      text: 'Ubuntu'
+      code: 'Ubuntu Mono'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite(guess_lang=false)
+  - footnotes
+  - meta
+  - toc(permalink=true)
+  - pymdownx.arithmatex
+  - pymdownx.betterem(smart_enable=all)
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist(custom_checkbox=true)
+  - pymdownx.tilde

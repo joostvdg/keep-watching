@@ -5,15 +5,21 @@ machine:
     - docker
   java:
     version: oraclejdk8
+  python:
+      version: 2.7.9
 
 general:
   artifacts:
     - "backend/target/keep-watching-be.jar"
+  branches:
+    ignore:
+      - gh-pages # list of branches to ignore
 
 dependencies:
   pre:
     - curl -L https://github.com/docker/compose/releases/download/1.8.0-rc2/docker-compose-`uname -s`-`uname -m` > ../bin/docker-compose && chmod +x ../bin/docker-compose
     - docker-compose pull
+    - pip install -r mkdocs-requirements.txt
   override:
     - mvn dependency:resolve -P db
     - docker info
@@ -29,3 +35,5 @@ deployment:
       - docker build --rm=false -t caladreas/keep-watching-be backend
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push caladreas/keep-watching-be
+      - git remote add github https://${GITHUB_TOKEN}@github.com/joostvdg/keep-watching.git
+      - mkdocs gh-deploy -r github --force

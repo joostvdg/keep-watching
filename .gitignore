@@ -29,3 +29,5 @@ backend/gensrc/
 backend/src/main/resources/static/built/
 
 backend/src/main/resources/static/js/
+
+site/

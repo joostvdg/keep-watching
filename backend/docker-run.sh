@@ -22,4 +22,5 @@ echo "HELLO=$DATABASE_URL"
     export JDBC_DATABASE_USERNAME="$USR"
     export JDBC_DATABASE_PASSWORD="$PSS"
 fi
-exec "$@"
+
+java -Xms256M -Xmx512M -Djava.security.egd=file:/dev/./urandom -Dserver.port=$PORT -Ddb.url=$JDBC_DATABASE_URL -Dspring.datasource.url=$JDBC_DATABASE_URL -Ddb.password=$JDBC_DATABASE_PASSWORD -Dspring.datasource.password=$JDBC_DATABASE_PASSWORD -Ddb.user=$JDBC_DATABASE_USERNAME -Dspring.datasource.username=$JDBC_DATABASE_USERNAME -jar /app.jar

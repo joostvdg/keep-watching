@@ -37,3 +37,6 @@ deployment:
       - docker push caladreas/keep-watching-be
       - git remote add github https://${GITHUB_TOKEN}@github.com/joostvdg/keep-watching.git
       - mkdocs gh-deploy -r github --force
+      - docker login --username=${HEROKU_USER} --password=${HEROKU_TOKEN} registry.heroku.com
+      - docker tag caladreas/keep-watching-be registry.heroku.com/keep-watching/web
+      - docker push registry.heroku.com/keep-watching/web

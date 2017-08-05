@@ -146,7 +146,6 @@ class Navigation extends React.Component {
                     <Navbar.Collapse>
                         <Nav >
                             <LinkContainer to="/"><NavItem eventKey={3}><Glyphicon glyph="home"/></NavItem></LinkContainer>
-                            <LinkContainer to="/view/facebook.html"><NavItem eventKey={6}>loginfb</NavItem></LinkContainer>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

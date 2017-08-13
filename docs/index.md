@@ -7,3 +7,43 @@
 
 ## Tech Stack
 
+### Backend
+
+* [Spring Boot](https://projects.spring.io/spring-boot/)
+* [JOOQ](https://www.jooq.org/)
+* [FlyWay](https://flywaydb.org/)
+* [PostGreSQL](https://www.postgresql.org/)
+* [Swagger](https://swagger.io/)
+
+### Frontend
+
+* [ReactJS](https://facebook.github.io/react/)
+
+### Build Tools
+
+* [Maven](https://maven.apache.org/)
+* [YARN](https://yarnpkg.com/en/)
+* [WebPack](https://webpack.github.io/)
+
+### Dev Tools
+
+* [Circle CI](https://circleci.com)
+* [Heroku](https://www.heroku.com)
+* [DockerHub](https://hub.docker.com/r/caladreas/keep-watching-be/)
+* [GitHub](https://github.com/joostvdg/keep-watching)
+
+### Runtime
+
+* [NodeJS](https://nodejs.org/en/)
+* [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Docker](https://www.docker.com/)
+* [Docker Compose](https://docs.docker.com/compose/)
+
+### Docs
+* [MKDocs](http://www.mkdocs.org/)
+* [MKDocs Material](https://squidfunk.github.io/mkdocs-material/)
+* [GitHub Pages](https://joostvdg.github.io/keep-watching)
+
+
+
+

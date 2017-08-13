@@ -11,11 +11,11 @@ pages:
 - Home: index.md
 - Circle CI: circle-ci.md
 - Heroku: heroku.md
-- Spring:
-    - Spring Boot: spring/spring-boot.md
-    - Security: spring/security.md
-    - ReactJS: spring/reactjs.md
-    - Database: spring/database.md
+- Backend:
+    - Spring Boot: backend/spring-boot.md
+    - Security: backend/security.md
+    - ReactJS: backend/reactjs.md
+    - Database: backend/database.md
 
 # Theme
 theme: 'material'

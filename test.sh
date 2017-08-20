@@ -14,7 +14,7 @@ echo "##############"
 echo "##############"
 echo "## RUN MAVEN TESTS"
 cd backend
-mvn flyway:migrate generate-resources generate-sources package -e  -Dspring.profiles.active=compose -Ddb.url=jdbc:postgresql://${DB_IP}:5432/kw -Dspring.datasource.url=jdbc:postgresql://${DB_IP}:5432/kw -Dspring.datasource.username=docker -Dspring.datasource.password=docker
+mvn flyway:migrate generate-resources generate-sources package -e -Ddb.url="jdbc:postgresql://${DB_IP}:5432/kw" -Drun.jvmArguments="-Dencrypt.keyStore.secret=${JKS_SECRET} -Dencrypt.keyStore.password=${JKS_PASS} -Dspring.datasource.url=jdbc:postgresql://${DB_IP}:5432/kw -Dspring.datasource.username=docker -Dspring.datasource.password=docker"
 cd ..
 echo "##############"
 echo "##############"

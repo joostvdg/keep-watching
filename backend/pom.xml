@@ -136,7 +136,7 @@
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.4</version>
+                <version>1.5</version>
                 <configuration>
                     <installDirectory>target</installDirectory>
                 </configuration>
@@ -151,7 +151,7 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <nodeVersion>v6.10.3</nodeVersion>
-                            <yarnVersion>v0.23.4</yarnVersion>
+                            <yarnVersion>v0.27.5</yarnVersion>
                         </configuration>
                     </execution>
                     <execution>
@@ -220,10 +220,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-config-server</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -258,6 +254,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-rsa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -349,18 +353,18 @@
 			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>com.structurizr</groupId>
-            <artifactId>structurizr-core</artifactId>
-            <version>1.0.0-RC3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.structurizr</groupId>
-            <artifactId>structurizr-spring</artifactId>
-            <version>1.0.0-RC3</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.structurizr</groupId>-->
+            <!--<artifactId>structurizr-core</artifactId>-->
+            <!--<version>1.0.0-RC3</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.structurizr</groupId>-->
+            <!--<artifactId>structurizr-spring</artifactId>-->
+            <!--<version>1.0.0-RC3</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
 	</dependencies>
 
 	<dependencyManagement>

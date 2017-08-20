@@ -1,3 +1,18 @@
+spring:
+  application:
+    name: keep-watching
+  cloud:
+    config:
+      uri: http://localhost:8081
+
+encrypt:
+  keyStore:
+    location: classpath:/config-server.jks
+    password: NotThePassword
+    alias: config-server-key
+    secret: AlsoNotThePassword
+
+
 ---
 spring:
     profiles: compose

@@ -1,6 +1,6 @@
 spring:
     datasource:
-      url: localhost:5432/kw
+      url: jdbc:postgresql://localhost:5432/kw
       username: docker
       password: docker
 

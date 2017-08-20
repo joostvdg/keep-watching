@@ -34,7 +34,6 @@ import javax.servlet.Filter;
 @EnableTransactionManagement
 @EnableAutoConfiguration
 @EnableOAuth2Client
-//@EnableConfigServer
 public class Application extends WebSecurityConfigurerAdapter {
 
     private OAuth2ClientContext oauth2ClientContext;

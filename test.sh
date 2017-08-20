@@ -13,8 +13,8 @@ echo "# IP=${DB_IP}"
 echo "##############"
 echo "##############"
 echo "## RUN MAVEN TESTS"
-ehco "# JKS_SECRET=${JKS_SECRET}"
-ehco "# JKS_PASS  =${JKS_PASS}"
+echo "# JKS_SECRET=${JKS_SECRET}"
+echo "# JKS_PASS  =${JKS_PASS}"
 cd backend
 mvn flyway:migrate generate-resources generate-sources package -e -Ddb.url="jdbc:postgresql://${DB_IP}:5432/kw" -Drun.jvmArguments="-Dencrypt.keyStore.secret=${JKS_SECRET} -Dencrypt.keyStore.password=${JKS_PASS} -Dspring.datasource.url=jdbc:postgresql://${DB_IP}:5432/kw -Dspring.datasource.username=docker -Dspring.datasource.password=docker"
 cd ..

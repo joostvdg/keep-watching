@@ -15,6 +15,13 @@ encrypt:
 
 ---
 spring:
+  profiles: heroku
+  cloud:
+    config:
+      uri: https://keep-config.herokuapp.com
+
+---
+spring:
     profiles: compose
     datasource:
       url: jdbc:postgresql://keepwatching_db_1:5432/kw

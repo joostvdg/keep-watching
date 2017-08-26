@@ -16,6 +16,7 @@ pages:
     - Security: backend/security.md
     - ReactJS: backend/reactjs.md
     - Database: backend/database.md
+    - Config: backend/config.md
 
 # Theme
 theme: 'material'
@@ -32,7 +33,7 @@ extra:
 # Extensions
 markdown_extensions:
   - admonition
-  - codehilite(guess_lang=false)
+  - codehilite(guess_lang=false,linenums=true)
   - footnotes
   - meta
   - toc(permalink=true)

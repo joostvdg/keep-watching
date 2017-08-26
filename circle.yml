@@ -32,6 +32,7 @@ deployment:
   release:
     branch: master
     commands:
+      - curl -L --connect-timeout 30 -v https://keep-config.herokuapp.com/hello
       - docker build --rm=false -t caladreas/keep-watching-be backend
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push caladreas/keep-watching-be

@@ -1,0 +1,992 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://joostvdg.github.io/keep-watching/backend/config/">
+      
+      
+      
+        <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.10.0">
+    
+    
+      
+        <title>Config - Keep-Watching</title>
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr-e826f8942a.js"></script>
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application-b6a6d08807.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-23f75ab9c7.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,400i,700|Ubuntu+Mono">
+        <style>body,input{font-family:"Ubuntu","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Ubuntu Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="orange" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://joostvdg.github.io/keep-watching" title="Keep-Watching" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon md-icon--home"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Backend
+                </span>
+              
+            
+            Config
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/joostvdg/keep-watching" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      joostvdg/keep-watching
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <div class="md-nav__button md-logo">
+      
+        <i class="md-icon md-icon--home"></i>
+      
+    </div>
+    Keep-Watching
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/joostvdg/keep-watching" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      joostvdg/keep-watching
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../circle-ci/" title="Circle CI" class="md-nav__link">
+      Circle CI
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../heroku/" title="Heroku" class="md-nav__link">
+      Heroku
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      Backend
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Backend
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../spring-boot/" title="Spring Boot" class="md-nav__link">
+      Spring Boot
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../security/" title="Security" class="md-nav__link">
+      Security
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reactjs/" title="ReactJS" class="md-nav__link">
+      ReactJS
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../database/" title="Database" class="md-nav__link">
+      Database
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Config
+      </label>
+    
+    <a href="./" title="Config" class="md-nav__link md-nav__link--active">
+      Config
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spring-cloud-config" title="Spring Cloud Config" class="md-nav__link">
+    Spring Cloud Config
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#keep-config" title="Keep-Config" class="md-nav__link">
+    Keep-Config
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pomxml" title="pom.xml" class="md-nav__link">
+    pom.xml
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applicationjava" title="Application.java" class="md-nav__link">
+    Application.java
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applicationyml" title="application.yml" class="md-nav__link">
+    application.yml
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keep-watching" title="Keep-Watching" class="md-nav__link">
+    Keep-Watching
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pomxml_1" title="pom.xml" class="md-nav__link">
+    pom.xml
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootstrapyml" title="bootstrap.yml" class="md-nav__link">
+    bootstrap.yml
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config" title="Config" class="md-nav__link">
+    Config
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encryption" title="Encryption" class="md-nav__link">
+    Encryption
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java-encryption-strength" title="Java Encryption Strength" class="md-nav__link">
+    Java Encryption Strength
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#config-server-on-heroku" title="Config Server on Heroku" class="md-nav__link">
+    Config Server on Heroku
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" title="Docker" class="md-nav__link">
+    Docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-configuration" title="Spring Configuration" class="md-nav__link">
+    Spring Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secret-encryption-decryption" title="Secret Encryption / Decryption" class="md-nav__link">
+    Secret Encryption / Decryption
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disable-automatic-decryption-in-cloud-config-server" title="Disable automatic decryption in cloud config server" class="md-nav__link">
+    Disable automatic decryption in cloud config server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decrypt-in-client" title="Decrypt in client" class="md-nav__link">
+    Decrypt in client
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jks-secret-password" title="JKS Secret &amp; Password" class="md-nav__link">
+    JKS Secret &amp; Password
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spring-cloud-config" title="Spring Cloud Config" class="md-nav__link">
+    Spring Cloud Config
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#keep-config" title="Keep-Config" class="md-nav__link">
+    Keep-Config
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pomxml" title="pom.xml" class="md-nav__link">
+    pom.xml
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applicationjava" title="Application.java" class="md-nav__link">
+    Application.java
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applicationyml" title="application.yml" class="md-nav__link">
+    application.yml
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keep-watching" title="Keep-Watching" class="md-nav__link">
+    Keep-Watching
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pomxml_1" title="pom.xml" class="md-nav__link">
+    pom.xml
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootstrapyml" title="bootstrap.yml" class="md-nav__link">
+    bootstrap.yml
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config" title="Config" class="md-nav__link">
+    Config
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encryption" title="Encryption" class="md-nav__link">
+    Encryption
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java-encryption-strength" title="Java Encryption Strength" class="md-nav__link">
+    Java Encryption Strength
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#config-server-on-heroku" title="Config Server on Heroku" class="md-nav__link">
+    Config Server on Heroku
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" title="Docker" class="md-nav__link">
+    Docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-configuration" title="Spring Configuration" class="md-nav__link">
+    Spring Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secret-encryption-decryption" title="Secret Encryption / Decryption" class="md-nav__link">
+    Secret Encryption / Decryption
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disable-automatic-decryption-in-cloud-config-server" title="Disable automatic decryption in cloud config server" class="md-nav__link">
+    Disable automatic decryption in cloud config server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decrypt-in-client" title="Decrypt in client" class="md-nav__link">
+    Decrypt in client
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jks-secret-password" title="JKS Secret &amp; Password" class="md-nav__link">
+    JKS Secret &amp; Password
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="cloud-config">Cloud Config<a class="headerlink" href="#cloud-config" title="Permanent link">&para;</a></h1>
+<p>So Keep-Watching is a service that's run in the cloud, but must also be debuggable on a local setup.</p>
+<p>The gives rise to a requirement about the configuration, which needs to be dynamically loaded based on the context.</p>
+<p>Next up, it is using public services only for hosting (sources), building and running.
+That makes it very difficult to keep things a secret so the secrets must be encrypted.</p>
+<h2 id="spring-cloud-config">Spring Cloud Config<a class="headerlink" href="#spring-cloud-config" title="Permanent link">&para;</a></h2>
+<p>For Keep-Watching, this is: <a href="https://github.com/joostvdg/keep-config">Keep-Config</a>.</p>
+<p>For the external dynamic configuration loading, we utilize <a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html">Spring Cloud Config Server</a>.</p>
+<p>This allows you to store configuration files in a git repository (local or remote) which contains configuration per profile.</p>
+<p>For this to work, you need two spring applications and a repository:</p>
+<ul>
+<li>The application for which you want to create the configuration (the Client, Keep-Watching)</li>
+<li>A Spring application which acts as a Cloud Config Server (the Server, Keep-Config)</li>
+<li>Git repository with the configuration (Config)</li>
+</ul>
+<p>For how to set this up, <a href="https://spring.io/guides/gs/centralized-configuration/">there's a nice tutorial</a> from SpringSource.</p>
+<h3 id="keep-config">Keep-Config<a class="headerlink" href="#keep-config" title="Permanent link">&para;</a></h3>
+<p>Make sure its a spring boot app, that contains the cloud config server dependency.</p>
+<h4 id="pomxml">pom.xml<a class="headerlink" href="#pomxml" title="Permanent link">&para;</a></h4>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-cloud-config-server<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<h4 id="applicationjava">Application.java<a class="headerlink" href="#applicationjava" title="Permanent link">&para;</a></h4>
+<p>The application class should then enable the server with the annotation <code>@EnableConfigServer</code></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@SpringBootApplication</span>
+<span class="nd">@EnableConfigServer</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RestServiceApplication</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="n">RestServiceApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>And last but not least, it needs to configure where the configuration should come from in <code>application.yml</code></p>
+<h4 id="applicationyml">application.yml<a class="headerlink" href="#applicationyml" title="Permanent link">&para;</a></h4>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">spring</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">cloud</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">config</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">server</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">git</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">https://github.com/joostvdg/config</span>
+        <span class="l l-Scalar l-Scalar-Plain">encrypt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="keep-watching">Keep-Watching<a class="headerlink" href="#keep-watching" title="Permanent link">&para;</a></h3>
+<p>The client needs to configure that it uses a cloud config server, where it is and that requires a dependency on <code>spring-cloud-starter-config</code>.</p>
+<h4 id="pomxml_1">pom.xml<a class="headerlink" href="#pomxml_1" title="Permanent link">&para;</a></h4>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-config<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="bootstrapyml">bootstrap.yml<a class="headerlink" href="#bootstrapyml" title="Permanent link">&para;</a></h3>
+<p>As the configuration for the application should be loaded before the applications starts, this configuration should be in the <code>bootstrap.yml</code> file.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">spring</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">keep-watching</span>
+  <span class="l l-Scalar l-Scalar-Plain">cloud</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">config</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost:8081</span>
+
+<span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">spring</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">profiles</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">heroku</span>
+  <span class="l l-Scalar l-Scalar-Plain">cloud</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">config</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">https://keep-config.herokuapp.com</span>
+</pre></div>
+</td></tr></table>
+
+<p>And depending on the active profile we will use a different server for this.</p>
+<h3 id="config">Config<a class="headerlink" href="#config" title="Permanent link">&para;</a></h3>
+<p>For Keep-Watching, this is: <a href="https://github.com/joostvdg/config">Config</a>.</p>
+<p>THe only thing to do here to create configuration files per application for each profile.</p>
+<ul>
+<li>keep-watching-compose.properties: used when profile is compose</li>
+<li>keep-watching-heroku.properties: used when profile in heroku</li>
+<li>keep-watching.properties: default file used</li>
+</ul>
+<p>These files are then just standard Java properties files.</p>
+<h2 id="encryption">Encryption<a class="headerlink" href="#encryption" title="Permanent link">&para;</a></h2>
+<p>For how to use the encryption with Spring Cloud Config, there's a great tutorial from <a href="http://www.baeldung.com/spring-cloud-configuration">Baeldung</a>.</p>
+<h3 id="java-encryption-strength">Java Encryption Strength<a class="headerlink" href="#java-encryption-strength" title="Permanent link">&para;</a></h3>
+<p>Due to strong <a href="https://en.wikipedia.org/wiki/Export_of_cryptography_from_the_United_States">export restrictions on cryptography in the U.S.A</a> 
+and Java being from there, Java's default encryption strength is severely limited.</p>
+<p>For secure encryption of secrets in public places, such as the configuration being in a GitHub repo, we need to use stronger algorithms.</p>
+<p>There's an easy solution to this: download and "install" Java's <a href="http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html">Java Cryptography Extension</a>(JCE).</p>
+<h4 id="config-server-on-heroku">Config Server on Heroku<a class="headerlink" href="#config-server-on-heroku" title="Permanent link">&para;</a></h4>
+<p>As we run our Config Server directly on Heroku, our Heroku host needs to have the Unlimited Strength in place.</p>
+<p>This is actually surprisingly simple, as can be seen <a href="https://devcenter.heroku.com/articles/customizing-the-jdk">in this tutorial on heroku's devcenter</a>.</p>
+<p>Simply create a <code>.jdk-overlay</code> folder and "install" the JCE just as you would do locally.</p>
+<h4 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h4>
+<p>As Keep-Watching runs in a Docker container, it will also need the JCE to be able to use the "Unlimited Strength Policy".</p>
+<p>So we use a Docker base image which contains exactly that: <a href="https://hub.docker.com/r/anapsix/alpine-java/">anapsix/alpine-java:8_jdk_unlimited</a>. </p>
+<h3 id="spring-configuration">Spring Configuration<a class="headerlink" href="#spring-configuration" title="Permanent link">&para;</a></h3>
+<p>We need to add a JKS and configure Spring to use this JKS.</p>
+<p>This is exactly the same for the server and the client.</p>
+<p>This is what is required in the <code>application.yml</code>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">encrypt</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">keyStore</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">location</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">classpath:/config-server.jks</span>
+    <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nothepassword</span>
+    <span class="l l-Scalar l-Scalar-Plain">alias</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">config-server-key</span>
+    <span class="l l-Scalar l-Scalar-Plain">secret</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nothepassword</span>
+</pre></div>
+</td></tr></table>
+
+<p>As to be expected, we do not use the actual username and password of the JKS in the sources.</p>
+<p>This would undermine the safety of the encryption, see below how this is configured.</p>
+<h3 id="secret-encryption-decryption">Secret Encryption / Decryption<a class="headerlink" href="#secret-encryption-decryption" title="Permanent link">&para;</a></h3>
+<p>To encrypt and decrypt the values, we can use the keep-config application.</p>
+<p>To encrypt: <code>curl -X POST --data-urlencode d3v3L http://root:s3cr3t@localhost:8081/encrypt</code></p>
+<p>To decrypt: <code>curl -X POST --data-urlencode d3v3L http://root:s3cr3t@localhost:8081/decrypt</code></p>
+<p>Once you have a encrypted value, you want to store it encrypted in the config repository.</p>
+<p>In order to tell the config server this value is encrypted, you have to add a special marker; <code>{cipher}</code></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="na">message</span><span class="o">=</span><span class="s">Hoi hoi hoi</span>
+<span class="na">user.password</span><span class="o">=</span><span class="s">{cipher}AgAuqFORZF2ls7XmjQxotluoVXL7M8kEM8OV8Z9/xBPReuVMCbF5Krcd2qNQRq2/l6gTBrqcQXdy/nnv4dHxxGfDU4fxOAL+6YjPqLpZ13N9UYG8sKBw9UjupltLR3S/xHGXBFPp67WC/OeZ7MLbLqa8chY9UWbSySFcK43kNuTKZYsHfeh6ZZt7rAkjzdLoIAC1k4t1YVZxn4Bx9c3gOEIV9ZH1va+AJHg09xRXslCApUklTx6RRTOPt7G+iRizKZe9cwlZwJXu5Niaujtv8Jo6B8HdCq6c5fh0N4Lvvfohb1pOX/drKJm56zRzklcn/Tz8/xAKS4GsPks++zWdhqJU+xVMqBTD7htglmU3j2VZs2YqrBcw5hojEwQPRgH0e6BiU+IxLCqUolaSmCRgWrtx/Yz+Ft6X8zq3Fa+ater3MhptP40LJDDRiA+Gathvp+YHf7SpToGEea4Mxcx547IwzDqigXgMxhhQwyvI6fzR5IZXxL1kY2mUgIyPpg+xCg2bx4lH9ufGtZCr8AYkjnsZc5LH6DGPaYeWmpYu+LuNuRxVP2OdH1UVXhLL+X35MZq9RBtSTK/9JU1WtRVdc7q+g7YbaE1DKnt/5zteX0sfQO7rs20ATMF5JLM3KglHm27Pv4RSQWl4CEUqtL0AhsE6/pxFaxpZ9LsvnNk5GZu/jPkZlduKyFJneJCG4lg4jc5CAMfuExv9Sx2NyKV4wpSP1Qs9VqyvnUA1BFtOL4nS19kRZigsIZDVBxWS6X5yWIk=</span>
+</pre></div>
+</td></tr></table>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you would now request the values from the server, both will come in plain text.
+You have to disable the automatic decryption by the config server!</p>
+</div>
+<h4 id="disable-automatic-decryption-in-cloud-config-server">Disable automatic decryption in cloud config server<a class="headerlink" href="#disable-automatic-decryption-in-cloud-config-server" title="Permanent link">&para;</a></h4>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">spring</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">cloud</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">config</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">server</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">git</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">https://github.com/joostvdg/config</span>
+<span class="hll">        <span class="l l-Scalar l-Scalar-Plain">encrypt</span><span class="p p-Indicator">:</span>
+</span><span class="hll">          <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</span></pre></div>
+</td></tr></table>
+
+<h4 id="decrypt-in-client">Decrypt in client<a class="headerlink" href="#decrypt-in-client" title="Permanent link">&para;</a></h4>
+<p>When decryption is disabled in the server, we will have to decrypt in the client.</p>
+<p>It will need the same JKS as was use for the encryption (see above).</p>
+<p>For the decryption to work, one more thing is required: a dependency on <code>spring-security-rsa</code>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.security<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-security-rsa<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<h3 id="jks-secret-password">JKS Secret &amp; Password<a class="headerlink" href="#jks-secret-password" title="Permanent link">&para;</a></h3>
+<p>Make sure we have an additional line for when we've detected we're running (the docker container) in Heroku: </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATABASE_URL</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="c1"># ...</span>
+  <span class="nv">EXTRA_CONFIG</span><span class="o">=</span><span class="s2">&quot;-Dencrypt.keyStore.secret=</span><span class="si">${</span><span class="nv">KEYSTORE_SECRET</span><span class="si">}</span><span class="s2"> -Dencrypt.keyStore.password=</span><span class="si">${</span><span class="nv">KEYSTORE_PASS</span><span class="si">}</span><span class="s2"> -Dspring.profiles.active=heroku&quot;</span>
+<span class="k">fi</span>
+java ... <span class="si">${</span><span class="nv">EXTRA_CONFIG</span><span class="si">}</span> -jar /app.jar
+</pre></div>
+</td></tr></table>
+
+<p>Make sure we add the secrets are available as environment variables, so the docker run will be able to use them. </p>
+<p>We do the same with building in CircleCI, by adding this to the test command (in test.sh).</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>mvn flyway:migrate generate-resources generate-sources package -e ... -Dencrypt.keyStore.secret<span class="o">=</span><span class="si">${</span><span class="nv">JKS_SECRET</span><span class="si">}</span> -Dencrypt.keyStore.password<span class="o">=</span><span class="si">${</span><span class="nv">JKS_PASS</span><span class="si">}</span> 
+</pre></div>
+</td></tr></table>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../database/" title="Database" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Database
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2017 Joost van der Griendt
+          </div>
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application-f3ab9e5ff8.js"></script>
+      
+      
+      <script>app.initialize({url:{base:"../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

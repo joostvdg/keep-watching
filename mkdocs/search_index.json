@@ -1,0 +1,384 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "Keep-Watching\n\n\n\n\n\n\n\n\n\n\n\n\nTech Stack\n\n\nBackend\n\n\n\n\nSpring Boot\n\n\nJOOQ\n\n\nFlyWay\n\n\nPostGreSQL\n\n\nSwagger\n\n\n\n\nFrontend\n\n\n\n\nReactJS\n\n\n\n\nBuild Tools\n\n\n\n\nMaven\n\n\nYARN\n\n\nWebPack\n\n\n\n\nDev Tools\n\n\n\n\nCircle CI\n\n\nHeroku\n\n\nDockerHub\n\n\nGitHub\n\n\n\n\nRuntime\n\n\n\n\nNodeJS\n\n\nJDK 8\n\n\nDocker\n\n\nDocker Compose\n\n\n\n\nDocs\n\n\n\n\nMKDocs\n\n\nMKDocs Material\n\n\nGitHub Pages", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#keep-watching", 
+            "text": "", 
+            "title": "Keep-Watching"
+        }, 
+        {
+            "location": "/#tech-stack", 
+            "text": "", 
+            "title": "Tech Stack"
+        }, 
+        {
+            "location": "/#backend", 
+            "text": "Spring Boot  JOOQ  FlyWay  PostGreSQL  Swagger", 
+            "title": "Backend"
+        }, 
+        {
+            "location": "/#frontend", 
+            "text": "ReactJS", 
+            "title": "Frontend"
+        }, 
+        {
+            "location": "/#build-tools", 
+            "text": "Maven  YARN  WebPack", 
+            "title": "Build Tools"
+        }, 
+        {
+            "location": "/#dev-tools", 
+            "text": "Circle CI  Heroku  DockerHub  GitHub", 
+            "title": "Dev Tools"
+        }, 
+        {
+            "location": "/#runtime", 
+            "text": "NodeJS  JDK 8  Docker  Docker Compose", 
+            "title": "Runtime"
+        }, 
+        {
+            "location": "/#docs", 
+            "text": "MKDocs  MKDocs Material  GitHub Pages", 
+            "title": "Docs"
+        }, 
+        {
+            "location": "/circle-ci/", 
+            "text": "Circle CI\n\n\n\n\nCircleCI was founded in 2011 with the mission of giving every developer state-of-the-art automated testing and continuous integration tools.\n\n\n\n\nCircle CI is a cloud Continuous Integration tool which allows you to build your Open Source GitHub applications for free.\n\n\nKeep-Watching uses Circle CI to validate the code and the docker image before sending it to DockerHub and Heroku.\n\n\nCircle CI 1.0\n\n\nCurrently, the build is still using the Circle CI 1.0 API.\n\n\nEnvironment variables\n\n\nTo make sure we do not have to put passwords, tokens or other compromising information in the build file (see below), we use environment variables in the Circle CI configuration. \n\n\nThese speak for themselves:\n\n\n\n\nDOCKER_EMAIL  \n\n\nDOCKER_PASS   \n\n\nDOCKER_USER   \n\n\nGITHUB_TOKEN  \n\n\nHEROKU_EMAIL  \n\n\nHEROKU_TOKEN  \n\n\nHEROKU_USER\n\n\n\n\nBuild file\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\nmachine\n:\n\n  \npre\n:\n\n    \n-\n \ncurl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0\n\n  \nservices\n:\n\n    \n-\n \ndocker\n\n  \njava\n:\n\n    \nversion\n:\n \noraclejdk8\n\n  \npython\n:\n\n      \nversion\n:\n \n2.7.9\n\n\n\ngeneral\n:\n\n  \nartifacts\n:\n\n    \n-\n \nbackend/target/keep-watching-be.jar\n\n  \nbranches\n:\n\n    \nignore\n:\n\n      \n-\n \ngh-pages\n \n# list of branches to ignore\n\n\n\ndependencies\n:\n\n  \npre\n:\n\n    \n-\n \ncurl -L https://github.com/docker/compose/releases/download/1.8.0-rc2/docker-compose-`uname -s`-`uname -m` \n ../bin/docker-compose \n chmod +x ../bin/docker-compose\n\n    \n-\n \ndocker-compose pull\n\n    \n-\n \npip install -r mkdocs-requirements.txt\n\n  \noverride\n:\n\n    \n-\n \nmvn dependency:resolve -P db\n\n    \n-\n \ndocker info\n\n\n\ntest\n:\n\n  \noverride\n:\n\n    \n-\n \nsh ./test.sh\n\n\n\ndeployment\n:\n\n  \nrelease\n:\n\n    \nbranch\n:\n \nmaster\n\n    \ncommands\n:\n\n      \n-\n \ndocker build --rm=false -t caladreas/keep-watching-be backend\n\n      \n-\n \ndocker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS\n\n      \n-\n \ndocker push caladreas/keep-watching-be\n\n      \n-\n \ngit remote add github https://${GITHUB_TOKEN}@github.com/joostvdg/keep-watching.git\n\n      \n-\n \nmkdocs gh-deploy -r github --force\n\n      \n-\n \ndocker login --email=${HEROKU_EMAIL} --username=${HEROKU_USER} --password=${HEROKU_TOKEN} registry.heroku.com\n\n      \n-\n \ndocker tag caladreas/keep-watching-be registry.heroku.com/keep-watching/web\n\n      \n-\n \ndocker push registry.heroku.com/keep-watching/web", 
+            "title": "Circle CI"
+        }, 
+        {
+            "location": "/circle-ci/#circle-ci", 
+            "text": "CircleCI was founded in 2011 with the mission of giving every developer state-of-the-art automated testing and continuous integration tools.   Circle CI is a cloud Continuous Integration tool which allows you to build your Open Source GitHub applications for free.  Keep-Watching uses Circle CI to validate the code and the docker image before sending it to DockerHub and Heroku.", 
+            "title": "Circle CI"
+        }, 
+        {
+            "location": "/circle-ci/#circle-ci-10", 
+            "text": "Currently, the build is still using the Circle CI 1.0 API.", 
+            "title": "Circle CI 1.0"
+        }, 
+        {
+            "location": "/circle-ci/#environment-variables", 
+            "text": "To make sure we do not have to put passwords, tokens or other compromising information in the build file (see below), we use environment variables in the Circle CI configuration.   These speak for themselves:   DOCKER_EMAIL    DOCKER_PASS     DOCKER_USER     GITHUB_TOKEN    HEROKU_EMAIL    HEROKU_TOKEN    HEROKU_USER", 
+            "title": "Environment variables"
+        }, 
+        {
+            "location": "/circle-ci/#build-file", 
+            "text": "1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42 machine : \n   pre : \n     -   curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0 \n   services : \n     -   docker \n   java : \n     version :   oraclejdk8 \n   python : \n       version :   2.7.9  general : \n   artifacts : \n     -   backend/target/keep-watching-be.jar \n   branches : \n     ignore : \n       -   gh-pages   # list of branches to ignore  dependencies : \n   pre : \n     -   curl -L https://github.com/docker/compose/releases/download/1.8.0-rc2/docker-compose-`uname -s`-`uname -m`   ../bin/docker-compose   chmod +x ../bin/docker-compose \n     -   docker-compose pull \n     -   pip install -r mkdocs-requirements.txt \n   override : \n     -   mvn dependency:resolve -P db \n     -   docker info  test : \n   override : \n     -   sh ./test.sh  deployment : \n   release : \n     branch :   master \n     commands : \n       -   docker build --rm=false -t caladreas/keep-watching-be backend \n       -   docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS \n       -   docker push caladreas/keep-watching-be \n       -   git remote add github https://${GITHUB_TOKEN}@github.com/joostvdg/keep-watching.git \n       -   mkdocs gh-deploy -r github --force \n       -   docker login --email=${HEROKU_EMAIL} --username=${HEROKU_USER} --password=${HEROKU_TOKEN} registry.heroku.com \n       -   docker tag caladreas/keep-watching-be registry.heroku.com/keep-watching/web \n       -   docker push registry.heroku.com/keep-watching/web", 
+            "title": "Build file"
+        }, 
+        {
+            "location": "/heroku/", 
+            "text": "Heroku\n\n\n\n\nHeroku is a cloud platform based on a managed container system, with integrated data services and a powerful ecosystem, for deploying and running modern apps. The Heroku developer experience is an app-centric approach for software delivery, integrated with today\u2019s most popular developer tools and workflows.\n\n\n\n\nKeep-Watching uses Heroku for its deployment/runtime environment.\n\n\nAllowing free hosting of the docker container running the Spring Boot backend and a free postgresql database for the storage.\n\n\nHeroku configuration\n\n\nIn Heroku there isn't much to configure.\n\n\n\n\ncreate new app\n\n\nadd postgresql database via configure add-ons\n\n\n\n\nDocker configuration\n\n\nAs Heroku will manage the postgresql database itself in a IAAS (EC2), the database isn't fixed.\n\n\nSo instead of a having a fixed URL and credentials, Heroku makes sure your runtime gets this information via environment variables.\n\n\nHow this works, can be read \nhere\n.\n\n\nUnfortunately, this complicates the Docker configuration, as the runtime environment variable is url of the following format:\n\n\n1\nDATABASE_URL\n=\npostgres://user:password@heroku.com:5432/hellodb\n\n\n\n\n\n\nOur complication come from the usage of JOOQ and Flyway, which need access to the Database prior to Spring loading.\n\n\nSo even if the format suits Spring configuration, the url needs to be parsed before the application can start.\n\n\nThat's why the Dockerfile looks like this:\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\nFROM\n anapsix/alpine-java:jdk8\n\n\nADD\n target/keep-watching-be.jar /app.jar\n\n\nRUN\n bash -c \ntouch /app.jar\n\n\nENV\n JDBC_DATABASE_URL=\njdbc:postgresql://localhost:5432\n\n\nENV\n JDBC_DATABASE_USERNAME=\ndocker\n\n\nENV\n JDBC_DATABASE_PASSWORD=\ndocker\n\n\nENV\n PORT=8080\n\nCOPY docker-run.sh /run.sh\n\nRUN\n chmod +x /run.sh\n\nCMD\n [\n/run.sh\n]\n\n\n\n\n\n\n\nThe \ndocker-run.sh\n will check for the Heroku environment variable (DATABASE_URL).\n\n\nIf it isn't there, the three JDBC variables can either be left to default or set via any other docker mechanism.\n\n\nStart command\n\n\nJust for saving you the trouble to look up the docker-run.sh file, here is the start command. \nThe Java environment variables are suited for Heroku deployment in the free tier (beyond 512mb Heroku will kill it).\n\n\n1\njava -Xms256M -Xmx512M -Djava.security.egd\n=\nfile:/dev/./urandom -Dserver.port\n=\n$PORT\n -Ddb.url\n=\n$JDBC_DATABASE_URL\n -Dspring.datasource.url\n=\n$JDBC_DATABASE_URL\n -Ddb.password\n=\n$JDBC_DATABASE_PASSWORD\n -Dspring.datasource.password\n=\n$JDBC_DATABASE_PASSWORD\n -Ddb.user\n=\n$JDBC_DATABASE_USERNAME\n -Dspring.datasource.username\n=\n$JDBC_DATABASE_USERNAME\n -jar /app.jar\n\n\n\n\n\n\nHow to deploy\n\n\nThere are various way's to deploy Spring Boot applications to Heroku.\n\n\nDue to our reliance on JOOQ and Flyway it is a little complicated to create a build that is the same locally, in Circle CI and in Heroku.\n\n\nSo the current approach is to just push an existing Docker image to our personal Heroku registry.\n\n\n1\n2\n3\ndocker login --email\n=\n${\nHEROKU_EMAIL\n}\n --username\n=\n${\nHEROKU_USER\n}\n --password\n=\n${\nHEROKU_TOKEN\n}\n registry.heroku.com\ndocker tag caladreas/keep-watching-be registry.heroku.com/keep-watching/web\ndocker push registry.heroku.com/keep-watching/web\n\n\n\n\n\n\nResources\n\n\n\n\nSpring Boot Docker deployment on Heroku\n\n\nSpring Boot on Heroku tutorial\n\n\nHeroku API Authentication tutorial", 
+            "title": "Heroku"
+        }, 
+        {
+            "location": "/heroku/#heroku", 
+            "text": "Heroku is a cloud platform based on a managed container system, with integrated data services and a powerful ecosystem, for deploying and running modern apps. The Heroku developer experience is an app-centric approach for software delivery, integrated with today\u2019s most popular developer tools and workflows.   Keep-Watching uses Heroku for its deployment/runtime environment.  Allowing free hosting of the docker container running the Spring Boot backend and a free postgresql database for the storage.", 
+            "title": "Heroku"
+        }, 
+        {
+            "location": "/heroku/#heroku-configuration", 
+            "text": "In Heroku there isn't much to configure.   create new app  add postgresql database via configure add-ons", 
+            "title": "Heroku configuration"
+        }, 
+        {
+            "location": "/heroku/#docker-configuration", 
+            "text": "As Heroku will manage the postgresql database itself in a IAAS (EC2), the database isn't fixed.  So instead of a having a fixed URL and credentials, Heroku makes sure your runtime gets this information via environment variables.  How this works, can be read  here .  Unfortunately, this complicates the Docker configuration, as the runtime environment variable is url of the following format:  1 DATABASE_URL = postgres://user:password@heroku.com:5432/hellodb   Our complication come from the usage of JOOQ and Flyway, which need access to the Database prior to Spring loading.  So even if the format suits Spring configuration, the url needs to be parsed before the application can start.  That's why the Dockerfile looks like this:   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10 FROM  anapsix/alpine-java:jdk8  ADD  target/keep-watching-be.jar /app.jar  RUN  bash -c  touch /app.jar  ENV  JDBC_DATABASE_URL= jdbc:postgresql://localhost:5432  ENV  JDBC_DATABASE_USERNAME= docker  ENV  JDBC_DATABASE_PASSWORD= docker  ENV  PORT=8080 \nCOPY docker-run.sh /run.sh RUN  chmod +x /run.sh CMD  [ /run.sh ]    The  docker-run.sh  will check for the Heroku environment variable (DATABASE_URL).  If it isn't there, the three JDBC variables can either be left to default or set via any other docker mechanism.", 
+            "title": "Docker configuration"
+        }, 
+        {
+            "location": "/heroku/#start-command", 
+            "text": "Just for saving you the trouble to look up the docker-run.sh file, here is the start command. \nThe Java environment variables are suited for Heroku deployment in the free tier (beyond 512mb Heroku will kill it).  1 java -Xms256M -Xmx512M -Djava.security.egd = file:/dev/./urandom -Dserver.port = $PORT  -Ddb.url = $JDBC_DATABASE_URL  -Dspring.datasource.url = $JDBC_DATABASE_URL  -Ddb.password = $JDBC_DATABASE_PASSWORD  -Dspring.datasource.password = $JDBC_DATABASE_PASSWORD  -Ddb.user = $JDBC_DATABASE_USERNAME  -Dspring.datasource.username = $JDBC_DATABASE_USERNAME  -jar /app.jar", 
+            "title": "Start command"
+        }, 
+        {
+            "location": "/heroku/#how-to-deploy", 
+            "text": "There are various way's to deploy Spring Boot applications to Heroku.  Due to our reliance on JOOQ and Flyway it is a little complicated to create a build that is the same locally, in Circle CI and in Heroku.  So the current approach is to just push an existing Docker image to our personal Heroku registry.  1\n2\n3 docker login --email = ${ HEROKU_EMAIL }  --username = ${ HEROKU_USER }  --password = ${ HEROKU_TOKEN }  registry.heroku.com\ndocker tag caladreas/keep-watching-be registry.heroku.com/keep-watching/web\ndocker push registry.heroku.com/keep-watching/web", 
+            "title": "How to deploy"
+        }, 
+        {
+            "location": "/heroku/#resources", 
+            "text": "Spring Boot Docker deployment on Heroku  Spring Boot on Heroku tutorial  Heroku API Authentication tutorial", 
+            "title": "Resources"
+        }, 
+        {
+            "location": "/backend/spring-boot/", 
+            "text": "Spring \n Spring Boot Config\n\n\nThis is a Spring Boot application generated via \nSpring Initialzr\n. \nIt is a web application build with Maven, using Spring Security, MVC, web (thymeleaf) and Cloud Config server.  \n\n\nFor an overview how these work, please take a look at the following tutorials:\n\n\n\n\nSpring Boot\n\n\nSpring Rest services\n\n\nSpring Boot and ReactJS\n\n\nSpring Boot and Docker\n\n\nSpring Boot and Centralized Configuration\n\n\nSpring Boot and Swagger2\n\n\n\n\nFor the specifics for ReactJS, Database/ORM configuration or security configuration: please look at the individual pages.\n\n\nJackson Config\n\n\nWe also want to get DateTime objects from Java 8 back as a proper timestamp, so we have to supply additional jackson configuration.\n\n\nAnother thing to note, is that we do not want to fail on JSON payloads that have additional properties.\n\n\nJacksonConfig.java\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n@Configuration\n\n\npublic\n \nclass\n \nJacksonConfig\n \n{\n\n    \n/**\n\n\n     * Instantiates a new jackson config.\n\n\n     *\n\n\n     */\n\n    \n@Bean\n(\nname\n \n=\n \nMyObjectMapper\n)\n\n    \n@Primary\n\n    \npublic\n \nObjectMapper\n \nobjectMapper\n(\nJackson2ObjectMapperBuilder\n \nbuilder\n)\n \n{\n\n        \nObjectMapper\n \nobjectMapper\n \n=\n \nbuilder\n.\ncreateXmlMapper\n(\nfalse\n).\nbuild\n();\n\n        \nobjectMapper\n.\nconfigure\n(\nSerializationFeature\n.\nWRITE_DATES_AS_TIMESTAMPS\n,\n \nfalse\n);\n\n        \nobjectMapper\n.\nconfigure\n(\nDeserializationFeature\n.\nFAIL_ON_UNKNOWN_PROPERTIES\n,\n \nfalse\n);\n\n        \nobjectMapper\n.\nconfigure\n(\nDeserializationFeature\n.\nACCEPT_SINGLE_VALUE_AS_ARRAY\n,\n \ntrue\n);\n\n        \nreturn\n \nobjectMapper\n;\n\n    \n}\n\n\n}\n\n\n\n\n\n\n\nSwagger2 config\n\n\nApplication.java\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n@SpringBootApplication\n\n\n@EnableSwagger2\n\n\n@ComponentScan\n(\nbasePackages\n \n=\n \ncom.github.joostvdg.keepwatching\n)\n\n\n@EnableTransactionManagement\n\n\n@EnableAutoConfiguration\n\n\n@EnableOAuth2Client\n\n\n@EnableConfigServer\n\n\npublic\n \nclass\n \nApplication\n \nextends\n \nWebSecurityConfigurerAdapter\n \n{\n\n    \npublic\n \nstatic\n \nvoid\n \nmain\n(\nString\n[]\n \nargs\n)\n \n{\n\n        \nSpringApplication\n.\nrun\n(\nApplication\n.\nclass\n,\n \nargs\n);\n\n    \n}\n\n\n}\n\n\n\n\n\n\n\nController example\n\n\nAs you can see with this hello world controller, not additional configuration is needed for Swagger to pick it up.\n\n\nThe only thing this needs is to be a @Controller or @RestController with a @RequestMapping on the class or a method.\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n@RestController\n\n\n@RequestMapping\n(\n/hello\n)\n\n\npublic\n \nclass\n \nHelloWorldController\n \n{\n\n\n    \nprivate\n \nfinal\n \nLogger\n \nlogger\n \n=\n \nLoggerFactory\n.\ngetLogger\n(\nthis\n.\ngetClass\n());\n\n\n    \n@RequestMapping\n(\nmethod\n \n=\n \nRequestMethod\n.\nGET\n)\n\n    \n@ResponseBody\n\n    \npublic\n \nResponseEntity\nCollection\nMovie\n \ngetTools\n(){\n\n        \nlogger\n.\ninfo\n(\nMovies::GET\n);\n\n        \nList\nMovie\n \nmovies\n \n=\n \nnew\n \nArrayList\n();\n\n        \nmovies\n.\nadd\n(\nnew\n \nMovie\n(\n1l\n,\n \nLogan\n));\n\n        \nmovies\n.\nadd\n(\nnew\n \nMovie\n(\n2l\n,\n \nJohn Wick 2\n));\n\n        \nreturn\n \nResponseEntity\n.\nok\n().\nbody\n(\nmovies\n);\n\n    \n}\n\n\n}", 
+            "title": "Spring Boot"
+        }, 
+        {
+            "location": "/backend/spring-boot/#spring-spring-boot-config", 
+            "text": "This is a Spring Boot application generated via  Spring Initialzr . \nIt is a web application build with Maven, using Spring Security, MVC, web (thymeleaf) and Cloud Config server.    For an overview how these work, please take a look at the following tutorials:   Spring Boot  Spring Rest services  Spring Boot and ReactJS  Spring Boot and Docker  Spring Boot and Centralized Configuration  Spring Boot and Swagger2   For the specifics for ReactJS, Database/ORM configuration or security configuration: please look at the individual pages.", 
+            "title": "Spring &amp; Spring Boot Config"
+        }, 
+        {
+            "location": "/backend/spring-boot/#jackson-config", 
+            "text": "We also want to get DateTime objects from Java 8 back as a proper timestamp, so we have to supply additional jackson configuration.  Another thing to note, is that we do not want to fail on JSON payloads that have additional properties.", 
+            "title": "Jackson Config"
+        }, 
+        {
+            "location": "/backend/spring-boot/#jacksonconfigjava", 
+            "text": "1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16 @Configuration  public   class   JacksonConfig   { \n     /**       * Instantiates a new jackson config.       *       */ \n     @Bean ( name   =   MyObjectMapper ) \n     @Primary \n     public   ObjectMapper   objectMapper ( Jackson2ObjectMapperBuilder   builder )   { \n         ObjectMapper   objectMapper   =   builder . createXmlMapper ( false ). build (); \n         objectMapper . configure ( SerializationFeature . WRITE_DATES_AS_TIMESTAMPS ,   false ); \n         objectMapper . configure ( DeserializationFeature . FAIL_ON_UNKNOWN_PROPERTIES ,   false ); \n         objectMapper . configure ( DeserializationFeature . ACCEPT_SINGLE_VALUE_AS_ARRAY ,   true ); \n         return   objectMapper ; \n     }  }", 
+            "title": "JacksonConfig.java"
+        }, 
+        {
+            "location": "/backend/spring-boot/#swagger2-config", 
+            "text": "", 
+            "title": "Swagger2 config"
+        }, 
+        {
+            "location": "/backend/spring-boot/#applicationjava", 
+            "text": "1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12 @SpringBootApplication  @EnableSwagger2  @ComponentScan ( basePackages   =   com.github.joostvdg.keepwatching )  @EnableTransactionManagement  @EnableAutoConfiguration  @EnableOAuth2Client  @EnableConfigServer  public   class   Application   extends   WebSecurityConfigurerAdapter   { \n     public   static   void   main ( String []   args )   { \n         SpringApplication . run ( Application . class ,   args ); \n     }  }", 
+            "title": "Application.java"
+        }, 
+        {
+            "location": "/backend/spring-boot/#controller-example", 
+            "text": "As you can see with this hello world controller, not additional configuration is needed for Swagger to pick it up.  The only thing this needs is to be a @Controller or @RestController with a @RequestMapping on the class or a method.   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16 @RestController  @RequestMapping ( /hello )  public   class   HelloWorldController   { \n\n     private   final   Logger   logger   =   LoggerFactory . getLogger ( this . getClass ()); \n\n     @RequestMapping ( method   =   RequestMethod . GET ) \n     @ResponseBody \n     public   ResponseEntity Collection Movie   getTools (){ \n         logger . info ( Movies::GET ); \n         List Movie   movies   =   new   ArrayList (); \n         movies . add ( new   Movie ( 1l ,   Logan )); \n         movies . add ( new   Movie ( 2l ,   John Wick 2 )); \n         return   ResponseEntity . ok (). body ( movies ); \n     }  }", 
+            "title": "Controller example"
+        }, 
+        {
+            "location": "/backend/security/", 
+            "text": "Spring Security\n\n\nThe current implementation follows the \nSpring Boot oauth2 tutorial\n and connects to OAUTH2 from GitHub and Facebook.\n\n\nConfiguration\n\n\nThe configuration for the OAUTH2 authentication is present in two files and the respective OAUTH2 services.\n\n\n\n\nApplication.java (src/main/java/com/github.com/joostvdg.keepwatching)\n\n\napplication.yml (src/main/resources) \n\n\nFacebook Developer Portal\n\n\nGitHub OAUTH2 introduction\n\n\n\n\napplication.yml\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\nfacebook\n:\n\n  \nclient\n:\n\n    \nclientId\n:\n \nXXXXXXXXXXXX\n\n    \nclientSecret\n:\n \nXXXXXXXXXXXX\n\n    \naccessTokenUri\n:\n \nhttps://graph.facebook.com/oauth/access_token\n\n    \nuserAuthorizationUri\n:\n \nhttps://www.facebook.com/dialog/oauth\n\n    \ntokenName\n:\n \noauth_token\n\n    \nauthenticationScheme\n:\n \nquery\n\n    \nclientAuthenticationScheme\n:\n \nform\n\n  \nresource\n:\n\n    \nuserInfoUri\n:\n \nhttps://graph.facebook.com/me\n\n\n\ngithub\n:\n\n  \nclient\n:\n\n    \nclientId\n:\n \nXXXXXXXXXXXX\n\n    \nclientSecret\n:\n \nXXXXXXXXXXXX\n\n    \naccessTokenUri\n:\n \nhttps://github.com/login/oauth/access_token\n\n    \nuserAuthorizationUri\n:\n \nhttps://github.com/login/oauth/authorize\n\n    \nclientAuthenticationScheme\n:\n \nform\n\n  \nresource\n:\n\n    \nuserInfoUri\n:\n \nhttps://api.github.com/user", 
+            "title": "Security"
+        }, 
+        {
+            "location": "/backend/security/#spring-security", 
+            "text": "The current implementation follows the  Spring Boot oauth2 tutorial  and connects to OAUTH2 from GitHub and Facebook.", 
+            "title": "Spring Security"
+        }, 
+        {
+            "location": "/backend/security/#configuration", 
+            "text": "The configuration for the OAUTH2 authentication is present in two files and the respective OAUTH2 services.   Application.java (src/main/java/com/github.com/joostvdg.keepwatching)  application.yml (src/main/resources)   Facebook Developer Portal  GitHub OAUTH2 introduction", 
+            "title": "Configuration"
+        }, 
+        {
+            "location": "/backend/security/#applicationyml", 
+            "text": "1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21 facebook : \n   client : \n     clientId :   XXXXXXXXXXXX \n     clientSecret :   XXXXXXXXXXXX \n     accessTokenUri :   https://graph.facebook.com/oauth/access_token \n     userAuthorizationUri :   https://www.facebook.com/dialog/oauth \n     tokenName :   oauth_token \n     authenticationScheme :   query \n     clientAuthenticationScheme :   form \n   resource : \n     userInfoUri :   https://graph.facebook.com/me  github : \n   client : \n     clientId :   XXXXXXXXXXXX \n     clientSecret :   XXXXXXXXXXXX \n     accessTokenUri :   https://github.com/login/oauth/access_token \n     userAuthorizationUri :   https://github.com/login/oauth/authorize \n     clientAuthenticationScheme :   form \n   resource : \n     userInfoUri :   https://api.github.com/user", 
+            "title": "application.yml"
+        }, 
+        {
+            "location": "/backend/reactjs/", 
+            "text": "ReactJS Frontend\n\n\nAs the bulk of the application will be in the backend services and the database, the choice was made for a lightweight frontend.\n\n\nThe choice came to using ReactJS build into the Spring Boot backend application itself.\n\n\nHow to set this up, can be found in \nthis tutorial from Spring.io\n. \n\n\nMaven configuration\n\n\nWe make use of the \nFrontend Maven Plugin\n to kick off the \nYarn\n and \nWebPack\n builds.\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\nplugin\n\n    \ngroupId\ncom.github.eirslett\n/groupId\n\n    \nartifactId\nfrontend-maven-plugin\n/artifactId\n\n    \nversion\n1.4\n/version\n\n    \nconfiguration\n\n        \ninstallDirectory\ntarget\n/installDirectory\n\n    \n/configuration\n\n    \nexecutions\n\n        \nexecution\n\n            \nid\ninstall node and yarn\n/id\n\n            \ngoals\n\n                \ngoal\ninstall-node-and-yarn\n/goal\n\n            \n/goals\n\n            \nconfiguration\n\n                \nnodeVersion\nv6.10.3\n/nodeVersion\n\n                \nyarnVersion\nv0.23.4\n/yarnVersion\n\n            \n/configuration\n\n        \n/execution\n\n        \nexecution\n\n            \nid\nyarn install\n/id\n\n            \ngoals\n\n                \ngoal\nyarn\n/goal\n\n            \n/goals\n\n        \n/execution\n\n        \nexecution\n\n            \nid\nwebpack build\n/id\n\n            \ngoals\n\n                \ngoal\nwebpack\n/goal\n\n            \n/goals\n\n        \n/execution\n\n    \n/executions\n\n\n/plugin\n\n\n\n\n\n\n\nSpring Web configuration\n\n\nAs said, we let Spring Web host the frontend for us, this also removes the nasty CORS problems.\n\n\nTo do this, we have the following configuration.\n\n\nPom.xml\n\n\nA dependency on spring-boot-starter-thymeleaf.\n\n\n1\n2\n3\n4\ndependency\n\n    \ngroupId\norg.springframework.boot\n/groupId\n\n    \nartifactId\nspring-boot-starter-thymeleaf\n/artifactId\n\n\n/dependency\n\n\n\n\n\n\n\nindex.html\n\n\nThymeleaf will automatically load the index.html in the folder src/main/resources/static.\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n!DOCTYPE html\n\n\nhtml\n \nxmlns:th\n=\nhttp://www.thymeleaf.org\n\n    \nhead\n\n        \nmeta\n \ncharset\n=\nUTF-8\n \n/\n\n        \ntitle\nKeep-Watching\n/\ntitle\n\n        \nlink\n \nrel\n=\nstylesheet\n \nhref\n=\nhttps://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css\n \n/\n\n        \nlink\n \nrel\n=\nstylesheet\n \nhref\n=\nhttps://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css\n \n/\n\n    \n/\nhead\n\n    \nbody\n\n        \ndiv\n \nid\n=\nreact\n \n/\n\n        \nscript\n \nsrc\n=\njs/bundle.js\n \n/\n\n    \n/\nbody\n\n\n/\nhtml\n\n\n\n\n\n\n\nThe build from Yarn and packaging from WebPack will result in the js/bundle.js file.\n\n\nApp.js\n\n\nThis will make sure that ReactJS will load itself into the page on the \ndiv id=\nreact\n /\n in the index.html.\n\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\nimport\n \nReact\n \nfrom\n \nreact\n;\n\n\nimport\n \nReactDOM\n \nfrom\n \nreact-dom\n;\n\n\n\nfunction\n \nApp\n(\nprops\n)\n \n{\n\n    \nreturn\n \n(\nh1\nHi\n/h1\n);\n\n\n}\n\n\n\nconst\n \napp\n \n=\n \nApp\n \n/\n;\n\n\nReactDOM\n.\nrender\n(\napp\n,\n \ndocument\n.\ngetElementById\n(\nreact\n));\n\n\n\n\n\n\n\nOther Configuration\n\n\n\n\nWebPack config\n\n\nYarn config\n\n\n\n\nReact solutions\n\n\nStyles\n\n\nFor styles, the choice came to \nBootstrap\n.\n\n\nHowever, it doesn't always play nice with ReactJS, so we added the following dependencies:\n\n\n\n\nreact-bootstrap\n: for easy integration of Bootstrap into ReactJS\n\n\nreact-router-bootstrap\n: for combining the react router with react-bootstrap\n\n\n\n\nSecurity\n\n\nThe Spring application has been configured to use Spring Security with OAUTH2 via GitHub/Facebook.\n\n\nThis complicates the calls to the backend, so here's how you can call the backend with the XSRF Token and SessionID intact.\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\nimport\n \nCookies\n \nfrom\n \nuniversal-cookie\n;\n\n\nconst\n \nrest\n \n=\n \nrequire\n(\nrest\n);\n\n\nconst\n \nmime\n \n=\n \nrequire\n(\nrest/interceptor/mime\n);\n\n\n\nconst\n \ncookies\n \n=\n \nnew\n \nCookies\n();\n\n\nconst\n \nxsrfToken\n \n=\n \ncookies\n.\nget\n(\nXSRF-TOKEN\n);\n\n\n\nlet\n \nclient\n \n=\n \nrest\n.\nwrap\n(\nmime\n);\n\n\nclient\n({\n\n    \npath\n:\n \n/watchlist/\n+\nid\n,\n\n    \nmethod\n:\n \nDELETE\n,\n\n    \nheaders\n:\n \n{\n\n        \nAccept\n:\n \napplication/json, application/xml, text/plain, text/html, */*\n,\n\n        \nContent-Type\n:\n \napplication/json\n,\n\n        \nX-XSRF-TOKEN\n:\n \nxsrfToken\n\n    \n},\n\n    \ncredentials\n:\n \nsame-origin\n,\n\n    \nmode\n:\n \ncors\n,\n\n    \nredirect\n:\n \nfollow\n,\n\n\n});", 
+            "title": "ReactJS"
+        }, 
+        {
+            "location": "/backend/reactjs/#reactjs-frontend", 
+            "text": "As the bulk of the application will be in the backend services and the database, the choice was made for a lightweight frontend.  The choice came to using ReactJS build into the Spring Boot backend application itself.  How to set this up, can be found in  this tutorial from Spring.io .", 
+            "title": "ReactJS Frontend"
+        }, 
+        {
+            "location": "/backend/reactjs/#maven-configuration", 
+            "text": "We make use of the  Frontend Maven Plugin  to kick off the  Yarn  and  WebPack  builds.   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32 plugin \n     groupId com.github.eirslett /groupId \n     artifactId frontend-maven-plugin /artifactId \n     version 1.4 /version \n     configuration \n         installDirectory target /installDirectory \n     /configuration \n     executions \n         execution \n             id install node and yarn /id \n             goals \n                 goal install-node-and-yarn /goal \n             /goals \n             configuration \n                 nodeVersion v6.10.3 /nodeVersion \n                 yarnVersion v0.23.4 /yarnVersion \n             /configuration \n         /execution \n         execution \n             id yarn install /id \n             goals \n                 goal yarn /goal \n             /goals \n         /execution \n         execution \n             id webpack build /id \n             goals \n                 goal webpack /goal \n             /goals \n         /execution \n     /executions  /plugin", 
+            "title": "Maven configuration"
+        }, 
+        {
+            "location": "/backend/reactjs/#spring-web-configuration", 
+            "text": "As said, we let Spring Web host the frontend for us, this also removes the nasty CORS problems.  To do this, we have the following configuration.", 
+            "title": "Spring Web configuration"
+        }, 
+        {
+            "location": "/backend/reactjs/#pomxml", 
+            "text": "A dependency on spring-boot-starter-thymeleaf.  1\n2\n3\n4 dependency \n     groupId org.springframework.boot /groupId \n     artifactId spring-boot-starter-thymeleaf /artifactId  /dependency", 
+            "title": "Pom.xml"
+        }, 
+        {
+            "location": "/backend/reactjs/#indexhtml", 
+            "text": "Thymeleaf will automatically load the index.html in the folder src/main/resources/static.   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13 !DOCTYPE html  html   xmlns:th = http://www.thymeleaf.org \n     head \n         meta   charset = UTF-8   / \n         title Keep-Watching / title \n         link   rel = stylesheet   href = https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css   / \n         link   rel = stylesheet   href = https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css   / \n     / head \n     body \n         div   id = react   / \n         script   src = js/bundle.js   / \n     / body  / html    The build from Yarn and packaging from WebPack will result in the js/bundle.js file.", 
+            "title": "index.html"
+        }, 
+        {
+            "location": "/backend/reactjs/#appjs", 
+            "text": "This will make sure that ReactJS will load itself into the page on the  div id= react  /  in the index.html.  1\n2\n3\n4\n5\n6\n7\n8\n9 import   React   from   react ;  import   ReactDOM   from   react-dom ;  function   App ( props )   { \n     return   ( h1 Hi /h1 );  }  const   app   =   App   / ;  ReactDOM . render ( app ,   document . getElementById ( react ));", 
+            "title": "App.js"
+        }, 
+        {
+            "location": "/backend/reactjs/#other-configuration", 
+            "text": "WebPack config  Yarn config", 
+            "title": "Other Configuration"
+        }, 
+        {
+            "location": "/backend/reactjs/#react-solutions", 
+            "text": "", 
+            "title": "React solutions"
+        }, 
+        {
+            "location": "/backend/reactjs/#styles", 
+            "text": "For styles, the choice came to  Bootstrap .  However, it doesn't always play nice with ReactJS, so we added the following dependencies:   react-bootstrap : for easy integration of Bootstrap into ReactJS  react-router-bootstrap : for combining the react router with react-bootstrap", 
+            "title": "Styles"
+        }, 
+        {
+            "location": "/backend/reactjs/#security", 
+            "text": "The Spring application has been configured to use Spring Security with OAUTH2 via GitHub/Facebook.  This complicates the calls to the backend, so here's how you can call the backend with the XSRF Token and SessionID intact.   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20 import   Cookies   from   universal-cookie ;  const   rest   =   require ( rest );  const   mime   =   require ( rest/interceptor/mime );  const   cookies   =   new   Cookies ();  const   xsrfToken   =   cookies . get ( XSRF-TOKEN );  let   client   =   rest . wrap ( mime );  client ({ \n     path :   /watchlist/ + id , \n     method :   DELETE , \n     headers :   { \n         Accept :   application/json, application/xml, text/plain, text/html, */* , \n         Content-Type :   application/json , \n         X-XSRF-TOKEN :   xsrfToken \n     }, \n     credentials :   same-origin , \n     mode :   cors , \n     redirect :   follow ,  });", 
+            "title": "Security"
+        }, 
+        {
+            "location": "/backend/database/", 
+            "text": "Database Setup\n\n\nFor the database configuration, the following requirements were set:\n\n\n\n\nautomatically update the database from build\n\n\nautomatically keep database and ORM in sync from build\n\n\ndatabase can be maintained via SQL scripts only\n\n\nopen source database\n\n\ndatabase of which you can get free (or near free) instances\n\n\ncapable of running in docker\n\n\ncompatible with spring boot\n\n\n\n\nTech Stack\n\n\n\n\nSpring Boot\n\n\nJOOQ\n\n\nJOOQ Generator\n\n\nFlyWay\n\n\nPostGreSQL\n\n\n\n\nConfiguration\n\n\nInitialConfiguration.java\n\n\nConfiguration class for JOOQ to make sure the connection to postgresql will work on every platform.\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n@Configuration\n\n\npublic\n \nclass\n \nInitialConfiguration\n \n{\n\n\n    \n@Autowired\n\n    \nprivate\n \nDataSource\n \ndataSource\n;\n\n\n    \n@Bean\n\n    \npublic\n \nDataSourceConnectionProvider\n \nconnectionProvider\n()\n \n{\n\n        \nreturn\n \nnew\n \nDataSourceConnectionProvider\n\n                \n(\nnew\n \nTransactionAwareDataSourceProxy\n(\ndataSource\n));\n\n    \n}\n\n\n    \n@Bean\n\n    \npublic\n \nDefaultDSLContext\n \ndsl\n()\n \n{\n\n        \nreturn\n \nnew\n \nDefaultDSLContext\n(\nconfiguration\n());\n\n    \n}\n\n\n    \npublic\n \nDefaultConfiguration\n \nconfiguration\n()\n \n{\n\n        \nDefaultConfiguration\n \njooqConfiguration\n \n=\n \nnew\n \nDefaultConfiguration\n();\n\n\n        \njooqConfiguration\n.\nset\n(\nconnectionProvider\n());\n\n        \nSettings\n \nsettings\n \n=\nnew\n \nSettings\n();\n\n        \nsettings\n.\nsetRenderNameStyle\n(\nRenderNameStyle\n.\nLOWER\n);\n\n        \nsettings\n.\nsetRenderSchema\n(\ntrue\n);\n\n        \njooqConfiguration\n.\nset\n(\nsettings\n);\n\n        \njooqConfiguration\n.\nset\n(\nnew\n \nDefaultExecuteListenerProvider\n(\nnew\n \nExceptionTranslator\n()));\n\n\n        \nreturn\n \njooqConfiguration\n;\n\n    \n}\n\n\n\n}\n\n\n\n\n\n\n\npom.xml\n\n\n1\n2\n3\n4\n5\n6\n7\n8\nproperties\n\n    \nflyway.baseline-on-migrate\ntrue\n/flyway.baseline-on-migrate\n\n    \npostgres.driver.version\n9.2-1002.jdbc4\n/postgres.driver.version\n\n    \ndb.url\njdbc:postgresql://localhost:5432/kw\n/db.url\n\n    \ndb.user\ndocker\n/db.user\n\n    \ndb.password\ndocker\n/db.password\n\n    \nflyway.schemas\npublic\n/flyway.schemas\n\n\n/properties\n\n\n\n\n\n\n\nFLYWAY\n\n\nFor updating the Database via DB Migrations.\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n \nplugin\n\n    \ngroupId\norg.flywaydb\n/groupId\n\n    \nartifactId\nflyway-maven-plugin\n/artifactId\n\n    \nconfiguration\n\n        \nsqlMigrationSeparator\n__\n/sqlMigrationSeparator\n\n        \nlocations\n\n            \nlocation\nfilesystem:src/main/resources/db/migration\n/location\n\n        \n/locations\n\n        \nurl\n${db.url}\n/url\n\n        \nuser\n${db.user}\n/user\n\n        \npassword\n${db.password}\n/password\n\n    \n/configuration\n\n    \ndependencies\n\n        \ndependency\n\n            \ngroupId\norg.postgresql\n/groupId\n\n            \nartifactId\npostgresql\n/artifactId\n\n            \nversion\n9.4-1206-jdbc42\n/version\n\n        \n/dependency\n\n    \n/dependencies\n\n    \nexecutions\n\n    \nexecution\n\n        \nid\nintegration-test-database-setup\n/id\n\n        \nphase\ninitialize\n/phase\n\n            \ngoals\n\n                \ngoal\nclean\n/goal\n\n                \ngoal\nmigrate\n/goal\n\n            \n/goals\n\n        \n/execution\n\n    \n/executions\n\n\n/plugin\n\n\n\n\n\n\n\nJOOQ\n\n\nFor generating Active Record classes from Database.\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\nplugin\n\n    \ngroupId\norg.jooq\n/groupId\n\n    \nartifactId\njooq-codegen-maven\n/artifactId\n\n    \nversion\n${org.jooq.version}\n/version\n\n    \nexecutions\n\n        \nexecution\n\n            \nphase\ngenerate-sources\n/phase\n\n            \ngoals\n\n                \ngoal\ngenerate\n/goal\n\n            \n/goals\n\n        \n/execution\n\n    \n/executions\n\n    \n!-- Manage the plugin\ns dependency. In this example, we\nll use a PostgreSQL database --\n\n    \ndependencies\n\n        \ndependency\n\n            \ngroupId\norg.postgresql\n/groupId\n\n            \nartifactId\npostgresql\n/artifactId\n\n            \nversion\n9.4-1206-jdbc42\n/version\n\n        \n/dependency\n\n    \n/dependencies\n\n\n    \n!-- Specify the plugin configuration.\n\n\n         The configuration format is the same as for the standalone code generator --\n\n    \nconfiguration\n\n\n        \n!-- JDBC connection parameters --\n\n        \njdbc\n\n            \ndriver\norg.postgresql.Driver\n/driver\n\n            \nurl\n${db.url}\n/url\n\n            \nuser\n${db.user}\n/user\n\n            \npassword\n${db.password}\n/password\n\n        \n/jdbc\n\n\n        \n!-- Generator parameters --\n\n        \ngenerator\n\n            \nname\norg.jooq.util.DefaultGenerator\n/name\n\n            \ndatabase\n\n                \nname\norg.jooq.util.postgres.PostgresDatabase\n/name\n\n                \nincludes\n.*\n/includes\n\n                \nexcludes\n/excludes\n\n                \ninputSchema\npublic\n/inputSchema\n\n            \n/database\n\n            \ntarget\n\n                \npackageName\ncom.github.joostvdg.keepwatching.model\n/packageName\n\n                \ndirectory\ngensrc/main/java\n/directory\n\n            \n/target\n\n        \n/generator\n\n    \n/configuration\n\n\n/plugin\n\n\n\n\n\n\n\nBuild Helper\n\n\nFor adding generated sources (Active Record tabel classes)  from JOOQ to the sources list.\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\nplugin\n\n    \ngroupId\norg.codehaus.mojo\n/groupId\n\n    \nartifactId\nbuild-helper-maven-plugin\n/artifactId\n\n    \nexecutions\n\n        \nexecution\n\n            \nphase\nprocess-sources\n/phase\n\n            \ngoals\n\n                \ngoal\nadd-source\n/goal\n\n            \n/goals\n\n            \nconfiguration\n\n                \nsources\n\n                    \nsource\ngensrc/main/java\n/source\n\n                \n/sources\n\n            \n/configuration\n\n        \n/execution\n\n    \n/executions\n\n\n/plugin\n    \n\n\n\n\n\n\napplication.yml\n\n\n1\n2\n3\n4\n5\nspring\n:\n\n    \ndatasource\n:\n\n      \nurl\n:\n \nlocalhost:5432/kw\n\n      \nusername\n:\n \ndocker\n\n      \npassword\n:\n \ndocker\n\n\n\n\n\n\n\nDocker Compose\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\nversion\n:\n \n2\n\n\nservices\n:\n\n  \ndb\n:\n\n    \nimage\n:\n \npostgres\n\n    \nexpose\n:\n\n      \n-\n \n5432\n\n    \nports\n:\n\n      \n-\n \n15432:5432\n\n    \nenvironment\n:\n\n      \n-\n \nPOSTGRES_PASSWORD=docker\n\n      \n-\n \nPOSTGRES_USER=docker\n\n      \n-\n \nPOSTGRES_DB=kw\n\n  \ndb-local\n:\n\n    \nimage\n:\n \npostgres\n\n    \nexpose\n:\n\n      \n-\n \n5432\n\n    \nports\n:\n\n      \n-\n \n15432:5432\n\n    \nenvironment\n:\n\n      \n-\n \nPOSTGRES_PASSWORD=docker\n\n      \n-\n \nPOSTGRES_USER=docker\n\n      \n-\n \nPOSTGRES_DB=kw\n\n    \nvolumes\n:\n\n      \n-\n \n/wolkje/volumes/kw/postgres:/var/lib/postgresql/data\n\n\n  \nbackend\n:\n\n    \nimage\n:\n \ncaladreas/keep-watching-be\n\n    \nexpose\n:\n\n      \n-\n \n8080\n\n    \nports\n:\n\n      \n-\n \n8080:8080\n\n    \nlinks\n:\n\n        \n-\n \ndb\n\n\n\n\n\n\n\nWay of Working\n\n\nThe process of change goes as follows:\n\n\n\n\nmake sure the default postgresql database is up\n\n\ncreate a db migration in src/main/resources/db.migration\n\n\nV{number}__{description_of_change}.sql format\n\n\n\n\n\n\nrun Flyway migration to apply database changes\n\n\nrun JOOQ generation to generate the classes of the active records (database tables)\n\n\nrun maven build helper to make these generated class part of the source files\n\n\ncompile normally\n\n\nrun spring boot to test working database/application\n\n\n\n\n1\n2\n3\ndocker-compose up db-local\n\nDB_IP\n=\n$(\ndocker inspect --format \n{{.NetworkSettings.Networks.keepwatching_default.IPAddress}}\n keepwatching_db_1\n)\n\nmvn clean \ntest\n package -P db -Dspring.profiles.active\n=\ncompose -Ddb.url\n=\njdbc:postgresql://\n${\nDB_IP\n}\n:5432/kw -Dspring.datasource.url\n=\njdbc:postgresql://\n${\nDB_IP\n}\n:5432/kw -Dspring.datasource.username\n=\ndocker -Dspring.datasource.password\n=\ndocker \n\n\n\n\n\n\nResources\n\n\n\n\nFlyway migrations during Maven build\n\n\nIntroduction to Spring \n JOOQ\n\n\nJOOQ \n Spring Boot\n\n\nJOOQ \n Spring Boot \n Flyway\n\n\nJOOQ \n Flyway", 
+            "title": "Database"
+        }, 
+        {
+            "location": "/backend/database/#database-setup", 
+            "text": "For the database configuration, the following requirements were set:   automatically update the database from build  automatically keep database and ORM in sync from build  database can be maintained via SQL scripts only  open source database  database of which you can get free (or near free) instances  capable of running in docker  compatible with spring boot", 
+            "title": "Database Setup"
+        }, 
+        {
+            "location": "/backend/database/#tech-stack", 
+            "text": "Spring Boot  JOOQ  JOOQ Generator  FlyWay  PostGreSQL", 
+            "title": "Tech Stack"
+        }, 
+        {
+            "location": "/backend/database/#configuration", 
+            "text": "", 
+            "title": "Configuration"
+        }, 
+        {
+            "location": "/backend/database/#initialconfigurationjava", 
+            "text": "Configuration class for JOOQ to make sure the connection to postgresql will work on every platform.   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31 @Configuration  public   class   InitialConfiguration   { \n\n     @Autowired \n     private   DataSource   dataSource ; \n\n     @Bean \n     public   DataSourceConnectionProvider   connectionProvider ()   { \n         return   new   DataSourceConnectionProvider \n                 ( new   TransactionAwareDataSourceProxy ( dataSource )); \n     } \n\n     @Bean \n     public   DefaultDSLContext   dsl ()   { \n         return   new   DefaultDSLContext ( configuration ()); \n     } \n\n     public   DefaultConfiguration   configuration ()   { \n         DefaultConfiguration   jooqConfiguration   =   new   DefaultConfiguration (); \n\n         jooqConfiguration . set ( connectionProvider ()); \n         Settings   settings   = new   Settings (); \n         settings . setRenderNameStyle ( RenderNameStyle . LOWER ); \n         settings . setRenderSchema ( true ); \n         jooqConfiguration . set ( settings ); \n         jooqConfiguration . set ( new   DefaultExecuteListenerProvider ( new   ExceptionTranslator ())); \n\n         return   jooqConfiguration ; \n     }  }", 
+            "title": "InitialConfiguration.java"
+        }, 
+        {
+            "location": "/backend/database/#pomxml", 
+            "text": "1\n2\n3\n4\n5\n6\n7\n8 properties \n     flyway.baseline-on-migrate true /flyway.baseline-on-migrate \n     postgres.driver.version 9.2-1002.jdbc4 /postgres.driver.version \n     db.url jdbc:postgresql://localhost:5432/kw /db.url \n     db.user docker /db.user \n     db.password docker /db.password \n     flyway.schemas public /flyway.schemas  /properties", 
+            "title": "pom.xml"
+        }, 
+        {
+            "location": "/backend/database/#flyway", 
+            "text": "For updating the Database via DB Migrations.   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30   plugin \n     groupId org.flywaydb /groupId \n     artifactId flyway-maven-plugin /artifactId \n     configuration \n         sqlMigrationSeparator __ /sqlMigrationSeparator \n         locations \n             location filesystem:src/main/resources/db/migration /location \n         /locations \n         url ${db.url} /url \n         user ${db.user} /user \n         password ${db.password} /password \n     /configuration \n     dependencies \n         dependency \n             groupId org.postgresql /groupId \n             artifactId postgresql /artifactId \n             version 9.4-1206-jdbc42 /version \n         /dependency \n     /dependencies \n     executions \n     execution \n         id integration-test-database-setup /id \n         phase initialize /phase \n             goals \n                 goal clean /goal \n                 goal migrate /goal \n             /goals \n         /execution \n     /executions  /plugin", 
+            "title": "FLYWAY"
+        }, 
+        {
+            "location": "/backend/database/#jooq", 
+            "text": "For generating Active Record classes from Database.   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49 plugin \n     groupId org.jooq /groupId \n     artifactId jooq-codegen-maven /artifactId \n     version ${org.jooq.version} /version \n     executions \n         execution \n             phase generate-sources /phase \n             goals \n                 goal generate /goal \n             /goals \n         /execution \n     /executions \n     !-- Manage the plugin s dependency. In this example, we ll use a PostgreSQL database -- \n     dependencies \n         dependency \n             groupId org.postgresql /groupId \n             artifactId postgresql /artifactId \n             version 9.4-1206-jdbc42 /version \n         /dependency \n     /dependencies \n\n     !-- Specify the plugin configuration.           The configuration format is the same as for the standalone code generator -- \n     configuration \n\n         !-- JDBC connection parameters -- \n         jdbc \n             driver org.postgresql.Driver /driver \n             url ${db.url} /url \n             user ${db.user} /user \n             password ${db.password} /password \n         /jdbc \n\n         !-- Generator parameters -- \n         generator \n             name org.jooq.util.DefaultGenerator /name \n             database \n                 name org.jooq.util.postgres.PostgresDatabase /name \n                 includes .* /includes \n                 excludes /excludes \n                 inputSchema public /inputSchema \n             /database \n             target \n                 packageName com.github.joostvdg.keepwatching.model /packageName \n                 directory gensrc/main/java /directory \n             /target \n         /generator \n     /configuration  /plugin", 
+            "title": "JOOQ"
+        }, 
+        {
+            "location": "/backend/database/#build-helper", 
+            "text": "For adding generated sources (Active Record tabel classes)  from JOOQ to the sources list.   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17 plugin \n     groupId org.codehaus.mojo /groupId \n     artifactId build-helper-maven-plugin /artifactId \n     executions \n         execution \n             phase process-sources /phase \n             goals \n                 goal add-source /goal \n             /goals \n             configuration \n                 sources \n                     source gensrc/main/java /source \n                 /sources \n             /configuration \n         /execution \n     /executions  /plugin", 
+            "title": "Build Helper"
+        }, 
+        {
+            "location": "/backend/database/#applicationyml", 
+            "text": "1\n2\n3\n4\n5 spring : \n     datasource : \n       url :   localhost:5432/kw \n       username :   docker \n       password :   docker", 
+            "title": "application.yml"
+        }, 
+        {
+            "location": "/backend/database/#docker-compose", 
+            "text": "1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33 version :   2  services : \n   db : \n     image :   postgres \n     expose : \n       -   5432 \n     ports : \n       -   15432:5432 \n     environment : \n       -   POSTGRES_PASSWORD=docker \n       -   POSTGRES_USER=docker \n       -   POSTGRES_DB=kw \n   db-local : \n     image :   postgres \n     expose : \n       -   5432 \n     ports : \n       -   15432:5432 \n     environment : \n       -   POSTGRES_PASSWORD=docker \n       -   POSTGRES_USER=docker \n       -   POSTGRES_DB=kw \n     volumes : \n       -   /wolkje/volumes/kw/postgres:/var/lib/postgresql/data \n\n   backend : \n     image :   caladreas/keep-watching-be \n     expose : \n       -   8080 \n     ports : \n       -   8080:8080 \n     links : \n         -   db", 
+            "title": "Docker Compose"
+        }, 
+        {
+            "location": "/backend/database/#way-of-working", 
+            "text": "The process of change goes as follows:   make sure the default postgresql database is up  create a db migration in src/main/resources/db.migration  V{number}__{description_of_change}.sql format    run Flyway migration to apply database changes  run JOOQ generation to generate the classes of the active records (database tables)  run maven build helper to make these generated class part of the source files  compile normally  run spring boot to test working database/application   1\n2\n3 docker-compose up db-local DB_IP = $( docker inspect --format  {{.NetworkSettings.Networks.keepwatching_default.IPAddress}}  keepwatching_db_1 ) \nmvn clean  test  package -P db -Dspring.profiles.active = compose -Ddb.url = jdbc:postgresql:// ${ DB_IP } :5432/kw -Dspring.datasource.url = jdbc:postgresql:// ${ DB_IP } :5432/kw -Dspring.datasource.username = docker -Dspring.datasource.password = docker", 
+            "title": "Way of Working"
+        }, 
+        {
+            "location": "/backend/database/#resources", 
+            "text": "Flyway migrations during Maven build  Introduction to Spring   JOOQ  JOOQ   Spring Boot  JOOQ   Spring Boot   Flyway  JOOQ   Flyway", 
+            "title": "Resources"
+        }, 
+        {
+            "location": "/backend/config/", 
+            "text": "Cloud Config\n\n\nSo Keep-Watching is a service that's run in the cloud, but must also be debuggable on a local setup.\n\n\nThe gives rise to a requirement about the configuration, which needs to be dynamically loaded based on the context.\n\n\nNext up, it is using public services only for hosting (sources), building and running.\nThat makes it very difficult to keep things a secret so the secrets must be encrypted.\n\n\nSpring Cloud Config\n\n\nFor Keep-Watching, this is: \nKeep-Config\n.\n\n\nFor the external dynamic configuration loading, we utilize \nSpring Cloud Config Server\n.\n\n\nThis allows you to store configuration files in a git repository (local or remote) which contains configuration per profile.\n\n\nFor this to work, you need two spring applications and a repository:\n\n\n\n\nThe application for which you want to create the configuration (the Client, Keep-Watching)\n\n\nA Spring application which acts as a Cloud Config Server (the Server, Keep-Config)\n\n\nGit repository with the configuration (Config)\n\n\n\n\nFor how to set this up, \nthere's a nice tutorial\n from SpringSource.\n\n\nKeep-Config\n\n\nMake sure its a spring boot app, that contains the cloud config server dependency.\n\n\npom.xml\n\n\n1\n2\n3\n4\ndependency\n\n    \ngroupId\norg.springframework.cloud\n/groupId\n\n    \nartifactId\nspring-cloud-config-server\n/artifactId\n\n\n/dependency\n\n\n\n\n\n\n\nApplication.java\n\n\nThe application class should then enable the server with the annotation \n@EnableConfigServer\n\n\n1\n2\n3\n4\n5\n6\n7\n@SpringBootApplication\n\n\n@EnableConfigServer\n\n\npublic\n \nclass\n \nRestServiceApplication\n \n{\n\n    \npublic\n \nstatic\n \nvoid\n \nmain\n(\nString\n[]\n \nargs\n)\n \n{\n\n        \nSpringApplication\n.\nrun\n(\nRestServiceApplication\n.\nclass\n,\n \nargs\n);\n\n    \n}\n\n\n}\n\n\n\n\n\n\n\nAnd last but not least, it needs to configure where the configuration should come from in \napplication.yml\n\n\napplication.yml\n\n\n1\n2\n3\n4\n5\n6\n7\n8\nspring\n:\n\n  \ncloud\n:\n\n    \nconfig\n:\n\n      \nserver\n:\n\n        \ngit\n:\n\n          \nuri\n:\n \nhttps://github.com/joostvdg/config\n\n        \nencrypt\n:\n\n          \nenabled\n:\n \nfalse\n\n\n\n\n\n\n\nKeep-Watching\n\n\nThe client needs to configure that it uses a cloud config server, where it is and that requires a dependency on \nspring-cloud-starter-config\n.\n\n\npom.xml\n\n\n1\n2\n3\n4\ndependency\n\n    \ngroupId\norg.springframework.cloud\n/groupId\n\n    \nartifactId\nspring-cloud-starter-config\n/artifactId\n\n\n/dependency\n\n\n\n\n\n\n\nbootstrap.yml\n\n\nAs the configuration for the application should be loaded before the applications starts, this configuration should be in the \nbootstrap.yml\n file.\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\nspring\n:\n\n  \napplication\n:\n\n    \nname\n:\n \nkeep-watching\n\n  \ncloud\n:\n\n    \nconfig\n:\n\n      \nuri\n:\n \nhttp://localhost:8081\n\n\n\n---\n\n\nspring\n:\n\n  \nprofiles\n:\n \nheroku\n\n  \ncloud\n:\n\n    \nconfig\n:\n\n      \nuri\n:\n \nhttps://keep-config.herokuapp.com\n\n\n\n\n\n\n\nAnd depending on the active profile we will use a different server for this.\n\n\nConfig\n\n\nFor Keep-Watching, this is: \nConfig\n.\n\n\nTHe only thing to do here to create configuration files per application for each profile.\n\n\n\n\nkeep-watching-compose.properties: used when profile is compose\n\n\nkeep-watching-heroku.properties: used when profile in heroku\n\n\nkeep-watching.properties: default file used\n\n\n\n\nThese files are then just standard Java properties files.\n\n\nEncryption\n\n\nFor how to use the encryption with Spring Cloud Config, there's a great tutorial from \nBaeldung\n.\n\n\nJava Encryption Strength\n\n\nDue to strong \nexport restrictions on cryptography in the U.S.A\n \nand Java being from there, Java's default encryption strength is severely limited.\n\n\nFor secure encryption of secrets in public places, such as the configuration being in a GitHub repo, we need to use stronger algorithms.\n\n\nThere's an easy solution to this: download and \"install\" Java's \nJava Cryptography Extension\n(JCE).\n\n\nConfig Server on Heroku\n\n\nAs we run our Config Server directly on Heroku, our Heroku host needs to have the Unlimited Strength in place.\n\n\nThis is actually surprisingly simple, as can be seen \nin this tutorial on heroku's devcenter\n.\n\n\nSimply create a \n.jdk-overlay\n folder and \"install\" the JCE just as you would do locally.\n\n\nDocker\n\n\nAs Keep-Watching runs in a Docker container, it will also need the JCE to be able to use the \"Unlimited Strength Policy\".\n\n\nSo we use a Docker base image which contains exactly that: \nanapsix/alpine-java:8_jdk_unlimited\n. \n\n\nSpring Configuration\n\n\nWe need to add a JKS and configure Spring to use this JKS.\n\n\nThis is exactly the same for the server and the client.\n\n\nThis is what is required in the \napplication.yml\n.\n\n\n1\n2\n3\n4\n5\n6\nencrypt\n:\n\n  \nkeyStore\n:\n\n    \nlocation\n:\n \nclasspath:/config-server.jks\n\n    \npassword\n:\n \nnothepassword\n\n    \nalias\n:\n \nconfig-server-key\n\n    \nsecret\n:\n \nnothepassword\n\n\n\n\n\n\n\nAs to be expected, we do not use the actual username and password of the JKS in the sources.\n\n\nThis would undermine the safety of the encryption, see below how this is configured.\n\n\nSecret Encryption / Decryption\n\n\nTo encrypt and decrypt the values, we can use the keep-config application.\n\n\nTo encrypt: \ncurl -X POST --data-urlencode d3v3L http://root:s3cr3t@localhost:8081/encrypt\n\n\nTo decrypt: \ncurl -X POST --data-urlencode d3v3L http://root:s3cr3t@localhost:8081/decrypt\n\n\nOnce you have a encrypted value, you want to store it encrypted in the config repository.\n\n\nIn order to tell the config server this value is encrypted, you have to add a special marker; \n{cipher}\n\n\n1\n2\nmessage\n=\nHoi hoi hoi\n\n\nuser.password\n=\n{cipher}AgAuqFORZF2ls7XmjQxotluoVXL7M8kEM8OV8Z9/xBPReuVMCbF5Krcd2qNQRq2/l6gTBrqcQXdy/nnv4dHxxGfDU4fxOAL+6YjPqLpZ13N9UYG8sKBw9UjupltLR3S/xHGXBFPp67WC/OeZ7MLbLqa8chY9UWbSySFcK43kNuTKZYsHfeh6ZZt7rAkjzdLoIAC1k4t1YVZxn4Bx9c3gOEIV9ZH1va+AJHg09xRXslCApUklTx6RRTOPt7G+iRizKZe9cwlZwJXu5Niaujtv8Jo6B8HdCq6c5fh0N4Lvvfohb1pOX/drKJm56zRzklcn/Tz8/xAKS4GsPks++zWdhqJU+xVMqBTD7htglmU3j2VZs2YqrBcw5hojEwQPRgH0e6BiU+IxLCqUolaSmCRgWrtx/Yz+Ft6X8zq3Fa+ater3MhptP40LJDDRiA+Gathvp+YHf7SpToGEea4Mxcx547IwzDqigXgMxhhQwyvI6fzR5IZXxL1kY2mUgIyPpg+xCg2bx4lH9ufGtZCr8AYkjnsZc5LH6DGPaYeWmpYu+LuNuRxVP2OdH1UVXhLL+X35MZq9RBtSTK/9JU1WtRVdc7q+g7YbaE1DKnt/5zteX0sfQO7rs20ATMF5JLM3KglHm27Pv4RSQWl4CEUqtL0AhsE6/pxFaxpZ9LsvnNk5GZu/jPkZlduKyFJneJCG4lg4jc5CAMfuExv9Sx2NyKV4wpSP1Qs9VqyvnUA1BFtOL4nS19kRZigsIZDVBxWS6X5yWIk=\n\n\n\n\n\n\n\n\n\nWarning\n\n\nIf you would now request the values from the server, both will come in plain text.\nYou have to disable the automatic decryption by the config server!\n\n\n\n\nDisable automatic decryption in cloud config server\n\n\n1\n2\n3\n4\n5\n6\n7\n8\nspring\n:\n\n  \ncloud\n:\n\n    \nconfig\n:\n\n      \nserver\n:\n\n        \ngit\n:\n\n          \nuri\n:\n \nhttps://github.com/joostvdg/config\n\n\n        \nencrypt\n:\n\n\n          \nenabled\n:\n \nfalse\n\n\n\n\n\n\n\nDecrypt in client\n\n\nWhen decryption is disabled in the server, we will have to decrypt in the client.\n\n\nIt will need the same JKS as was use for the encryption (see above).\n\n\nFor the decryption to work, one more thing is required: a dependency on \nspring-security-rsa\n.\n\n\n1\n2\n3\n4\ndependency\n\n    \ngroupId\norg.springframework.security\n/groupId\n\n    \nartifactId\nspring-security-rsa\n/artifactId\n\n\n/dependency\n\n\n\n\n\n\n\nJKS Secret \n Password\n\n\nMake sure we have an additional line for when we've detected we're running (the docker container) in Heroku: \n\n\n1\n2\n3\n4\n5\nif\n \n[\n \n${\nDATABASE_URL\n}\n \n]\n;\n \nthen\n\n  \n# ...\n\n  \nEXTRA_CONFIG\n=\n-Dencrypt.keyStore.secret=\n${\nKEYSTORE_SECRET\n}\n -Dencrypt.keyStore.password=\n${\nKEYSTORE_PASS\n}\n -Dspring.profiles.active=heroku\n\n\nfi\n\njava ... \n${\nEXTRA_CONFIG\n}\n -jar /app.jar\n\n\n\n\n\n\nMake sure we add the secrets are available as environment variables, so the docker run will be able to use them. \n\n\nWe do the same with building in CircleCI, by adding this to the test command (in test.sh).\n\n\n1\nmvn flyway:migrate generate-resources generate-sources package -e ... -Dencrypt.keyStore.secret\n=\n${\nJKS_SECRET\n}\n -Dencrypt.keyStore.password\n=\n${\nJKS_PASS\n}", 
+            "title": "Config"
+        }, 
+        {
+            "location": "/backend/config/#cloud-config", 
+            "text": "So Keep-Watching is a service that's run in the cloud, but must also be debuggable on a local setup.  The gives rise to a requirement about the configuration, which needs to be dynamically loaded based on the context.  Next up, it is using public services only for hosting (sources), building and running.\nThat makes it very difficult to keep things a secret so the secrets must be encrypted.", 
+            "title": "Cloud Config"
+        }, 
+        {
+            "location": "/backend/config/#spring-cloud-config", 
+            "text": "For Keep-Watching, this is:  Keep-Config .  For the external dynamic configuration loading, we utilize  Spring Cloud Config Server .  This allows you to store configuration files in a git repository (local or remote) which contains configuration per profile.  For this to work, you need two spring applications and a repository:   The application for which you want to create the configuration (the Client, Keep-Watching)  A Spring application which acts as a Cloud Config Server (the Server, Keep-Config)  Git repository with the configuration (Config)   For how to set this up,  there's a nice tutorial  from SpringSource.", 
+            "title": "Spring Cloud Config"
+        }, 
+        {
+            "location": "/backend/config/#keep-config", 
+            "text": "Make sure its a spring boot app, that contains the cloud config server dependency.", 
+            "title": "Keep-Config"
+        }, 
+        {
+            "location": "/backend/config/#pomxml", 
+            "text": "1\n2\n3\n4 dependency \n     groupId org.springframework.cloud /groupId \n     artifactId spring-cloud-config-server /artifactId  /dependency", 
+            "title": "pom.xml"
+        }, 
+        {
+            "location": "/backend/config/#applicationjava", 
+            "text": "The application class should then enable the server with the annotation  @EnableConfigServer  1\n2\n3\n4\n5\n6\n7 @SpringBootApplication  @EnableConfigServer  public   class   RestServiceApplication   { \n     public   static   void   main ( String []   args )   { \n         SpringApplication . run ( RestServiceApplication . class ,   args ); \n     }  }    And last but not least, it needs to configure where the configuration should come from in  application.yml", 
+            "title": "Application.java"
+        }, 
+        {
+            "location": "/backend/config/#applicationyml", 
+            "text": "1\n2\n3\n4\n5\n6\n7\n8 spring : \n   cloud : \n     config : \n       server : \n         git : \n           uri :   https://github.com/joostvdg/config \n         encrypt : \n           enabled :   false", 
+            "title": "application.yml"
+        }, 
+        {
+            "location": "/backend/config/#keep-watching", 
+            "text": "The client needs to configure that it uses a cloud config server, where it is and that requires a dependency on  spring-cloud-starter-config .", 
+            "title": "Keep-Watching"
+        }, 
+        {
+            "location": "/backend/config/#pomxml_1", 
+            "text": "1\n2\n3\n4 dependency \n     groupId org.springframework.cloud /groupId \n     artifactId spring-cloud-starter-config /artifactId  /dependency", 
+            "title": "pom.xml"
+        }, 
+        {
+            "location": "/backend/config/#bootstrapyml", 
+            "text": "As the configuration for the application should be loaded before the applications starts, this configuration should be in the  bootstrap.yml  file.   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13 spring : \n   application : \n     name :   keep-watching \n   cloud : \n     config : \n       uri :   http://localhost:8081  ---  spring : \n   profiles :   heroku \n   cloud : \n     config : \n       uri :   https://keep-config.herokuapp.com    And depending on the active profile we will use a different server for this.", 
+            "title": "bootstrap.yml"
+        }, 
+        {
+            "location": "/backend/config/#config", 
+            "text": "For Keep-Watching, this is:  Config .  THe only thing to do here to create configuration files per application for each profile.   keep-watching-compose.properties: used when profile is compose  keep-watching-heroku.properties: used when profile in heroku  keep-watching.properties: default file used   These files are then just standard Java properties files.", 
+            "title": "Config"
+        }, 
+        {
+            "location": "/backend/config/#encryption", 
+            "text": "For how to use the encryption with Spring Cloud Config, there's a great tutorial from  Baeldung .", 
+            "title": "Encryption"
+        }, 
+        {
+            "location": "/backend/config/#java-encryption-strength", 
+            "text": "Due to strong  export restrictions on cryptography in the U.S.A  \nand Java being from there, Java's default encryption strength is severely limited.  For secure encryption of secrets in public places, such as the configuration being in a GitHub repo, we need to use stronger algorithms.  There's an easy solution to this: download and \"install\" Java's  Java Cryptography Extension (JCE).", 
+            "title": "Java Encryption Strength"
+        }, 
+        {
+            "location": "/backend/config/#config-server-on-heroku", 
+            "text": "As we run our Config Server directly on Heroku, our Heroku host needs to have the Unlimited Strength in place.  This is actually surprisingly simple, as can be seen  in this tutorial on heroku's devcenter .  Simply create a  .jdk-overlay  folder and \"install\" the JCE just as you would do locally.", 
+            "title": "Config Server on Heroku"
+        }, 
+        {
+            "location": "/backend/config/#docker", 
+            "text": "As Keep-Watching runs in a Docker container, it will also need the JCE to be able to use the \"Unlimited Strength Policy\".  So we use a Docker base image which contains exactly that:  anapsix/alpine-java:8_jdk_unlimited .", 
+            "title": "Docker"
+        }, 
+        {
+            "location": "/backend/config/#spring-configuration", 
+            "text": "We need to add a JKS and configure Spring to use this JKS.  This is exactly the same for the server and the client.  This is what is required in the  application.yml .  1\n2\n3\n4\n5\n6 encrypt : \n   keyStore : \n     location :   classpath:/config-server.jks \n     password :   nothepassword \n     alias :   config-server-key \n     secret :   nothepassword    As to be expected, we do not use the actual username and password of the JKS in the sources.  This would undermine the safety of the encryption, see below how this is configured.", 
+            "title": "Spring Configuration"
+        }, 
+        {
+            "location": "/backend/config/#secret-encryption-decryption", 
+            "text": "To encrypt and decrypt the values, we can use the keep-config application.  To encrypt:  curl -X POST --data-urlencode d3v3L http://root:s3cr3t@localhost:8081/encrypt  To decrypt:  curl -X POST --data-urlencode d3v3L http://root:s3cr3t@localhost:8081/decrypt  Once you have a encrypted value, you want to store it encrypted in the config repository.  In order to tell the config server this value is encrypted, you have to add a special marker;  {cipher}  1\n2 message = Hoi hoi hoi  user.password = {cipher}AgAuqFORZF2ls7XmjQxotluoVXL7M8kEM8OV8Z9/xBPReuVMCbF5Krcd2qNQRq2/l6gTBrqcQXdy/nnv4dHxxGfDU4fxOAL+6YjPqLpZ13N9UYG8sKBw9UjupltLR3S/xHGXBFPp67WC/OeZ7MLbLqa8chY9UWbSySFcK43kNuTKZYsHfeh6ZZt7rAkjzdLoIAC1k4t1YVZxn4Bx9c3gOEIV9ZH1va+AJHg09xRXslCApUklTx6RRTOPt7G+iRizKZe9cwlZwJXu5Niaujtv8Jo6B8HdCq6c5fh0N4Lvvfohb1pOX/drKJm56zRzklcn/Tz8/xAKS4GsPks++zWdhqJU+xVMqBTD7htglmU3j2VZs2YqrBcw5hojEwQPRgH0e6BiU+IxLCqUolaSmCRgWrtx/Yz+Ft6X8zq3Fa+ater3MhptP40LJDDRiA+Gathvp+YHf7SpToGEea4Mxcx547IwzDqigXgMxhhQwyvI6fzR5IZXxL1kY2mUgIyPpg+xCg2bx4lH9ufGtZCr8AYkjnsZc5LH6DGPaYeWmpYu+LuNuRxVP2OdH1UVXhLL+X35MZq9RBtSTK/9JU1WtRVdc7q+g7YbaE1DKnt/5zteX0sfQO7rs20ATMF5JLM3KglHm27Pv4RSQWl4CEUqtL0AhsE6/pxFaxpZ9LsvnNk5GZu/jPkZlduKyFJneJCG4lg4jc5CAMfuExv9Sx2NyKV4wpSP1Qs9VqyvnUA1BFtOL4nS19kRZigsIZDVBxWS6X5yWIk=     Warning  If you would now request the values from the server, both will come in plain text.\nYou have to disable the automatic decryption by the config server!", 
+            "title": "Secret Encryption / Decryption"
+        }, 
+        {
+            "location": "/backend/config/#disable-automatic-decryption-in-cloud-config-server", 
+            "text": "1\n2\n3\n4\n5\n6\n7\n8 spring : \n   cloud : \n     config : \n       server : \n         git : \n           uri :   https://github.com/joostvdg/config           encrypt :             enabled :   false", 
+            "title": "Disable automatic decryption in cloud config server"
+        }, 
+        {
+            "location": "/backend/config/#decrypt-in-client", 
+            "text": "When decryption is disabled in the server, we will have to decrypt in the client.  It will need the same JKS as was use for the encryption (see above).  For the decryption to work, one more thing is required: a dependency on  spring-security-rsa .  1\n2\n3\n4 dependency \n     groupId org.springframework.security /groupId \n     artifactId spring-security-rsa /artifactId  /dependency", 
+            "title": "Decrypt in client"
+        }, 
+        {
+            "location": "/backend/config/#jks-secret-password", 
+            "text": "Make sure we have an additional line for when we've detected we're running (the docker container) in Heroku:   1\n2\n3\n4\n5 if   [   ${ DATABASE_URL }   ] ;   then \n   # ... \n   EXTRA_CONFIG = -Dencrypt.keyStore.secret= ${ KEYSTORE_SECRET }  -Dencrypt.keyStore.password= ${ KEYSTORE_PASS }  -Dspring.profiles.active=heroku  fi \njava ...  ${ EXTRA_CONFIG }  -jar /app.jar   Make sure we add the secrets are available as environment variables, so the docker run will be able to use them.   We do the same with building in CircleCI, by adding this to the test command (in test.sh).  1 mvn flyway:migrate generate-resources generate-sources package -e ... -Dencrypt.keyStore.secret = ${ JKS_SECRET }  -Dencrypt.keyStore.password = ${ JKS_PASS }", 
+            "title": "JKS Secret &amp; Password"
+        }
+    ]
+}

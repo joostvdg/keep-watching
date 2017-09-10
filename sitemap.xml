@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
+    <url>
+     <loc>https://joostvdg.github.io/keep-watching/</loc>
+     <lastmod>2017-09-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://joostvdg.github.io/keep-watching/circle-ci/</loc>
+     <lastmod>2017-09-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://joostvdg.github.io/keep-watching/heroku/</loc>
+     <lastmod>2017-09-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+        
+    <url>
+     <loc>https://joostvdg.github.io/keep-watching/backend/spring-boot/</loc>
+     <lastmod>2017-09-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://joostvdg.github.io/keep-watching/backend/security/</loc>
+     <lastmod>2017-09-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://joostvdg.github.io/keep-watching/backend/reactjs/</loc>
+     <lastmod>2017-09-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://joostvdg.github.io/keep-watching/backend/database/</loc>
+     <lastmod>2017-09-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://joostvdg.github.io/keep-watching/backend/config/</loc>
+     <lastmod>2017-09-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+</urlset>

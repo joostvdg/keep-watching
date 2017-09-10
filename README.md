@@ -8,6 +8,8 @@
 
 [Documentation](https://joostvdg.github.io/keep-watching/)
 
+## Usage
+
 To run, do the following.
 
 ```bash

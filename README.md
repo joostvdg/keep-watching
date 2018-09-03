@@ -5,6 +5,7 @@
 [![license](https://img.shields.io/github/license/joostvdg/keep-watching.svg)]()
 [![Docker Pulls](https://img.shields.io/docker/pulls/caladreas/keep-watching-be.svg)]()
 [![CircleCI](https://circleci.com/gh/joostvdg/keep-watching.svg?style=svg)](https://circleci.com/gh/joostvdg/keep-watching)
+[![DepShield Badge](https://depshield.sonatype.org/badges/joostvdg/keep-watching/depshield.svg)](https://depshield.github.io)
 
 [Documentation](https://joostvdg.github.io/keep-watching/)
 

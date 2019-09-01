@@ -29,7 +29,7 @@
 
         <!-- Lib Versions -->
         <jackson.datatypes.version>2.8.5</jackson.datatypes.version>
-        <swagger.version>1.5.12</swagger.version>
+        <swagger.version>1.5.23</swagger.version>
         <springfox.version>2.6.1</springfox.version>
         <org.jooq.version>3.9.1</org.jooq.version>
         <spring.boot.version>1.5.3.RELEASE</spring.boot.version>

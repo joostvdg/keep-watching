@@ -28,7 +28,7 @@
         <java.version>1.8</java.version>
 
         <!-- Lib Versions -->
-        <jackson.datatypes.version>2.10.0.pr2</jackson.datatypes.version>
+        <jackson.datatypes.version>2.11.0</jackson.datatypes.version>
         <swagger.version>1.5.12</swagger.version>
         <springfox.version>2.6.1</springfox.version>
         <org.jooq.version>3.9.1</org.jooq.version>

@@ -51,7 +51,7 @@
                 <plugin>
                     <groupId>org.flywaydb</groupId>
                     <artifactId>flyway-maven-plugin</artifactId>
-                    <version>4.2.0</version>
+                    <version>6.5.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>

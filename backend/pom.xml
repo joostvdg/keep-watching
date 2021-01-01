@@ -345,7 +345,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.2.10.Final</version>
+            <version>5.4.27.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>

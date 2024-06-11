@@ -7,3 +7,12 @@ build-all:
       -Dspring.datasource.password=docker
 #	  -Drun.jvmArguments="-Dencrypt.keyStore.secret=${JKS_SECRET} \
 #      -Dencrypt.keyStore.password=${JKS_PASS}
+
+run:
+	mvn -e spring-boot:run \
+	 	-Dspring.profiles.active=local \
+	 	-Ddb.url=jdbc:postgresql://${DB_IP}/kw \
+	 	-Dspring.datasource.url=jdbc:postgresql://${DB_IP}/kw \
+	 	-Dspring.datasource.username=docker \
+	 	-Dspring.datasource.password=docker
+

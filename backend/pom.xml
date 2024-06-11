@@ -17,7 +17,7 @@
 
     <properties><flyway.baseline-on-migrate>true</flyway.baseline-on-migrate>
         <postgres.driver.version>9.2-1002.jdbc4</postgres.driver.version>
-        <db.url>jdbc:postgresql://localhost:5432/kw</db.url>
+        <db.url>jdbc:postgresql://localhost:15432/kw</db.url>
         <db.user>docker</db.user>
         <db.password>docker</db.password>
         <flyway.schemas>public</flyway.schemas>
@@ -158,6 +158,19 @@
 <!--                        &lt;!&ndash; optional: default phase is "generate-resources" &ndash;&gt;-->
 <!--                        <phase>generate-resources</phase>-->
 <!--                        <configuration>-->
+<!--                            <nodeVersion>v16.20.2</nodeVersion>-->
+<!--                            <yarnVersion>v0.27.5</yarnVersion>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        &lt;!&ndash; optional: you don't really need execution ids, but it looks nice in your build log. &ndash;&gt;-->
+<!--                        <id>install node and yarn</id>-->
+<!--                        <goals>-->
+<!--                            <goal>install-node-and-yarn</goal>-->
+<!--                        </goals>-->
+<!--                        &lt;!&ndash; optional: default phase is "generate-resources" &ndash;&gt;-->
+<!--                        <phase>generate-resources</phase>-->
+<!--                        <configuration>-->
 <!--                            <nodeVersion>v6.10.3</nodeVersion>-->
 <!--                            <yarnVersion>v0.27.5</yarnVersion>-->
 <!--                        </configuration>-->
@@ -166,6 +179,19 @@
 <!--                        <id>yarn install</id>-->
 <!--                        <goals>-->
 <!--                            <goal>yarn</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            &lt;!&ndash; optional: The default argument is actually-->
+<!--                            "install", so unless you need to run some other yarn command,-->
+<!--                            you can remove this whole <configuration> section.-->
+<!--                            &ndash;&gt;-->
+<!--                            <arguments>install</arguments>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>npm install</id>-->
+<!--                        <goals>-->
+<!--                            <goal>npm</goal>-->
 <!--                        </goals>-->
 <!--                        <configuration>-->
 <!--                            &lt;!&ndash; optional: The default argument is actually-->

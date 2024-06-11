@@ -40,7 +40,7 @@ class Home extends React.Component {
     }
 
     componentDidMount(){
-        console.log("Navigation Did Mount");
+        console.log("Home Did Mount");
         let client = rest.wrap(mime);
         client({ path: '/authenticated',
             headers: {'Accept': 'application/json'}}).then(response => {
@@ -155,6 +155,10 @@ class Navigation extends React.Component {
 }
 
 class MainPage extends React.Component {
+
+    componentDidMount() {
+        console.log("MainPage Did Mount");
+    }
 
     render(){
         // TODO: introduce default watchlist so we can have the movies page init with this

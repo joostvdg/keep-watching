@@ -159,6 +159,20 @@ npm install --save-dev webpack-cli@2.1.5
 npm install --global webpack@2.7.0
 ```
 
+### Build Frontend
+
+We install the dependencies via `yarn`, v1.22.22 should work.
+
+```shell
+yarn install
+```
+
+To build the frontend, we need to run webpack, note, without any arguments.
+
+```shell
+webpack
+```
+
 ### Disabled Frontend Plugin
 
 It really can't download those version anymore.
@@ -174,4 +188,52 @@ In `bootstrap.yml`:
 #    password: NotThePassword
 #    alias: config-server-key
 #    secret: AlsoNotThePassword
+```
+
+### Explicitly Set Bootstrap Version
+
+Orignally we used the Bootstrap version 3.x.
+Which as the time was the latest, so the version was not specified.
+
+We need to specify the version, as the latest version is 5.x.
+
+* https://getbootstrap.com/docs/3.4/getting-started/#download
+
+```html
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+```
+
+
+## Run It Again
+
+```shell
+docker compose up db -d
+```
+
+```shell
+export DB_IP=localhost:15432
+```
+
+```shell
+yarn install
+```
+
+```shell
+webpack
+```
+
+```shell
+mvn -e spring-boot:run \
+    -Dspring.profiles.active=local \
+    -Ddb.url=jdbc:postgresql://${DB_IP}/kw \
+    -Dspring.datasource.url=jdbc:postgresql://${DB_IP}/kw \
+    -Dspring.datasource.username=docker \
+    -Dspring.datasource.password=docker
 ```

@@ -211,7 +211,30 @@ We need to specify the version, as the latest version is 5.x.
 ```
 
 
-## Run It Again
+### Removed Spring JooQ Starter Version
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-jooq</artifactId>
+<!--            <version>2.2.6.RELEASE</version>-->
+</dependency>
+```
+
+### Reverted JOOQ Version Change
+
+From 3.14.4 to 3.9.3.
+
+### Removed Release Date field
+
+The Movie DTO has a field `releaseDate` which is a `LocalDate`.
+
+Unfortunately, the Jackson deserialization of `LocalDate` is not working.
+
+So I've commented out the field for now.
+We can now create movie entries in a WatchList.
+
+## Run It
 
 ```shell
 docker compose up db -d

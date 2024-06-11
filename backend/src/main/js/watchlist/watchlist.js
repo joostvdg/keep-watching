@@ -44,6 +44,7 @@ class MoviesWatched extends React.Component {
     }
 
     componentDidMount() {
+        console.log("MoviesWatched did mount");
         if (this.state.watchList.id) {
             console.log('Props set');
             const id = this.state.watchList.id;

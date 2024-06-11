@@ -194,7 +194,6 @@ export class ShowMovieEditModal extends React.Component {
                 director: this.state.movie.director,
                 notableActors: this.state.movie.notableActors,
                 releaseYear: this.state.movie.releaseYear,
-                releaseDate: this.state.movie.releaseDate,
                 genre: this.state.movie.genre,
                 imdbLink: this.state.movie.imdbLink,
                 seen: this.state.movie.seen,

@@ -54,9 +54,9 @@ public class MovieServiceImpl implements MovieService {
         assert movie != null;
         assert movie.getName() != null;
         java.sql.Date releaseDate = null;
-        if (movie.getReleaseDate() != null) {
-            releaseDate = new Date(movie.getReleaseDate().toEpochDay());
-        }
+//        if (movie.getReleaseDate() != null) {
+//            releaseDate = new Date(movie.getReleaseDate().toEpochDay());
+//        }
 
         Integer watchListId = ((Long)watchList.getId()).intValue();
         MoviesRecord moviesRecord = dsl.insertInto(MOVIES)
@@ -110,9 +110,9 @@ public class MovieServiceImpl implements MovieService {
         assert movie.getName() != null;
         assert movie.getId() >= 0;
         java.sql.Date releaseDate = null;
-        if (movie.getReleaseDate() != null) {
-            releaseDate = new Date(movie.getReleaseDate().toEpochDay());
-        }
+//        if (movie.getReleaseDate() != null) {
+//            releaseDate = new Date(movie.getReleaseDate().toEpochDay());
+//        }
 
         Long movieId = movie.getId();
         dsl.update(MOVIES)
@@ -141,9 +141,9 @@ public class MovieServiceImpl implements MovieService {
         movie.setNotableActors(record.getValue(MOVIES.NOTABLE_ACTORS, String.class));
         movie.setReleaseYear(record.getValue(MOVIES.RELEASE_YEAR, String.class));
         java.sql.Date releaseDateSql = record.getValue(MOVIES.RELEASE_DATE, java.sql.Date.class);
-        if ( releaseDateSql != null) {
-            movie.setReleaseDate(releaseDateSql.toLocalDate());
-        }
+//        if ( releaseDateSql != null) {
+//            movie.setReleaseDate(releaseDateSql.toLocalDate());
+//        }
 
         movie.setGenre(record.getValue(MOVIES.GENRE, String.class));
         movie.setImdbLink(record.getValue(MOVIES.IMDB, String.class));

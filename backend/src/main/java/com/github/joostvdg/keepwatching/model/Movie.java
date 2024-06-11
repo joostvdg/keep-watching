@@ -13,7 +13,7 @@ public class Movie {
     private String director;
     private String notableActors;
     private String releaseYear;
-    private LocalDate releaseDate;
+//    private LocalDate releaseDate;
     private boolean isSeen;
     private boolean isCinemaWorthy;
     private String genre;
@@ -159,23 +159,23 @@ public class Movie {
         this.releaseYear = releaseYear;
     }
 
-    /**
-     * Gets release date.
-     *
-     * @return the release date
-     */
-    public LocalDate getReleaseDate() {
-        return releaseDate;
-    }
-
-    /**
-     * Sets release date.
-     *
-     * @param releaseDate the release date
-     */
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
-    }
+//    /**
+//     * Gets release date.
+//     *
+//     * @return the release date
+//     */
+//    public LocalDate getReleaseDate() {
+//        return releaseDate;
+//    }
+//
+//    /**
+//     * Sets release date.
+//     *
+//     * @param releaseDate the release date
+//     */
+//    public void setReleaseDate(LocalDate releaseDate) {
+//        this.releaseDate = releaseDate;
+//    }
 
     /**
      * Is seen boolean.
@@ -299,7 +299,7 @@ public class Movie {
                 ", studio='" + studio + '\'' +
                 ", notableActors='" + notableActors + '\'' +
                 ", releaseYear='" + releaseYear + '\'' +
-                ", releaseDate=" + releaseDate +
+//                ", releaseDate=" + releaseDate +
                 ", isSeen=" + isSeen +
                 ", isCinemaWorthy=" + isCinemaWorthy +
                 ", genre='" + genre + '\'' +

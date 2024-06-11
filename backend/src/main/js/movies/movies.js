@@ -23,6 +23,7 @@ export class ShowMovieList extends React.Component {
     }
 
     componentDidMount() {
+        console.log("ShowMovieList.componentDidMount - watchListId: " + this.state.watchListId);
         let client = rest.wrap(mime);
         client({ path: '/watchlist/' + this.state.watchListId + '/movies',
             headers: {'Accept': 'application/json'}}).then(response => {

@@ -18,6 +18,7 @@ export class ShowWatcher extends React.Component {
     }
 
     componentDidMount() {
+        console.log("Watcher Did Mount");
         let client = rest.wrap(mime);
         client({ path: '/user',
             headers: {'Accept': 'application/json'}}).then(response => {

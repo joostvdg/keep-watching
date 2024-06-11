@@ -106,9 +106,9 @@ public class WatchListController {
     @ResponseBody
     public ResponseEntity<Movie> newMovie(Principal principal, @PathVariable("watchListId") long watchListId, @ApiParam("Movie to add") @RequestBody Movie movie)  {
         if (principal == null) {return notAuthorizedResponse;}
+        logger.info("Watchlist::Movies::PUT {}", movie.getName());
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
         WatchList watchList = watchListService.getWatchListById(watchListId, watcher);
-        logger.info("Watchlist::Movies::PUT {}", movie.getName());
         return ResponseEntity.ok().body(movieService.newMovie(movie, watchList));
     }
 

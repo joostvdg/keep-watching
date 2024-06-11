@@ -16,3 +16,32 @@ run:
 	 	-Dspring.datasource.username=docker \
 	 	-Dspring.datasource.password=docker
 
+dpush:
+	docker buildx build . \
+		-f docker/boot1/Dockerfile \
+		--platform linux/amd64,linux/arm64 \
+		--tag ghcr.io/joostvdg/keep-watching:$(VERSION) \
+		--build-arg BUILDKIT_INLINE_BUILDINFO_ATTRS=1 \
+		--provenance=false \
+		--sbom=false \
+		--push
+
+dpush-hub:
+	docker buildx build . \
+		-f docker/boot1/Dockerfile \
+		--platform linux/amd64,linux/arm64 \
+		--tag joostvdgtanzu/keep-watching:$(VERSION) \
+		--build-arg BUILDKIT_INLINE_BUILDINFO_ATTRS=1 \
+		--provenance=false \
+		--sbom=false \
+		--push
+
+dpush-harbor:
+	docker buildx build . \
+		-f docker/boot1/Dockerfile \
+		--platform linux/amd64,linux/arm64 \
+		--tag harbor.tap1.h2o-2-24224.h2o.vmware.com/tap-apps/keep-watching:$(VERSION) \
+		--build-arg BUILDKIT_INLINE_BUILDINFO_ATTRS=1 \
+		--provenance=false \
+		--sbom=false \
+		--push

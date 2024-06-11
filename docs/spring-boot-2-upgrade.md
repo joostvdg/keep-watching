@@ -260,3 +260,15 @@ mvn -e spring-boot:run \
     -Dspring.datasource.username=docker \
     -Dspring.datasource.password=docker
 ```
+
+### With Docker
+
+#### Build Image
+
+* Separate Dockerfile from the Heroku build
+* Separate run script from the Heroku build
+
+#### Run With Compose
+
+* need to specify DB params
+* need to specify platform?

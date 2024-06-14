@@ -302,7 +302,7 @@ https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Gu
 
 
 * TODO: Still we haven't fixed authentication and httpsecurity config.
-
+* Migrated code to new OAuthUser principal
 
 
 

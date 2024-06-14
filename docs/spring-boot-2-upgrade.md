@@ -276,3 +276,35 @@ mvn -e spring-boot:run \
 ### Run with Tanzu Application Service (CloudFoundry)
 
 * First have to migrate to a new PostgreSQL service
+
+# Upgraded Dependencies
+
+* Upgraded to spring boot 1.5.22 RELEASE
+* Upgraded to spring boot 2.0.0 RELEASE
+* Used spring-boot-starter-json replacing existing Jackson dependencies and remove starter-web
+https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping
+https://www.wimdeblauwe.com/blog/2018/2018-08-30-tip-on-migration-to-spring-boot-2-when-using-flyway/
+
+Used commands to check build only: mvn -DskipTests package
+
+* Replaced test runner SpringJUnit4ClassRunner
+Tested with mvn test -Dtest="MoviesServiceTest#findAllMovies"
+
+Related guides:
+https://github.com/spring-guides/tut-spring-boot-oauth2/blob/main/two-providers/src/main/java/com/example/SocialApplication.java
+https://github.com/spring-guides/tut-spring-boot-oauth2/blob/main/logout/src/main/java/com/example/SocialApplication.java
+https://github.com/spring-guides/tut-spring-boot-oauth2/blob/main/simple/pom.xml
+https://spring.io/guides/tutorials/spring-boot-oauth2
+https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide
+
+* Removed related spring-cloud, oauth2 and rsa dependencies since are not needed anymore
+* Removed spring cloud in dependency manager
+
+
+* TODO: Still we haven't fixed authentication and httpsecurity config.
+
+
+
+
+
+

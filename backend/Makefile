@@ -16,6 +16,16 @@ run:
 	 	-Dspring.datasource.username=docker \
 	 	-Dspring.datasource.password=docker
 
+run2:
+	mvn -e spring-boot:run \
+	 	-Dspring.profiles.active=local \
+	 	-Ddb.url=jdbc:postgresql://${DB_IP}/kw \
+	 	-Dspring.datasource.url=jdbc:postgresql://${DB_IP}/kw \
+	 	-Dspring.datasource.username=docker \
+	 	-Dspring.datasource.password=docker \
+		-DskipTests
+
+
 dpush:
 	docker buildx build . \
 		-f docker/boot1/Dockerfile \

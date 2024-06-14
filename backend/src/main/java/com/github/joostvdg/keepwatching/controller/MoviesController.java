@@ -1,19 +1,17 @@
 package com.github.joostvdg.keepwatching.controller;
 
 import com.github.joostvdg.keepwatching.model.Movie;
-import com.github.joostvdg.keepwatching.model.Watcher;
 import com.github.joostvdg.keepwatching.service.MovieService;
-import com.github.joostvdg.keepwatching.service.WatcherService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/movies")
@@ -35,7 +33,7 @@ public class MoviesController {
             method = {RequestMethod.GET}
     )
     @ResponseBody
-    public ResponseEntity<Movie> getMovieById(Principal principal, @PathVariable("id") long movieId){
+    public ResponseEntity<Movie> getMovieById(@AuthenticationPrincipal OAuth2User principal, @PathVariable("id") long movieId){
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Movies::GET {}", movieId);
         return ResponseEntity.ok().body(movieService.getMovieById(movieId));
@@ -47,7 +45,7 @@ public class MoviesController {
             method = {RequestMethod.PUT}
     )
     @ResponseBody
-    public ResponseEntity<Movie> updateMovie(Principal principal, @ApiParam("Movie to update") @RequestBody Movie movie)  {
+    public ResponseEntity<Movie> updateMovie(@AuthenticationPrincipal OAuth2User principal, @ApiParam("Movie to update") @RequestBody Movie movie)  {
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Movies::PUT {}", movie.getName());
         movieService.updateMovie(movie);

@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -41,7 +43,7 @@ public class WatchListController {
     @RequestMapping(value = "",
             produces = { "application/json", "text/plain; charset=utf-8" },
             method = RequestMethod.PUT)
-    public ResponseEntity<WatchList> newWatchList(Principal principal, @ApiParam("WatchList to add") @RequestBody WatchList watchList) {
+    public ResponseEntity<WatchList> newWatchList(@AuthenticationPrincipal OAuth2User principal, @ApiParam("WatchList to add") @RequestBody WatchList watchList) {
         logger.info("WatchList::POST");
         if (principal == null) {return notAuthorizedResponse;}
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
@@ -52,7 +54,7 @@ public class WatchListController {
     @RequestMapping(value = "",
             produces = { "application/json", "text/plain; charset=utf-8" },
             method = RequestMethod.POST)
-    public ResponseEntity<WatchList> updateWatchList(Principal principal, @ApiParam("WatchList to update") @RequestBody WatchList watchList) {
+    public ResponseEntity<WatchList> updateWatchList(@AuthenticationPrincipal OAuth2User principal, @ApiParam("WatchList to update") @RequestBody WatchList watchList) {
         logger.info("WatchList::PUT");
         if (principal == null) {return notAuthorizedResponse;}
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
@@ -65,7 +67,7 @@ public class WatchListController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Collection<WatchList>> getWatchList(Principal principal){
+    public ResponseEntity<Collection<WatchList>> getWatchList(@AuthenticationPrincipal OAuth2User principal){
         logger.info("WatchList::GET");
         if (principal == null) {return notAuthorizedResponse;}
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
@@ -78,7 +80,7 @@ public class WatchListController {
             method = {RequestMethod.GET}
     )
     @ResponseBody
-    public ResponseEntity<WatchList> getWatchListById(Principal principal, @PathVariable("watchListId") long watchListId){
+    public ResponseEntity<WatchList> getWatchListById(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId){
         logger.info("WatchList::GET {}", watchListId);
         if (principal == null) {return notAuthorizedResponse;}
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
@@ -90,7 +92,7 @@ public class WatchListController {
             method = {RequestMethod.DELETE}
     )
     @ResponseBody
-    public ResponseEntity deleteWatchListById(Principal principal, @PathVariable("watchListId") Long watchListId)  {
+    public ResponseEntity deleteWatchListById(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") Long watchListId)  {
         logger.info("WatchList::DELETE {}", watchListId);
         if (principal == null) {return notAuthorizedResponse;}
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
@@ -104,7 +106,7 @@ public class WatchListController {
             method = {RequestMethod.PUT}
     )
     @ResponseBody
-    public ResponseEntity<Movie> newMovie(Principal principal, @PathVariable("watchListId") long watchListId, @ApiParam("Movie to add") @RequestBody Movie movie)  {
+    public ResponseEntity<Movie> newMovie(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId, @ApiParam("Movie to add") @RequestBody Movie movie)  {
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Watchlist::Movies::PUT {}", movie.getName());
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
@@ -118,7 +120,7 @@ public class WatchListController {
             method = {RequestMethod.GET}
     )
     @ResponseBody
-    public ResponseEntity<Collection<Movie>> getMovies(Principal principal, @PathVariable("watchListId") long watchListId){
+    public ResponseEntity<Collection<Movie>> getMovies(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId){
         if (principal == null) {return notAuthorizedResponse;}
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
         WatchList watchList = watchListService.getWatchListById(watchListId, watcher);
@@ -132,7 +134,7 @@ public class WatchListController {
         method = {RequestMethod.GET}
     )
     @ResponseBody
-    public ResponseEntity<Collection<WatchListShare>> getWatcherSharedWith(Principal principal, @PathVariable("watchListId") long watchListId){
+    public ResponseEntity<Collection<WatchListShare>> getWatcherSharedWith(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId){
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Watchlist::Shares::GET");
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
@@ -146,7 +148,7 @@ public class WatchListController {
         method = {RequestMethod.PUT}
     )
     @ResponseBody
-    public ResponseEntity getWatcherSharedWith(Principal principal, @PathVariable("watchListId") long watchListId, @ApiParam("Share to create") @RequestBody WatchListShareDTO watchListShare){
+    public ResponseEntity getWatcherSharedWith(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId, @ApiParam("Share to create") @RequestBody WatchListShareDTO watchListShare){
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Watchlist::Shares::PUT");
 
@@ -179,7 +181,7 @@ public class WatchListController {
             method = {RequestMethod.DELETE}
     )
     @ResponseBody
-    public ResponseEntity deleteMovieById(Principal principal, @PathVariable("watchListId") long watchListId, @PathVariable Long movieId)  {
+    public ResponseEntity deleteMovieById(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId, @PathVariable Long movieId)  {
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Watchlist::Movies::DELETE {}", movieId);
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);

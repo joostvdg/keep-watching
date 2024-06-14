@@ -3,12 +3,10 @@ package com.github.joostvdg.keepwatching.service.impl;
 import com.github.joostvdg.keepwatching.model.WatchList;
 import com.github.joostvdg.keepwatching.model.WatchListShare;
 import com.github.joostvdg.keepwatching.model.Watcher;
-import com.github.joostvdg.keepwatching.model.tables.WatchlistShares;
 import com.github.joostvdg.keepwatching.model.tables.records.WatchlistRecord;
 import com.github.joostvdg.keepwatching.service.WatchListService;
 import com.github.joostvdg.keepwatching.service.WatcherService;
 import org.jooq.*;
-import org.jooq.conf.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

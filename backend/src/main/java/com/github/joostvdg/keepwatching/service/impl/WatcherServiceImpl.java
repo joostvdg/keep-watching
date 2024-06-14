@@ -8,17 +8,14 @@ import org.jooq.Record;
 import org.jooq.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.github.joostvdg.keepwatching.model.tables.Watcher.WATCHER;
@@ -99,17 +96,15 @@ public class WatcherServiceImpl implements WatcherService {
     }
 
     @Override
-    public Watcher getWatcherFromPrincipal(Principal principal) {
+    public Watcher getWatcherFromPrincipal(OAuth2User principal) {
         assert principal != null;
         Watcher watcher = null;
-
-        if (principal instanceof OAuth2Authentication && ((OAuth2Authentication) principal).getUserAuthentication().getDetails() != null) {
-            OAuth2Authentication auth = (OAuth2Authentication) principal;
-            String identifier = auth.getPrincipal().toString();
-            if (!StringUtils.isEmpty(identifier) ) {
-                watcher = getWatcherByIdentifier(identifier);
-            }
+            
+        String identifier = principal.getName();
+        if (!StringUtils.isEmpty(identifier) ) {
+            watcher = getWatcherByIdentifier(identifier);
         }
+        
         return watcher;
     }
 

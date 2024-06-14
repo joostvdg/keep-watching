@@ -272,3 +272,7 @@ mvn -e spring-boot:run \
 
 * need to specify DB params
 * need to specify platform?
+
+### Run with Tanzu Application Service (CloudFoundry)
+
+* First have to migrate to a new PostgreSQL service

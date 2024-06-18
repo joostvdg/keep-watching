@@ -8,7 +8,7 @@ import com.github.joostvdg.keepwatching.model.external.WatchListShareDTO;
 import com.github.joostvdg.keepwatching.service.MovieService;
 import com.github.joostvdg.keepwatching.service.WatchListService;
 import com.github.joostvdg.keepwatching.service.WatcherService;
-import io.swagger.annotations.ApiParam;
+//import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -43,7 +43,7 @@ public class WatchListController {
     @RequestMapping(value = "",
             produces = { "application/json", "text/plain; charset=utf-8" },
             method = RequestMethod.PUT)
-    public ResponseEntity<WatchList> newWatchList(@AuthenticationPrincipal OAuth2User principal, @ApiParam("WatchList to add") @RequestBody WatchList watchList) {
+    public ResponseEntity<WatchList> newWatchList(@AuthenticationPrincipal OAuth2User principal, @RequestBody WatchList watchList) {
         logger.info("WatchList::POST");
         if (principal == null) {return notAuthorizedResponse;}
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
@@ -54,7 +54,7 @@ public class WatchListController {
     @RequestMapping(value = "",
             produces = { "application/json", "text/plain; charset=utf-8" },
             method = RequestMethod.POST)
-    public ResponseEntity<WatchList> updateWatchList(@AuthenticationPrincipal OAuth2User principal, @ApiParam("WatchList to update") @RequestBody WatchList watchList) {
+    public ResponseEntity<WatchList> updateWatchList(@AuthenticationPrincipal OAuth2User principal, @RequestBody WatchList watchList) {
         logger.info("WatchList::PUT");
         if (principal == null) {return notAuthorizedResponse;}
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
@@ -106,7 +106,7 @@ public class WatchListController {
             method = {RequestMethod.PUT}
     )
     @ResponseBody
-    public ResponseEntity<Movie> newMovie(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId, @ApiParam("Movie to add") @RequestBody Movie movie)  {
+    public ResponseEntity<Movie> newMovie(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId, @RequestBody Movie movie)  {
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Watchlist::Movies::PUT {}", movie.getName());
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
@@ -148,7 +148,7 @@ public class WatchListController {
         method = {RequestMethod.PUT}
     )
     @ResponseBody
-    public ResponseEntity getWatcherSharedWith(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId, @ApiParam("Share to create") @RequestBody WatchListShareDTO watchListShare){
+    public ResponseEntity getWatcherSharedWith(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId, @RequestBody WatchListShareDTO watchListShare){
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Watchlist::Shares::PUT");
 

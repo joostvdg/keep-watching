@@ -2,7 +2,7 @@ package com.github.joostvdg.keepwatching.controller;
 
 import com.github.joostvdg.keepwatching.model.Watcher;
 import com.github.joostvdg.keepwatching.service.WatcherService;
-import io.swagger.annotations.ApiParam;
+//import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +50,7 @@ public class WatcherController {
             method = {RequestMethod.POST}
     )
     @ResponseBody
-    public ResponseEntity<Watcher> newWatcher(@ApiParam("Watcher to add") @RequestBody Watcher watcher)  {
+    public ResponseEntity<Watcher> newWatcher(@RequestBody Watcher watcher)  {
         logger.info(String.format("Watchers::POST %s", watcher.getName()));
         return ResponseEntity.ok().body(watcherService.newWatcher(watcher));
     }

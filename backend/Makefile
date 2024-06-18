@@ -8,6 +8,15 @@ build-all:
 #	  -Drun.jvmArguments="-Dencrypt.keyStore.secret=${JKS_SECRET} \
 #      -Dencrypt.keyStore.password=${JKS_PASS}
 
+build:
+	mvn -e clean package \
+	 	-Dspring.profiles.active=local \
+	 	-Ddb.url=jdbc:postgresql://localhost:15432/kw \
+	 	-Dspring.datasource.url=jdbc:postgresql://localhost:15432/kw \
+	 	-Dspring.datasource.username=docker \
+	 	-Dspring.datasource.password=docker \
+		-DskipTests
+
 run:
 	mvn -e spring-boot:run \
 	 	-Dspring.profiles.active=local \
@@ -16,15 +25,15 @@ run:
 	 	-Dspring.datasource.username=docker \
 	 	-Dspring.datasource.password=docker
 
+
 run2:
 	mvn -e spring-boot:run \
 	 	-Dspring.profiles.active=local \
-	 	-Ddb.url=jdbc:postgresql://${DB_IP}/kw \
-	 	-Dspring.datasource.url=jdbc:postgresql://${DB_IP}/kw \
+	 	-Ddb.url=jdbc:postgresql://localhost:15432/kw \
+	 	-Dspring.datasource.url=jdbc:postgresql://localhost:15432/kw \
 	 	-Dspring.datasource.username=docker \
 	 	-Dspring.datasource.password=docker \
 		-DskipTests
-
 
 dpush:
 	docker buildx build . \

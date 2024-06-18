@@ -1,9 +1,9 @@
 spring:
   application:
     name: keep-watching
-  cloud:
-    config:
-      uri: http://localhost:8081
+#  cloud:
+#    config:
+#      uri: http://localhost:8081
 
 #encrypt:
 #  keyStore:

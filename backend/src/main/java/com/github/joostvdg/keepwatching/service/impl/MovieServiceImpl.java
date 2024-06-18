@@ -2,22 +2,19 @@ package com.github.joostvdg.keepwatching.service.impl;
 
 import com.github.joostvdg.keepwatching.model.Movie;
 import com.github.joostvdg.keepwatching.model.WatchList;
-import com.github.joostvdg.keepwatching.model.Watcher;
 import com.github.joostvdg.keepwatching.model.tables.records.MoviesRecord;
 import com.github.joostvdg.keepwatching.service.MovieService;
-import com.github.joostvdg.keepwatching.service.WatcherService;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class MovieServiceImpl implements MovieService {
 
     public MovieServiceImpl(DSLContext dsl) {
         this.dsl = dsl;
-        this.dsl.configuration().set(SQLDialect.POSTGRES_9_5);
+        this.dsl.configuration().set(SQLDialect.POSTGRES);
     }
 
     @Override
@@ -65,7 +62,6 @@ public class MovieServiceImpl implements MovieService {
                 .set(MOVIES.DIRECTOR, movie.getDirector())
                 .set(MOVIES.NOTABLE_ACTORS, movie.getNotableActors())
                 .set(MOVIES.RELEASE_YEAR, movie.getReleaseYear())
-                .set(MOVIES.RELEASE_DATE, releaseDate)
                 .set(MOVIES.SEEN, movie.isSeen())
                 .set(MOVIES.CINEMA_WORTHY, movie.isCinemaWorthy())
                 .set(MOVIES.GENRE, movie.getGenre())
@@ -121,7 +117,6 @@ public class MovieServiceImpl implements MovieService {
                 .set(MOVIES.DIRECTOR, movie.getDirector())
                 .set(MOVIES.NOTABLE_ACTORS, movie.getNotableActors())
                 .set(MOVIES.RELEASE_YEAR, movie.getReleaseYear())
-                .set(MOVIES.RELEASE_DATE, releaseDate)
                 .set(MOVIES.SEEN, movie.isSeen())
                 .set(MOVIES.CINEMA_WORTHY, movie.isCinemaWorthy())
                 .set(MOVIES.GENRE, movie.getGenre())

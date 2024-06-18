@@ -2,7 +2,7 @@ package com.github.joostvdg.keepwatching.controller;
 
 import com.github.joostvdg.keepwatching.model.Movie;
 import com.github.joostvdg.keepwatching.service.MovieService;
-import io.swagger.annotations.ApiParam;
+//import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -45,7 +45,7 @@ public class MoviesController {
             method = {RequestMethod.PUT}
     )
     @ResponseBody
-    public ResponseEntity<Movie> updateMovie(@AuthenticationPrincipal OAuth2User principal, @ApiParam("Movie to update") @RequestBody Movie movie)  {
+    public ResponseEntity<Movie> updateMovie(@AuthenticationPrincipal OAuth2User principal, @RequestBody Movie movie)  {
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Movies::PUT {}", movie.getName());
         movieService.updateMovie(movie);

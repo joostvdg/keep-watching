@@ -43,32 +43,30 @@ public class Application extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .antMatcher("/**")
-                .authorizeRequests()
-                .antMatchers("/","/login**", "/webjars/**"," /view**", "/authenticated").permitAll()
-                .anyRequest().authenticated()
-                .and().logout().logoutSuccessUrl("/").permitAll()
-                .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and().csrf().ignoringAntMatchers("/logout");
-                
-        // http.authorizeRequests(request -> request
-		// 		.antMatchers("/","/login**", "/error", "/webjars/**", " /view**", "/authenticated").permitAll()
-		// 		.anyRequest().authenticated()
-        //     )
-		// 	.exceptionHandling(e -> e
-		// 		.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-		// 	)
-		// 	.csrf(c -> c
-		// 		.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-		// 	)
-		// 	.logout(l -> l
-		// 		.logoutSuccessUrl("/").permitAll()
-		// 	)
-		// 	.oauth2Login();
+//        http
+//            .antMatcher("/**")
+//            .authorizeRequests()
+//                .antMatchers("/","/login**", "/webjars/**"," /view**", "/authenticated", "/js/**").permitAll()
+//                .anyRequest().authenticated()
+//            .and().logout().logoutSuccessUrl("/").permitAll()
+//            .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//            .and().csrf().ignoringAntMatchers("/logout");
 
-                //.and().addFilterBefore(ssoFilter(github(), "/view/github.html"), BasicAuthenticationFilter.class)
-                //.addFilterBefore(ssoFilter(facebook(), "/view/facebook.html"), BasicAuthenticationFilter.class);
+        http
+            .authorizeRequests(a -> a
+                .antMatchers("/", "/error", "/js/**", "/webjars/**","/view**", "/authenticated").permitAll()
+                .anyRequest().authenticated()
+            )
+            .exceptionHandling(e -> e
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+            )
+            .csrf(c -> c
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            )
+            .logout(l -> l
+                .logoutSuccessUrl("/").permitAll()
+            )
+            .oauth2Login();
     }
 
     // private Filter ssoFilter(OAuthClientResources client, String path) {
@@ -112,7 +110,7 @@ public class Application extends WebSecurityConfigurerAdapter {
     @Bean
     public DefaultConfiguration configuration() {
         DefaultConfiguration jooqConfiguration = new DefaultConfiguration();
-        SQLDialect dialect = SQLDialect.POSTGRES_9_5;
+        SQLDialect dialect = SQLDialect.POSTGRES;
         jooqConfiguration.set(dialect);
         return jooqConfiguration;
     }

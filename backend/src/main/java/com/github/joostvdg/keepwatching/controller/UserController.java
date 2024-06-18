@@ -30,13 +30,20 @@ public class UserController {
 
         UserPrinciple userPrinciple = new UserPrinciple(principal.getName(), principal.getAttributes().get("name").toString());
         return ResponseEntity.ok().body(userPrinciple);
-    
+
     }
 
     @RequestMapping("/authenticated")
     public boolean authenticated(@AuthenticationPrincipal OAuth2User principal) {
         logger.info("Authenticated::GET");
-        return (principal != null);
+        if (principal != null) {
+            logger.info("adding new watcher if not exists");
+            String name = principal.getAttributes().get("name").toString();
+            String identifier = principal.getName();
+            watcherService.addNewWatcherIfNotExists(identifier, name);
+            return true;
+        }
+        return false;
     }
 
 }

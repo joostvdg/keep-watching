@@ -19,7 +19,7 @@ public interface WatcherService {
 
     Watcher getWatcherById(Long id);
 
-    void addNewWatcherIfNotExists(String identifier);
+    void addNewWatcherIfNotExists(String identifier, String name);
 
     Watcher getWatcherByIdentifier(String identifier);
 

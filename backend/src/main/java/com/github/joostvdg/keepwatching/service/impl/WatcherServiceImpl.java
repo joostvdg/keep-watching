@@ -74,12 +74,12 @@ public class WatcherServiceImpl implements WatcherService {
 
     @Override
     @Async
-    public void addNewWatcherIfNotExists(String identifier) {
+    public void addNewWatcherIfNotExists(String identifier, String name) {
         Watcher watcher = getWatcherByIdentifier(identifier);
         if (watcher == null) {
             watcher = new Watcher();
             watcher.setIdentifier(identifier);
-            watcher.setName("Anon");
+            watcher.setName(name);
             newWatcher(watcher);
         }
     }
@@ -99,12 +99,15 @@ public class WatcherServiceImpl implements WatcherService {
     public Watcher getWatcherFromPrincipal(OAuth2User principal) {
         assert principal != null;
         Watcher watcher = null;
-            
+
+        logger.info("Principal: {}", principal);
+        logger.info("Principal: {}", principal.getAttributes());
+        logger.info("Principal Name: {}", principal.getName());
         String identifier = principal.getName();
         if (!StringUtils.isEmpty(identifier) ) {
             watcher = getWatcherByIdentifier(identifier);
         }
-        
+
         return watcher;
     }
 

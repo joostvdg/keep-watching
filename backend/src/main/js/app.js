@@ -52,20 +52,22 @@ class Home extends React.Component {
     render(){
         if (this.state.authenticated) {
             return (
-                <div>
-                    <p>Welcome!</p>
+                <div className="container authenticated" style="display: none">
+                    Logged in as: <span id="user"></span>
+                    <div>
+                        <button onClick="logout()" className="btn btn-primary">Logout</button>
+                    </div>
                 </div>
             );
         } else {
             return (
-                <div>
-                    <p>Welcome!</p>
-                    <p>
-                        <Button href="/view/facebook.html" bsSize="large" bsStyle="primary">Login with Facebook<Glyphicon glyph="log-in"/></Button>
-                    </p>
-                    <p>
-                        <Button href="/view/github.html" bsSize="large" bsStyle="success">Login with GitHub <Glyphicon glyph="log-in"/></Button>
-                    </p>
+                <div class="container unauthenticated">
+                    <div>
+                        With GitHub: <a href="/oauth2/authorization/github">click here</a>
+                    </div>
+                    <div>
+                        With Google: <a href="/oauth2/authorization/google">click here</a>
+                    </div>
                 </div>
             );
         }
@@ -125,6 +127,7 @@ class Navigation extends React.Component {
 
     render(){
         if (this.state.authenticated) {
+
             return (
                 <Navbar collapseOnSelect>
                     <navHeader />

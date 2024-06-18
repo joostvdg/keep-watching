@@ -277,7 +277,9 @@ mvn -e spring-boot:run \
 
 * First have to migrate to a new PostgreSQL service
 
-# Upgraded Dependencies
+## Upgrade to Spring Boot 2.0
+
+### Upgraded Dependencies
 
 * Upgraded to spring boot 1.5.22 RELEASE
 * Upgraded to spring boot 2.0.0 RELEASE
@@ -299,12 +301,41 @@ https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Gu
 
 * Removed related spring-cloud, oauth2 and rsa dependencies since are not needed anymore
 * Removed spring cloud in dependency manager
-
-
 * TODO: Still we haven't fixed authentication and httpsecurity config.
 * Migrated code to new OAuthUser principal
 
+## Upgrade to Spring Boot 2.2.2 & Java 11
 
+The GitHub OAuth2 examples we found, do not work for Spring Boot 2.0, but they do work for Spring Boot 2.2.2.
+So we want to upgrade to 2.2.2, this also means we can upgrade to Java 11, as some of the plugins we use depend on it.
 
+* Upgraded to Spring Boot 2.2.2 RELEASE
+* Upgraded to Java 11
+* Used spring-boot-starter-json replacing existing Jackson dependencies and remove starter-web
+* Replaced test runner SpringJUnit4ClassRunner
+* Removed related spring-cloud, oauth2 and rsa dependencies since are not needed anymore
+* Removed spring cloud in dependency manager
+* Migrated code to new OAuthUser principal
+* Removed release date field from Movie DTO
+* Removed JKS encryption for Cloud Config Server
+* Disabled Swagger and Spring Fox
+  * these are not working with Spring Boot 2.2.2, and we want the end result of Spring Boot 3, which works with a different library to achieve the same
+  * we had to remove some annotations in the Controllers, as the classes are not available anymore
+* Change Flyway to match version of Spring Boot, as it now manages that version
+  * which is 6.0.8
 
+### Response On User Endpoint
+
+On the GitHub login:
+
+```json
+{"name":"539630","principle":"Joost van der Griendt"}
+```
+
+### Update Login Setup
+
+* update login page, change to example from the guide: https://github.com/spring-guides/tut-spring-boot-oauth2/blob/main/two-providers/
+* update the authentication mechanism, also from the guide: https://github.com/spring-guides/tut-spring-boot-oauth2/blob/main/two-providers/
+* updated the mechanism to register the user -> at the authenticated endpoint, we register the user if they don't already exist
+* added the Apache Commons Lang 3 library, as it came with one of the dependencies we removed, we but we still need it
 

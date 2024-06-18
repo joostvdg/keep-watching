@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +19,7 @@ import java.util.List;
 import static com.github.joostvdg.keepwatching.model.tables.Watchlist.WATCHLIST;
 import static com.github.joostvdg.keepwatching.model.tables.WatchlistShares.WATCHLIST_SHARES;
 
-@Transactional
+//@Transaction TODO: add transactional support back in
 @Service("watchListService")
 @Component
 public class WatchListServiceImpl implements WatchListService {
@@ -33,7 +32,7 @@ public class WatchListServiceImpl implements WatchListService {
 
     public WatchListServiceImpl(DSLContext dsl, WatcherService watcherService) {
         this.dsl = dsl;
-        this.dsl.configuration().set(SQLDialect.POSTGRES_9_5);
+        this.dsl.configuration().set(SQLDialect.POSTGRES);
         this.watcherService = watcherService;
     }
 
@@ -42,15 +41,15 @@ public class WatchListServiceImpl implements WatchListService {
         List<WatchList> watchLists = new ArrayList<>();
         Long userId = watcher.getId();
 
-        Result<Record> result = dsl.select().from(WATCHLIST_SHARES).where(WATCHLIST_SHARES.WATCHER_ID.eq(userId.intValue())).fetch();
+        Result<org.jooq.Record> result = dsl.select().from(WATCHLIST_SHARES).where(WATCHLIST_SHARES.WATCHER_ID.eq(userId.intValue())).fetch();
         List<Integer> sharedWatchListIds = new ArrayList<>();
-        for (Record r : result) {
+        for (org.jooq.Record r : result) {
             Integer id = r.getValue(WATCHLIST_SHARES.WATCHLIST_ID, Long.class).intValue();
             sharedWatchListIds.add(id);
         }
 
         result = dsl.select().from(WATCHLIST).where(WATCHLIST.USER_ID.eq(userId.intValue())).or(WATCHLIST.ID.in(sharedWatchListIds)).fetch();
-        for (Record r : result) {
+        for (org.jooq.Record r : result) {
             watchLists.add(getWatchListEntity(r));
         }
 
@@ -84,7 +83,7 @@ public class WatchListServiceImpl implements WatchListService {
         assert watchList.getId() > 0;
 
         int id = ((Long)watchList.getId()).intValue();
-        Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.ID.eq(id)).fetchOne();
+        org.jooq.Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.ID.eq(id)).fetchOne();
         if (record == null) {
             logger.warn("No valid value for the id ({}), so cannot update watchlist.", id);
             return false;
@@ -125,7 +124,7 @@ public class WatchListServiceImpl implements WatchListService {
 
         boolean deleted = false;
         int watcherId = ((Long)watcher.getId()).intValue();
-        Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.ID.eq(id.intValue())).and(WATCHLIST.USER_ID.eq(watcherId)).fetchOne();
+        org.jooq.Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.ID.eq(id.intValue())).and(WATCHLIST.USER_ID.eq(watcherId)).fetchOne();
         if (record != null) {
             logger.info("Found for id {}, going to delete it and its shares.", id);
             int countDelete = dsl.delete(WATCHLIST)
@@ -144,7 +143,7 @@ public class WatchListServiceImpl implements WatchListService {
         assert watcher.getId() > 0;
         assert id != null;
         assert id > 0;
-        Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.ID.eq(id.intValue())).fetchOne();
+        org.jooq.Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.ID.eq(id.intValue())).fetchOne();
         return returnWatchListIfAllowed(record, watcher.getId());
     }
 
@@ -154,7 +153,7 @@ public class WatchListServiceImpl implements WatchListService {
         assert !watchlistName.isEmpty();
         assert watcher != null;
         assert watcher.getId() > 0;
-        Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.NAME.eq(watchlistName)).fetchOne();
+        org.jooq.Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.NAME.eq(watchlistName)).fetchOne();
         return returnWatchListIfAllowed(record, watcher.getId());
     }
 
@@ -176,7 +175,7 @@ public class WatchListServiceImpl implements WatchListService {
         assert sharer.getId() > 0;
 
         Integer watchListId = ((Long)watchList.getId()).intValue();
-        Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.ID.eq(watchListId)).fetchOne();
+        org.jooq.Record record = dsl.select().from(WATCHLIST).where(WATCHLIST.ID.eq(watchListId)).fetchOne();
 
         if ((record.getValue(WATCHLIST.USER_ID, Long.class) != owner.getId())) {
             logger.warn("WatchList {} share request initiated by user {}, but isn't the owner", watchListId, owner.getId());
@@ -184,7 +183,7 @@ public class WatchListServiceImpl implements WatchListService {
         }
 
         Integer sharerId = ((Long)sharer.getId()).intValue();
-        Record shareRecord = dsl.select().from(WATCHLIST_SHARES).where(WATCHLIST_SHARES.WATCHLIST_ID.eq(watchListId)).and(WATCHLIST_SHARES.WATCHER_ID.eq(sharerId)).fetchOne();
+        org.jooq.Record shareRecord = dsl.select().from(WATCHLIST_SHARES).where(WATCHLIST_SHARES.WATCHLIST_ID.eq(watchListId)).and(WATCHLIST_SHARES.WATCHER_ID.eq(sharerId)).fetchOne();
 
         if (shareRecord != null && shareRecord.get(WATCHLIST_SHARES.WRITE_ACCESS) == hasWriteRights) {
             logger.warn("WatchList {} was already shared with user {}", watchListId, sharerId);
@@ -236,10 +235,10 @@ public class WatchListServiceImpl implements WatchListService {
             return response;
         }
 
-        Result<Record> result = dsl.select().from(WATCHLIST_SHARES).where(WATCHLIST_SHARES.WATCHLIST_ID.eq(id.intValue())).fetch();
+        Result<org.jooq.Record> result = dsl.select().from(WATCHLIST_SHARES).where(WATCHLIST_SHARES.WATCHLIST_ID.eq(id.intValue())).fetch();
         if (result != null && !result.isEmpty()) {
             response = new ArrayList<>();
-            for (Record record : result) {
+            for (org.jooq.Record record : result) {
                 WatchListShare share = createWatchListShareFromRecord(record, owner);
                 response.add(share);
             }
@@ -247,7 +246,7 @@ public class WatchListServiceImpl implements WatchListService {
         return response;
     }
 
-    private WatchListShare createWatchListShareFromRecord(Record record, Watcher owner) {
+    private WatchListShare createWatchListShareFromRecord(org.jooq.Record record, Watcher owner) {
         assert record != null;
         Long sharedWithId = record.getValue(WATCHLIST_SHARES.WATCHER_ID, Long.class);
         Long watchListId = record.getValue(WATCHLIST_SHARES.WATCHLIST_ID, Long.class);
@@ -257,7 +256,7 @@ public class WatchListServiceImpl implements WatchListService {
         return new WatchListShare(watchList, sharedWith, writeAccess);
     }
 
-    private WatchList returnWatchListIfAllowed(Record record, Long watcherId) {
+    private WatchList returnWatchListIfAllowed(org.jooq.Record record, Long watcherId) {
         if (record == null) {
             return null;
         }
@@ -281,7 +280,7 @@ public class WatchListServiceImpl implements WatchListService {
         return null;
     }
 
-    private WatchList getWatchListEntity(Record record){
+    private WatchList getWatchListEntity(org.jooq.Record record){
         Long id = record.getValue(WATCHLIST.ID, Long.class);
         Long userId = record.getValue(WATCHLIST.USER_ID, Long.class);
         String name = record.getValue(WATCHLIST.NAME, String.class);

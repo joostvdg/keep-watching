@@ -3,9 +3,9 @@ package com.github.joostvdg.keepwatching.service;
 import com.github.joostvdg.keepwatching.model.WatchList;
 import com.github.joostvdg.keepwatching.model.WatchListShare;
 import com.github.joostvdg.keepwatching.model.Watcher;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+//import org.junit.Before;
+// import org.junit.Test;
+// import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,9 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.*;
+
+//@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
 public class WatchListServiceTest {
@@ -39,7 +43,7 @@ public class WatchListServiceTest {
     private Watcher watcher2;
     String watcher2Identifier = "67890";
 
-    @Before
+    @BeforeEach
     public void setup() {
         watcher = watcherService.getWatcherByIdentifier(watcherIdentifier);
         if (watcher == null) {
@@ -61,19 +65,19 @@ public class WatchListServiceTest {
     public void shouldCreateAndDeleteWatchList() {
         watchList = new WatchList(uniqueName, watcher);
         WatchList created = watchListService.newWatchList(watchList, watcher);
-        assertNotNull(created);
-        assertTrue(created.getId() > 0);
-        assertEquals(uniqueName, created.getName());
+        Assertions.assertNotNull(created);
+        Assertions.assertTrue(created.getId() > 0);
+        Assertions.assertEquals(uniqueName, created.getName());
         boolean isDeleted = watchListService.deleteWatchListById(created.getId(), watcher);
-        assertTrue(isDeleted);
+        Assertions.assertTrue(isDeleted);
     }
 
-    @Test (expected = DataIntegrityViolationException.class)
-    public void cannotCreateTwoWatchListWithTheSameName(){
+    @Test
+    public void cannotCreateTwoWatchListWithTheSameName() throws DataIntegrityViolationException {
         watchList = new WatchList(uniqueName, watcher);
         WatchList created = watchListService.newWatchList(watchList, watcher);
-        assertNotNull(created);
-        assertEquals(uniqueName, created.getName());
+        Assertions.assertNotNull(created);
+        Assertions.assertEquals(uniqueName, created.getName());
         watchListService.newWatchList(watchList, watcher);
     }
 
@@ -81,38 +85,38 @@ public class WatchListServiceTest {
     public void canOnlyRetrieveOwnedAndSharedWatchLists(){
         watchList = new WatchList(uniqueName, watcher);
         WatchList created = watchListService.newWatchList(watchList, watcher);
-        assertNotNull(created);
+        Assertions.assertNotNull(created);
 
         List<WatchList> watchListsFound = watchListService.getAllWatchLists(watcher);
-        assertNotNull(watchListsFound);
-        assertFalse(watchListsFound.isEmpty());
+        Assertions.assertNotNull(watchListsFound);
+        Assertions.assertFalse(watchListsFound.isEmpty());
 
         watchListsFound = watchListService.getAllWatchLists(watcher2);
-        assertNotNull(watchListsFound);
-        assertTrue(watchListsFound.isEmpty());
+        Assertions.assertNotNull(watchListsFound);
+        Assertions.assertTrue(watchListsFound.isEmpty());
 
         watchListService.shareWatchList(watchList, watcher, watcher2, false);
 
         watchListsFound = watchListService.getAllWatchLists(watcher2);
-        assertNotNull(watchListsFound);
-        assertEquals(1, watchListsFound.size());
+        Assertions.assertNotNull(watchListsFound);
+        Assertions.assertEquals(1, watchListsFound.size());
     }
 
     @Test
     public void getListOfWatchersSharingTheWatchList() {
         watchList = new WatchList(uniqueName, watcher);
         WatchList created = watchListService.newWatchList(watchList, watcher);
-        assertNotNull(created);
+        Assertions.assertNotNull(created);
 
         List<WatchListShare> sharedWith = watchListService.getSharedWith(created, watcher);
-        assertNotNull(sharedWith);
-        assertTrue(sharedWith.isEmpty());
+        Assertions.assertNotNull(sharedWith);
+        Assertions.assertTrue(sharedWith.isEmpty());
 
         watchListService.shareWatchList(created, watcher, watcher2, false);
 
         sharedWith = watchListService.getSharedWith(created, watcher);
-        assertNotNull(sharedWith);
-        assertEquals(1, sharedWith.size());
+        Assertions.assertNotNull(sharedWith);
+        Assertions.assertEquals(1, sharedWith.size());
 
     }
 }

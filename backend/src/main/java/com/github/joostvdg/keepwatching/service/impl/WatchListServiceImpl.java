@@ -19,6 +19,8 @@ import java.util.List;
 import static com.github.joostvdg.keepwatching.model.tables.Watchlist.WATCHLIST;
 import static com.github.joostvdg.keepwatching.model.tables.WatchlistShares.WATCHLIST_SHARES;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 //@Transaction TODO: add transactional support back in
 @Service("watchListService")
 @Component
@@ -27,12 +29,10 @@ public class WatchListServiceImpl implements WatchListService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     // JOOQ DSL Context
-    private DSLContext dsl;
+    @Autowired DSLContext dsl;
     private WatcherService watcherService;
 
-    public WatchListServiceImpl(DSLContext dsl, WatcherService watcherService) {
-        this.dsl = dsl;
-        this.dsl.configuration().set(SQLDialect.POSTGRES);
+    public WatchListServiceImpl(WatcherService watcherService) {
         this.watcherService = watcherService;
     }
 

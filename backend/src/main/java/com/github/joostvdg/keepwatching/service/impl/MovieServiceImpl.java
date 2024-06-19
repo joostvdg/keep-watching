@@ -10,10 +10,12 @@ import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +30,7 @@ public class MovieServiceImpl implements MovieService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     // JOOQ DSL Context
-    private DSLContext dsl;
-
-    public MovieServiceImpl(DSLContext dsl) {
-        this.dsl = dsl;
-        this.dsl.configuration().set(SQLDialect.POSTGRES);
-    }
+    @Autowired DSLContext dsl;
 
     @Override
     public List<Movie> getAllMovies(WatchList watchList){

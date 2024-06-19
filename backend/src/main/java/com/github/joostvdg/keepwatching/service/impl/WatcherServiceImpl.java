@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +33,7 @@ public class WatcherServiceImpl implements WatcherService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     // JOOQ DSL Context
-    private DSLContext dsl;
-
-    public WatcherServiceImpl(DSLContext dsl) {
-        this.dsl = dsl;
-    }
+    @Autowired DSLContext dsl;
 
     @Override
     public List<Watcher> getAllWatchers() {
@@ -77,6 +75,7 @@ public class WatcherServiceImpl implements WatcherService {
     public void addNewWatcherIfNotExists(String identifier, String name) {
         Watcher watcher = getWatcherByIdentifier(identifier);
         if (watcher == null) {
+            logger.info("Watcher not found. Adding new watcher");
             watcher = new Watcher();
             watcher.setIdentifier(identifier);
             watcher.setName(name);

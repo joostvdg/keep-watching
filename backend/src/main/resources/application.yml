@@ -1,8 +1,14 @@
 spring:
     datasource:
+      initialize: false
+      continueOnError: true
+      driverClassName: org.postgresql.Driver
       url: jdbc:postgresql://localhost:15432/kw
       username: docker
       password: docker
+
+    jooq:
+       sql-dialect: POSTGRES
 
 #facebook:
 #  client:

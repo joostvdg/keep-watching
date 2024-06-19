@@ -2,6 +2,7 @@ package com.github.joostvdg.keepwatching.controller;
 
 import com.github.joostvdg.keepwatching.model.UserPrinciple;
 import com.github.joostvdg.keepwatching.service.WatcherService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,12 @@ public class UserController {
     public ResponseEntity<UserPrinciple> user(@AuthenticationPrincipal OAuth2User principal) {
         logger.info("User::GET");
 
-        UserPrinciple userPrinciple = new UserPrinciple(principal.getName(), principal.getAttributes().get("name").toString());
+        Object objName = principal.getAttributes().get("name");
+        if (objName == null) {
+            objName = principal.getAttributes().get("login");
+        }
+
+        UserPrinciple userPrinciple = new UserPrinciple(principal.getName(), objName.toString());
         return ResponseEntity.ok().body(userPrinciple);
 
     }
@@ -38,9 +44,19 @@ public class UserController {
         logger.info("Authenticated::GET");
         if (principal != null) {
             logger.info("adding new watcher if not exists");
-            String name = principal.getAttributes().get("name").toString();
+            var map = principal.getAttributes();
+            for (var entry : map.entrySet()) {
+                if(entry.getValue() != null)
+                    logger.info(entry.getKey() + "/" + entry.getValue().toString());
+            }  
+            
+                        
+            Object objName = principal.getAttributes().get("name");
+            if (objName == null) {
+                objName = principal.getAttributes().get("login");
+            }
             String identifier = principal.getName();
-            watcherService.addNewWatcherIfNotExists(identifier, name);
+            watcherService.addNewWatcherIfNotExists(identifier, objName.toString());
             return true;
         }
         return false;

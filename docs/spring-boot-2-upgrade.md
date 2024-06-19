@@ -339,3 +339,28 @@ On the GitHub login:
 * updated the mechanism to register the user -> at the authenticated endpoint, we register the user if they don't already exist
 * added the Apache Commons Lang 3 library, as it came with one of the dependencies we removed, we but we still need it
 
+
+## Upgrade to 2.5
+
+https://github.com/jOOQ/jOOQ/blob/version-3.16.0-branch/jOOQ-examples/jOOQ-spring-boot-example/src/main/java/org/jooq/example/spring/service/DefaultBookService.java#L16
+https://github.com/jOOQ/jOOQ/blob/version-3.16.0-branch/jOOQ-examples/jOOQ-spring-boot-example/src/main/java/org/jooq/example/spring/Config.java
+
+
+### Upgrade Dependencies
+
+* Upgraded to spring boot 2.5.6
+* Remove spring boot starter jpa dependency
+* Jooq dependency update and version controlled by spring boot
+* Removed nhibernate dependencies
+* Jooq version relying in spring boot
+* Add jakarta persistence dependency for sql Datasource
+
+
+### Code changes
+
+* Cleaned up of jooq configurations and simplified config with autowired dsl
+* Migrated to junit 5 and new assertions library in tests
+* Auth Principal defensive coding due to missing properties in accounts
+* Rely on jooq starter and not manual coordination between jpa and jooq
+* webpack removed deprecated debug property
+* Jooq spring properties file update

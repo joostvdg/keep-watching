@@ -3,8 +3,13 @@ package com.github.joostvdg.keepwatching.service;
 import com.github.joostvdg.keepwatching.model.Movie;
 import com.github.joostvdg.keepwatching.model.WatchList;
 import com.github.joostvdg.keepwatching.model.Watcher;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.Assertions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -13,9 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
 public class MoviesServiceTest {
@@ -55,16 +60,16 @@ public class MoviesServiceTest {
     @Test
     public void findAllMovies()  {
         List<Movie> movies = movieService.getAllMovies(watchList);
-        assertNotNull(movies);
-        assertTrue(movies.isEmpty());
+        Assertions.assertNotNull(movies);
+        Assertions.assertTrue(movies.isEmpty());
         String name = "John Wick 2";
         Movie movie = new Movie(name);
         movie.setWatchListId(watchList.getId());
         movieService.newMovie(movie, watchList);
         movies = movieService.getAllMovies(watchList);
-        assertNotNull(movies);
-        assertFalse(movies.isEmpty());
-        assertEquals(1, movies.size());
+        Assertions.assertNotNull(movies);
+        Assertions.assertFalse(movies.isEmpty());
+        Assertions.assertEquals(1, movies.size());
     }
 
     @Test
@@ -74,10 +79,10 @@ public class MoviesServiceTest {
         movie.setWatchListId(watchList.getId());
         Movie moviePersisted = movieService.newMovie(movie, watchList);
         List<Movie> movies = movieService.getAllMovies(watchList);
-        assertNotNull(movies);
-        assertNotNull(moviePersisted);
-        assertNotNull(moviePersisted.getId());
-        assertTrue(!movies.isEmpty());
+        Assertions.assertNotNull(movies);
+        Assertions.assertNotNull(moviePersisted);
+        Assertions.assertNotNull(moviePersisted.getId());
+        Assertions.assertTrue(!movies.isEmpty());
     }
 
     @Test
@@ -87,13 +92,13 @@ public class MoviesServiceTest {
         movie.setWatchListId(watchList.getId());
         Movie moviePersisted = movieService.newMovie(movie, watchList);
 
-        assertNotNull(moviePersisted);
-        assertEquals(name, moviePersisted.getName());
-        assertNotNull(moviePersisted.getId());
-        assertTrue(moviePersisted.getId() > 0);
+        Assertions.assertNotNull(moviePersisted);
+        Assertions.assertEquals(name, moviePersisted.getName());
+        Assertions.assertNotNull(moviePersisted.getId());
+        Assertions.assertTrue(moviePersisted.getId() > 0);
         Movie movieFound = movieService.getMovieById(moviePersisted.getId());
-        assertNotNull(movieFound);
-        assertEquals(name, movieFound.getName());
+        Assertions.assertNotNull(movieFound);
+        Assertions.assertEquals(name, movieFound.getName());
     }
 
 }

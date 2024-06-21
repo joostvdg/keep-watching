@@ -17,7 +17,6 @@
 
     <properties>
         <flyway.cleanDisabled>false</flyway.cleanDisabled>
-        <postgres.driver.version>9.2-1002.jdbc4</postgres.driver.version>
         <db.url>jdbc:postgresql://localhost:15432/kw</db.url>
         <db.user>docker</db.user>
         <db.password>docker</db.password>
@@ -62,7 +61,7 @@
                     <dependency>
                         <groupId>org.postgresql</groupId>
                         <artifactId>postgresql</artifactId>
-                        <version>9.4-1206-jdbc42</version>
+                        <version>${postgres.driver.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -93,7 +92,7 @@
                     <dependency>
                         <groupId>org.postgresql</groupId>
                         <artifactId>postgresql</artifactId>
-                        <version>9.4-1206-jdbc42</version>
+                        <version>${postgres.driver.version}</version>
                     </dependency>
                 </dependencies>
 
@@ -142,74 +141,6 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>com.github.eirslett</groupId>-->
-<!--                <artifactId>frontend-maven-plugin</artifactId>-->
-<!--                <version>1.5</version>-->
-<!--                <configuration>-->
-<!--                    <installDirectory>target</installDirectory>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        &lt;!&ndash; optional: you don't really need execution ids, but it looks nice in your build log. &ndash;&gt;-->
-<!--                        <id>install node and yarn</id>-->
-<!--                        <goals>-->
-<!--                            <goal>install-node-and-yarn</goal>-->
-<!--                        </goals>-->
-<!--                        &lt;!&ndash; optional: default phase is "generate-resources" &ndash;&gt;-->
-<!--                        <phase>generate-resources</phase>-->
-<!--                        <configuration>-->
-<!--                            <nodeVersion>v16.20.2</nodeVersion>-->
-<!--                            <yarnVersion>v0.27.5</yarnVersion>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        &lt;!&ndash; optional: you don't really need execution ids, but it looks nice in your build log. &ndash;&gt;-->
-<!--                        <id>install node and yarn</id>-->
-<!--                        <goals>-->
-<!--                            <goal>install-node-and-yarn</goal>-->
-<!--                        </goals>-->
-<!--                        &lt;!&ndash; optional: default phase is "generate-resources" &ndash;&gt;-->
-<!--                        <phase>generate-resources</phase>-->
-<!--                        <configuration>-->
-<!--                            <nodeVersion>v6.10.3</nodeVersion>-->
-<!--                            <yarnVersion>v0.27.5</yarnVersion>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>yarn install</id>-->
-<!--                        <goals>-->
-<!--                            <goal>yarn</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            &lt;!&ndash; optional: The default argument is actually-->
-<!--                            "install", so unless you need to run some other yarn command,-->
-<!--                            you can remove this whole <configuration> section.-->
-<!--                            &ndash;&gt;-->
-<!--                            <arguments>install</arguments>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>npm install</id>-->
-<!--                        <goals>-->
-<!--                            <goal>npm</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            &lt;!&ndash; optional: The default argument is actually-->
-<!--                            "install", so unless you need to run some other yarn command,-->
-<!--                            you can remove this whole <configuration> section.-->
-<!--                            &ndash;&gt;-->
-<!--                            <arguments>install</arguments>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>webpack build</id>-->
-<!--                        <goals>-->
-<!--                            <goal>webpack</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
@@ -255,25 +186,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
-        <!-- <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-entitymanager</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency> -->
-
-        <!-- <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-        </dependency> -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jooq</artifactId>
@@ -287,27 +199,12 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-<!--            <version>${flyway.version}</version>-->
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.flywaydb</groupId>-->
-<!--            <artifactId>flyway-database-postgresql</artifactId>-->
-<!--            <version>${flyway.version}</version>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!-- <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency> -->
-       <!-- <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-rsa</artifactId>
-        </dependency> -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-actuator</artifactId>
@@ -324,14 +221,9 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.14.0</version>
+            <version>${commons.lang.version}</version>
         </dependency>
 
-
-        <!-- <dependency>
-        <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -363,87 +255,22 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- JACKSON -->
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jdk8 -->
-        <!-- <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jdk8</artifactId>
-            <version>${jackson.datatypes.version}</version>
-        </dependency> -->
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
-        <!-- <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson.datatypes.version}</version>
-        </dependency> -->
-        <!-- SWAGGER -->
-<!--        <dependency>-->
-<!--            <groupId>io.swagger</groupId>-->
-<!--            <artifactId>swagger-annotations</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.swagger</groupId>-->
-<!--            <artifactId>swagger-jersey-jaxrs</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-swagger2</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-swagger-ui</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-staticdocs</artifactId>-->
-<!--        </dependency>-->
-
-
         <!-- TEST -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <!-- <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <scope>test</scope>
-        </dependency> -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
         </dependency>
         <dependency>
-			<groupId>org.springframework.restdocs</groupId>
-			<artifactId>spring-restdocs-mockmvc</artifactId>
+    		<groupId>org.springframework.restdocs</groupId>
+	    	<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.structurizr</groupId>-->
-            <!--<artifactId>structurizr-core</artifactId>-->
-            <!--<version>1.0.0-RC3</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.structurizr</groupId>-->
-            <!--<artifactId>structurizr-spring</artifactId>-->
-            <!--<version>1.0.0-RC3</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
 	</dependencies>
-
-	<!-- <dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Hoxton.SR8</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement> -->
 
     <repositories>
         <repository>

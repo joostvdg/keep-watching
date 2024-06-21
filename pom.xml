@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.6</version>
+        <version>2.5.15</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -28,14 +28,9 @@
         <java.version>11</java.version>
 
         <!-- Lib Versions -->
-        <jackson.datatypes.version>2.10.5</jackson.datatypes.version>
-<!--        <swagger.version>1.5.12</swagger.version>-->
-<!--        <springfox.version>2.6.1</springfox.version>-->
-        <!-- <org.jooq.version>3.19.8</org.jooq.version> -->
-        <!-- <spring.boot.version>2.2.2.RELEASE</spring.boot.version> -->
-<!--   LATEST     <flyway.version>10.13.0</flyway.version>-->
-        <!-- From Spring Boot 2.2.2.RELEASE -->
         <flyway.version>6.0.8</flyway.version>
+        <postgres.driver.version>42.7.3</postgres.driver.version>
+        <commons.lang.version>3.14.0</commons.lang.version>
     </properties>
 
     <developers>
@@ -71,48 +66,18 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <scope>runtime</scope>
-                <version>9.4-1206-jdbc42</version>
+                <version>${postgres.driver.version}</version>
             </dependency>
 
-            <!-- JACKSON -->
-            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jdk8 -->
-            <!-- <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jdk8</artifactId>
-                <version>${jackson.datatypes.version}</version>
-            </dependency> -->
-            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
-            <!-- <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson.datatypes.version}</version>
-            </dependency> -->
             <!-- SWAGGER -->
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
-<!--                <version>${swagger.version}</version>-->
             </dependency>
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-jersey-jaxrs</artifactId>
-<!--                <version>${swagger.version}</version>-->
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>io.springfox</groupId>-->
-<!--                <artifactId>springfox-swagger2</artifactId>-->
-<!--                <version>${springfox.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>io.springfox</groupId>-->
-<!--                <artifactId>springfox-swagger-ui</artifactId>-->
-<!--                <version>${springfox.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>io.springfox</groupId>-->
-<!--                <artifactId>springfox-staticdocs</artifactId>-->
-<!--                <version>${springfox.version}</version>-->
-<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 

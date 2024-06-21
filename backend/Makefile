@@ -8,6 +8,17 @@ build-all:
 #	  -Drun.jvmArguments="-Dencrypt.keyStore.secret=${JKS_SECRET} \
 #      -Dencrypt.keyStore.password=${JKS_PASS}
 
+verifyd:
+	mvnd clean verify \
+ 		-Dparallel=all \
+ 		-DperCoreThreadCount=false \
+ 		-DthreadCount=16 -T 1C -e \
+	 	-Dspring.profiles.active=local \
+	 	-Ddb.url=jdbc:postgresql://localhost:15432/kw \
+	 	-Dspring.datasource.url=jdbc:postgresql://localhost:15432/kw \
+	 	-Dspring.datasource.username=docker \
+	 	-Dspring.datasource.password=docker
+
 build:
 	mvn -e clean package \
 	 	-Dspring.profiles.active=local \

@@ -379,4 +379,4 @@ We upgraded the PostgreSQL database to version 16.
 ## Upgrade To Spring Boot 2.7
 
 * update parent pom to Spring Boot 2.7.18
-* 
+* update Java version to 17

@@ -375,3 +375,8 @@ https://github.com/jOOQ/jOOQ/blob/version-3.16.0-branch/jOOQ-examples/jOOQ-sprin
 We upgraded the PostgreSQL database to version 16.
 * updated the docker-compose file to use the new version
 * update the properties in the pom.xml's (parent and child)
+
+## Upgrade To Spring Boot 2.7
+
+* update parent pom to Spring Boot 2.7.18
+* 

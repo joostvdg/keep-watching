@@ -6,9 +6,11 @@ import com.github.joostvdg.keepwatching.model.Watcher;
 //import org.junit.Before;
 // import org.junit.Test;
 // import org.junit.runner.RunWith;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.*;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -66,19 +71,25 @@ public class WatchListServiceTest {
         watchList = new WatchList(uniqueName, watcher);
         WatchList created = watchListService.newWatchList(watchList, watcher);
         Assertions.assertNotNull(created);
-        Assertions.assertTrue(created.getId() > 0);
+        assertTrue(created.getId() > 0);
         Assertions.assertEquals(uniqueName, created.getName());
         boolean isDeleted = watchListService.deleteWatchListById(created.getId(), watcher);
-        Assertions.assertTrue(isDeleted);
+        assertTrue(isDeleted);
     }
 
     @Test
-    public void cannotCreateTwoWatchListWithTheSameName() throws DataIntegrityViolationException {
+    public void cannotCreateTwoWatchListWithTheSameName() {
         watchList = new WatchList(uniqueName, watcher);
         WatchList created = watchListService.newWatchList(watchList, watcher);
         Assertions.assertNotNull(created);
         Assertions.assertEquals(uniqueName, created.getName());
-        watchListService.newWatchList(watchList, watcher);
+        Exception exception = assertThrows(DuplicateKeyException.class, () -> {
+            watchListService.newWatchList(watchList, watcher);
+        });
+
+        String expectedMessage = "duplicate key value violates unique constraint \"watchlist_name_key\"";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -93,7 +104,7 @@ public class WatchListServiceTest {
 
         watchListsFound = watchListService.getAllWatchLists(watcher2);
         Assertions.assertNotNull(watchListsFound);
-        Assertions.assertTrue(watchListsFound.isEmpty());
+        assertTrue(watchListsFound.isEmpty());
 
         watchListService.shareWatchList(watchList, watcher, watcher2, false);
 
@@ -110,7 +121,7 @@ public class WatchListServiceTest {
 
         List<WatchListShare> sharedWith = watchListService.getSharedWith(created, watcher);
         Assertions.assertNotNull(sharedWith);
-        Assertions.assertTrue(sharedWith.isEmpty());
+        assertTrue(sharedWith.isEmpty());
 
         watchListService.shareWatchList(created, watcher, watcher2, false);
 

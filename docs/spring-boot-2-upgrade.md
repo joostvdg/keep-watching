@@ -364,3 +364,14 @@ https://github.com/jOOQ/jOOQ/blob/version-3.16.0-branch/jOOQ-examples/jOOQ-sprin
 * Rely on jooq starter and not manual coordination between jpa and jooq
 * webpack removed deprecated debug property
 * Jooq spring properties file update
+
+### Update JUnit Test
+
+* Update Junit test when asserting for Exceptions
+* https://www.baeldung.com/junit-assert-exception
+
+## Upgrade Postgresql
+
+We upgraded the PostgreSQL database to version 16.
+* updated the docker-compose file to use the new version
+* update the properties in the pom.xml's (parent and child)

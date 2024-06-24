@@ -378,5 +378,39 @@ We upgraded the PostgreSQL database to version 16.
 
 ## Upgrade To Spring Boot 2.7
 
+We follow the guidance from the Spring team: https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide.
+
+We want to end up at Spring Boot 3.3, so we need to go through the steps.
+First, we need to upgrade to Spring Boot 2.7.
+
 * update parent pom to Spring Boot 2.7.18
 * update Java version to 17
+
+### Upgrade Spring Security to 5.8
+
+In the Spring Upgrade Guide, we get the recommendation to upgrade to Spring Security 5.8 before upgrading Spring Boot.
+
+> The Spring Security team have released Spring Security 5.8 to simplify upgrading to Spring Security 6.0. Before upgrading to Spring Boot 3.0, consider upgrading your Spring Boot 2.7 application to Spring Security 5.8.
+
+We then follow these guides: 
+* https://docs.spring.io/spring-security/reference/6.0/migration/index.html
+* https://docs.spring.io/spring-security/reference/5.8/migration/index.html
+
+What we did:
+* upgraded Spring Security to 5.8.15
+* replaced the WebSecurityConfigurerAdapter with a Configuration class
+  * as described here: https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter
+* 
+
+## TODO
+
+* upgrade Spring Security to 5.8.x?
+  * handle deprecated methods
+* upgrade Spring Boot to 3.0
+* upgrade Spring Boot to 3.1
+* upgrade Spring Boot to 3.2
+* upgrade Spring Boot to 3.3
+* upgrade to Java 21
+* re-add Swagger/OpenID docs generation
+* re-do test with Spring + TestContainers
+* re-do Spring Cloud Config server (with encryption)

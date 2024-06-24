@@ -23,35 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.Filter;
 
 @SpringBootApplication()
-//@EnableSwagger2
-//@ComponentScan(basePackages = "com.github.joostvdg.keepwatching")
 @EnableTransactionManagement
-//@EnableAutoConfiguration
-//@EnableOAuth2Client
-public class Application extends WebSecurityConfigurerAdapter {
+public class Application  {
 
-
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests(a -> a
-                .antMatchers("/", "/error", "/js/**", "/webjars/**","/view**", "/authenticated").permitAll()
-                .anyRequest().authenticated()
-            )
-            .exceptionHandling(e -> e
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-            )
-            .csrf(c -> c
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-            )
-            .logout(l -> l
-                .logoutSuccessUrl("/").permitAll()
-            )
-            .oauth2Login();
-    }
 
 }

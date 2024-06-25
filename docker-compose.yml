@@ -28,6 +28,11 @@ services:
         - JDBC_DATABASE_USERNAME=docker
         - JDBC_DATABASE_PASSWORD=docker
         - PORT=8080
+        - JAVA_OPTS="-XX:+UseContainerSupport --XX:ActiveProcessorCount=2 -XX:InitialRAMPercentage=70.0 -XX:MaxRAMPercentage=70.0 -XX:+PrintGCDetails -XX:+PrintGCDateStamps"
+    mem_limit: 4096m
+    mem_reservation: 2048m
+    cpu_shares: 2000
+    restart: unless-stopped
 
 
 #    driver_opts:

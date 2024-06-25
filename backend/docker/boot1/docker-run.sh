@@ -10,6 +10,7 @@ echo "JDBC_DATABASE_URL=$JDBC_DATABASE_URL"
 echo "JDBC_DATABASE_USERNAME=$JDBC_DATABASE_USERNAME"
 echo "JDBC_DATABASE_PASSWORD=$JDBC_DATABASE_PASSWORD"
 echo "PORT=$PORT"
+echo "JAVA_OPTS=$JAVA_OPTS"
 
 #java -Xms256M -Xmx480M \
 #    -Djava.security.egd=file:/dev/./urandom \
@@ -22,4 +23,5 @@ java \
     -Dspring.datasource.password=${JDBC_DATABASE_PASSWORD} \
     -Ddb.user=${JDBC_DATABASE_USERNAME} \
     -Dspring.datasource.username=${JDBC_DATABASE_USERNAME} \
-    -jar /app.jar
+    $JAVA_OPTS -jar /app.jar \
+

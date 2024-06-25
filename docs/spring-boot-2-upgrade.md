@@ -400,7 +400,20 @@ What we did:
 * upgraded Spring Security to 5.8.15
 * replaced the WebSecurityConfigurerAdapter with a Configuration class
   * as described here: https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter
-* 
+
+## Upgrade to Spring Boot 3
+
+We follow the guidance from the Spring team: https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide.
+
+* upgrade to Spring Boot 3.0
+* remove Jolokia
+  * the version is no longer managed via Spring Boot, and it doesn't look like we need it
+* remove Spring Security version override
+* replace antMatchers with authorizeRequests
+  * https://www.baeldung.com/spring-security-migrate-5-to-6
+* replace javax.annotation with jakarta.annotation
+* seems our Thymeleaf configuration is broken
+  * we need to fix the Thymeleaf configuration
 
 ## TODO
 

@@ -25,7 +25,4 @@ public interface WatcherService {
 
     Watcher getWatcherFromPrincipal(OAuth2User  principal);
 
-    // void deleteWatcherById(Long id);
-
-    // void updateWatcher(Watcher watcher);
 }

@@ -25,7 +25,7 @@ export class ShowMovieList extends React.Component {
     componentDidMount() {
         console.log("ShowMovieList.componentDidMount - watchListId: " + this.state.watchListId);
         let client = rest.wrap(mime);
-        client({ path: '/watchlist/' + this.state.watchListId + '/movies',
+        client({ path: '/api/watchlist/' + this.state.watchListId + '/movies',
             headers: {'Accept': 'application/json'}}).then(response => {
             this.setState({movies: response.entity});
         });
@@ -33,7 +33,7 @@ export class ShowMovieList extends React.Component {
 
     fetchData(){
         let client = rest.wrap(mime);
-        client({ path: '/watchlist/' + this.state.watchListId + '/movies',
+        client({ path: '/api/watchlist/' + this.state.watchListId + '/movies',
             headers: {'Accept': 'application/json'}}).then(response => {
             this.setState({movies: response.entity});
         });

@@ -79,20 +79,32 @@ class DeleteButton extends React.Component {
     }
 
     deleteMovie() {
+        fetch('/authenticated', {
+            headers: {'Accept': 'application/json'}
+        }).then(response => {
+            for (var pair of response.headers.entries()) { // accessing the entries
+                if (pair[0] === 'x-xsrf-token') { // key I'm looking for in this instance
+                    this.setState({
+                        csrf: pair[1] // saving that value where I can use it
+                    })
+                }
+            }
+        }).then(() => {this.executeDeleteMovie()});
+    }
+
+    executeDeleteMovie() {
         event.preventDefault();
         const id = this.state.movie.id;
         const watchlistId = this.state.watchlistId;
-        const cookies = new Cookies();
-        const xsrfToken = cookies.get('XSRF-TOKEN');
 
         let client = rest.wrap(mime);
         client({
-            path: '/watchlist/' + watchlistId  + '/movies/'+id,
+            path: '/api/watchlist/' + watchlistId  + '/movies/'+id,
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, */*',
                 'Content-Type': 'application/json',
-                'X-XSRF-TOKEN': xsrfToken
+                'X-XSRF-TOKEN': this.state.csrf
             },
             credentials: 'same-origin',
             mode: 'cors',
@@ -173,16 +185,26 @@ export class ShowMovieEditModal extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        const cookies = new Cookies();
-        const xsrfToken = cookies.get('XSRF-TOKEN');
+        fetch('/authenticated', {
+            headers: {'Accept': 'application/json'}
+        }).then(response => {
+            for (var pair of response.headers.entries()) { // accessing the entries
+                if (pair[0] === 'x-xsrf-token') { // key I'm looking for in this instance
+                    this.setState({
+                        csrf: pair[1] // saving that value where I can use it
+                    })
+                }
+            }
+        }).then(() => {this.createMovieEntry()});
+    }
 
-        // TODO: do we need this? method: this.state.edit ? 'PUT' : 'POST',
-        fetch('/watchlist/' + this.state.watchlistId + '/movies', {
+    createMovieEntry() {
+        fetch('/api/watchlist/' + this.state.watchlistId + '/movies', {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, */*',
                 'Content-Type': 'application/json',
-                'X-XSRF-TOKEN': xsrfToken
+                'X-XSRF-TOKEN': this.state.csrf
             },
             credentials: 'same-origin',
             mode: 'cors',

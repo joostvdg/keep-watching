@@ -15,7 +15,8 @@ import java.util.Collection;
  */
 
 @RestController
-@RequestMapping("/watchers")
+@RequestMapping("/api/watchers")
+@CrossOrigin
 public class WatcherController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

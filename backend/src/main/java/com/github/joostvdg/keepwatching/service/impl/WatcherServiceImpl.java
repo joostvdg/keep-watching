@@ -3,6 +3,7 @@ package com.github.joostvdg.keepwatching.service.impl;
 import com.github.joostvdg.keepwatching.model.Watcher;
 import com.github.joostvdg.keepwatching.model.tables.records.WatcherRecord;
 import com.github.joostvdg.keepwatching.service.WatcherService;
+import jakarta.annotation.PostConstruct;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import static com.github.joostvdg.keepwatching.model.tables.Watcher.WATCHER;
 
@@ -32,15 +35,25 @@ public class WatcherServiceImpl implements WatcherService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private Map<String, Watcher> cachedWatchers;
+
     // JOOQ DSL Context
     @Autowired DSLContext dsl;
+
+    @PostConstruct
+    public void init() {
+        logger.info("WatcherService initialized");
+        cachedWatchers = new HashMap<>();
+    }
 
     @Override
     public List<Watcher> getAllWatchers() {
         List<Watcher> watchers = new ArrayList<>();
         Result<Record> result = dsl.select().from(WATCHER).fetch();
         for (Record r : result) {
-            watchers.add(getWatcherEntity(r));
+            var watcher = getWatcherEntity(r);
+            watchers.add(watcher);
+            cachedWatchers.put(watcher.getIdentifier(), watcher);
         }
         return watchers;
     }
@@ -51,12 +64,20 @@ public class WatcherServiceImpl implements WatcherService {
         assert watcher != null;
         assert watcher.getName() != null;
 
+        // TODO: should this become a cache?
+        // TODO: should we do an update instead?
+        if (cachedWatchers.containsKey(watcher.getIdentifier())) {
+            logger.info("Watcher found in cache");
+            return cachedWatchers.get(watcher.getIdentifier());
+        }
+
         WatcherRecord watcherRecord = dsl.insertInto(WATCHER)
                 .set(WATCHER.NAME, watcher.getName())
                 .set(WATCHER.IDENTIFIER, watcher.getIdentifier())
                 .returning(WATCHER.ID)
                 .fetchOne();
         watcher.setId(watcherRecord.getId());
+        cachedWatchers.put(watcher.getIdentifier(), watcher);
         return watcher;
     }
 
@@ -71,15 +92,22 @@ public class WatcherServiceImpl implements WatcherService {
     }
 
     @Override
-    @Async
     public void addNewWatcherIfNotExists(String identifier, String name) {
+        if (cachedWatchers.containsKey(identifier)) {
+            logger.info("Watcher already exists in cache");
+            return;
+        }
+
         Watcher watcher = getWatcherByIdentifier(identifier);
         if (watcher == null) {
             logger.info("Watcher not found. Adding new watcher");
             watcher = new Watcher();
             watcher.setIdentifier(identifier);
             watcher.setName(name);
-            newWatcher(watcher);
+            var insertedWatcher = newWatcher(watcher);
+            if (insertedWatcher != null) {
+                cachedWatchers.put(identifier, insertedWatcher);
+            }
         }
     }
 
@@ -87,11 +115,19 @@ public class WatcherServiceImpl implements WatcherService {
     public Watcher getWatcherByIdentifier(String identifier) {
         assert identifier != null;
 
+        if (cachedWatchers.containsKey(identifier)) {
+            logger.info("Watcher found in cache");
+            return cachedWatchers.get(identifier);
+        }
+
         Record record = dsl.select().from(WATCHER).where(WATCHER.IDENTIFIER.eq(identifier)).fetchOne();
         if (record != null) {
             logger.info("Found for identifier {}", identifier);
+            Watcher watcher = getWatcherEntity(record);
+            cachedWatchers.put(identifier, watcher);
+            return watcher;
         }
-        return record == null ? null : getWatcherEntity(record);
+        return null;
     }
 
     @Override
@@ -99,9 +135,6 @@ public class WatcherServiceImpl implements WatcherService {
         assert principal != null;
         Watcher watcher = null;
 
-        logger.info("Principal: {}", principal);
-        logger.info("Principal: {}", principal.getAttributes());
-        logger.info("Principal Name: {}", principal.getName());
         String identifier = principal.getName();
         if (!StringUtils.isEmpty(identifier) ) {
             watcher = getWatcherByIdentifier(identifier);

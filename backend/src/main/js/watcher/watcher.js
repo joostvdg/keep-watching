@@ -20,7 +20,7 @@ export class ShowWatcher extends React.Component {
     componentDidMount() {
         console.log("Watcher Did Mount");
         let client = rest.wrap(mime);
-        client({ path: '/user',
+        client({ path: '/api/user',
             headers: {'Accept': 'application/json'}}).then(response => {
             this.setState({name: response.entity.name});
             this.setState({id: response.entity.principle});

@@ -11,10 +11,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("/api/movies")
+@CrossOrigin
 public class MoviesController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

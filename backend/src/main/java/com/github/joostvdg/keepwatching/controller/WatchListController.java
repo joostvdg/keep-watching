@@ -17,11 +17,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/watchlist")
+@RequestMapping("/api/watchlist")
+@CrossOrigin
 public class WatchListController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -40,22 +40,20 @@ public class WatchListController {
         notAuthorizedResponse = ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @RequestMapping(value = "",
-            produces = { "application/json", "text/plain; charset=utf-8" },
-            method = RequestMethod.PUT)
+    @PutMapping
+    @ResponseBody
     public ResponseEntity<WatchList> newWatchList(@AuthenticationPrincipal OAuth2User principal, @RequestBody WatchList watchList) {
-        logger.info("WatchList::POST");
+        logger.info("WatchList::PUT");
         if (principal == null) {return notAuthorizedResponse;}
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
         WatchList created = watchListService.newWatchList(watchList, watcher);
         return  ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @RequestMapping(value = "",
-            produces = { "application/json", "text/plain; charset=utf-8" },
-            method = RequestMethod.POST)
+    @PostMapping
+    @ResponseBody
     public ResponseEntity<WatchList> updateWatchList(@AuthenticationPrincipal OAuth2User principal, @RequestBody WatchList watchList) {
-        logger.info("WatchList::PUT");
+        logger.info("WatchList::POST");
         if (principal == null) {return notAuthorizedResponse;}
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
         boolean isUpdated = watchListService.updateWatchList(watchList, watcher);
@@ -100,18 +98,15 @@ public class WatchListController {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(
-            value = {"/{watchListId}/movies"},
-            produces = {"application/json", "text/plain; charset=utf-8"},
-            method = {RequestMethod.PUT}
-    )
+    @PutMapping("/{watchListId}/movies")
     @ResponseBody
     public ResponseEntity<Movie> newMovie(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId, @RequestBody Movie movie)  {
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Watchlist::Movies::PUT {}", movie.getName());
         Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
         WatchList watchList = watchListService.getWatchListById(watchListId, watcher);
-        return ResponseEntity.ok().body(movieService.newMovie(movie, watchList));
+        var created = movieService.newMovie(movie, watchList);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @RequestMapping(
@@ -137,9 +132,20 @@ public class WatchListController {
     public ResponseEntity<Collection<WatchListShare>> getWatcherSharedWith(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId){
         if (principal == null) {return notAuthorizedResponse;}
         logger.info("Watchlist::Shares::GET");
-        Watcher watcher = watcherService.getWatcherFromPrincipal(principal);
+        if (watchListId <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
+        Watcher watcher = watcherService.getWatcherFromPrincipal(principal); // any authorized requests ensures the principle is stored as Watcher, so this should never be null (potential race condition)
         WatchList watchList = watchListService.getWatchListById(watchListId, watcher);
-        return ResponseEntity.ok().body(watchListService.getSharedWith(watchList, watcher));
+        if (watchList == null) {
+            return ResponseEntity.notFound().build();
+        }
+        var shares = watchListService.getSharedWith(watchList, watcher);
+        if (shares == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().body(shares);
     }
 
     @RequestMapping(

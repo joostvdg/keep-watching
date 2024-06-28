@@ -10,7 +10,6 @@ import {
     Redirect
 } from 'react-router-dom'
 
-import Button from 'react-bootstrap/lib/Button';
 import Grid from 'react-bootstrap/lib/Grid';
 import Navbar from 'react-bootstrap/lib/Navbar'
 import Nav from 'react-bootstrap/lib/Nav'
@@ -44,16 +43,16 @@ class Home extends React.Component {
         let client = rest.wrap(mime);
         client({ path: '/authenticated',
             headers: {'Accept': 'application/json'}}).then(response => {
-            console.log(response);
             this.setState({authenticated: response.entity});
         });
     }
 
     render(){
+        console.log("Home Render -- authenticated: " + this.state.authenticated);
         if (this.state.authenticated) {
             return (
-                <div className="container authenticated" style="display: none">
-                    Logged in as: <span id="user"></span>
+                <div className="container authenticated" >
+                    <p>Authenticated</p>
                     <div>
                         <button onClick="logout()" className="btn btn-primary">Logout</button>
                     </div>
@@ -61,12 +60,9 @@ class Home extends React.Component {
             );
         } else {
             return (
-                <div class="container unauthenticated">
+                <div className="container unauthenticated">
                     <div>
                         With GitHub: <a href="/oauth2/authorization/github">click here</a>
-                    </div>
-                    <div>
-                        With Google: <a href="/oauth2/authorization/google">click here</a>
                     </div>
                 </div>
             );
@@ -126,8 +122,8 @@ class Navigation extends React.Component {
     }
 
     render(){
+        console.log("Navigation Render -- authenticated: " + this.state.authenticated);
         if (this.state.authenticated) {
-
             return (
                 <Navbar collapseOnSelect>
                     <navHeader />

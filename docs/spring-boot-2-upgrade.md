@@ -385,6 +385,7 @@ First, we need to upgrade to Spring Boot 2.7.
 
 * update parent pom to Spring Boot 2.7.18
 * update Java version to 17
+* replace the oauth configuration in application.yml with the new configuration
 
 ### Upgrade Spring Security to 5.8
 
@@ -412,14 +413,281 @@ We follow the guidance from the Spring team: https://github.com/spring-projects/
 * replace antMatchers with authorizeRequests
   * https://www.baeldung.com/spring-security-migrate-5-to-6
 * replace javax.annotation with jakarta.annotation
+* properties migrator gave a warning
+  * recommended to use by the migration guide
+  * for more info, see: https://www.baeldung.com/spring-boot-properties-migrator
 * seems our Thymeleaf configuration is broken
   * we need to fix the Thymeleaf configuration
+* welcome page doesn't load
+  * probably due to the change in the security configuration
+
+### Fix Property Migrator Warnings
+
+> The use of configuration keys that have been renamed was found in the environment:
+>
+> Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+> Key: spring.datasource.continue-on-error
+> Line: 4
+> Replacement: spring.sql.init.continue-on-error
+>
+> Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+It looks like all we have to do, is replace `spring.datasource.continue-on-error` with `spring.sql.init.continue-on-error` in the `application.yml` file.
+
+### Fix Thymeleaf Configuration
+
+> 2024-06-25T14:37:24.524+02:00  WARN 25145 --- [  restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+
+Retrieving the version, we get `3.1.2`:
+
+```shell
+ mvn dependency:tree | grep thymeleaf
+[INFO] +- org.springframework.boot:spring-boot-starter-thymeleaf:jar:3.0.13:compile
+[INFO] |  \- org.thymeleaf:thymeleaf-spring6:jar:3.1.2.RELEASE:compile
+[INFO] |     \- org.thymeleaf:thymeleaf:jar:3.1.2.RELEASE:compile
+```
+
+We fix the warning is by setting the property in the `application.yml`.
+
+### Fix Security Configuration
+
+When we go to the main page, we get a Warning in the log:
+
+>2024-06-25T14:47:43.021+02:00  WARN 28326 --- [nio-8080-exec-1] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for FORWARD dispatch to '/index.html' (previous null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
+
+And when we go to the main page, we get a 401 error.
+
+There's two things broken:
+
+1. we should get a proper error page
+1. we should be able to access the main page without logging in
+
+We'll first focus on being able to view our login page.
+
+### Fix Authentication
+
+The gist, is that Spring Security 6.0 has a new way of configuring the security.
+
+* We need to replace the `WebSecurityConfigurerAdapter` with a `SecurityFilterChain`.
+* We need to replace the `antMatchers` with `authorizeRequests`.
+* We need to enable Web Security in the configuration, via `@EnableWebSecurity`.
+* We need to include starter-web dependency.
+* We need to configure the OAuth2 login.
+
+We start by creating a new configuration class, `SecurityConfiguration`.
+And we add the `@EnableWebSecurity` annotation.
+
+We then add a `SecurityFilterChain` bean, which configures the security.
+The authorizeRequests method is used to configure the security, but the matcher is not working as expected (different Regex).
+In order to make it easier, we've put all the endpoints that need to be secured under `/api/**`.
+
+The end result is this:
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfiguration {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/api/**").authenticated()
+                .anyRequest().permitAll()
+            )
+            .oauth2Login(withDefaults());
+        return http.build();
+    }
+}
+```
+References:
+
+* https://www.baeldung.com/spring-security-migrate-5-to-6
+* https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide
+* https://stackoverflow.com/questions/52029258/understanding-requestmatchers-on-spring-security
+
+With these changes, we got almost everything working.
+All the Get requests work, but with any Post or Put request, we get a 403 forbidden.
+
+It turns out, somewhere between Spring 5 and 6, several notorious breaches happened, and Spring Security tightened the defaults.
+The main thing that is changed, is how CSRF protection is handled.
+
+### CSRF Protection Change
+
+The gist of the issue, is that before the CSRF token was added to the Cookie.
+Older style JavaScript frameworks, such as the React version used by this App automatically pick up the token from the Cookie.
+
+As the token is longer in the Cookie, this stops working.
+
+There are several alternative ways this can be solved.
+I chose to add the token to all response headers as a starting point via a `@ControllerAdvice` as a starting point.
+As described in this section of the docs: https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-javascript-other.
+
+After updating the JavaScript to match (see below), I realised I could limit this behaviour to the `UserController` only.
+
+The end result is this:
+
+```java
+@ControllerAdvice(assignableTypes = UserController.class)
+public class CsrfControllerAdvice {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @ModelAttribute
+    public void getCsrfToken(HttpServletResponse response, CsrfToken csrfToken) {
+        response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
+    }
+}
+```
+
+In addition, we need to tell the Spring Security configuration to use the CSRF token.
+
+We do this, by adding the following to the `SecurityConfiguration` class:
+
+```java
+http
+    .csrf((csrf) -> csrf
+        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+    )
+```
+
+In the JavaScript portion, we have to change how we handle the CSRF token.
+Before, we could strip it from the Cookie, and this we could do always.
+
+Unfortunately, with the new setup, we can only do this when the token is present in the header.
+This means we need to be sure when we can extract the token.
+
+While there are many ways this can be optimized, for now, the easiest is to verify we are authenticated via the `/authenticate` endpoint, and then extract the token.
+And then we go on and do our Put or Post calls.
+
+The changed JavaScript, now looks like this:
+
+```javascript
+handleSubmit1(event) {
+        event.preventDefault();
+
+        console.log("fetching authentication data");
+        fetch('/authenticated', {
+            headers: {'Accept': 'application/json'}
+        }).then(response => {
+            console.log("reading authentication data");
+            console.log(response);
+            console.log("reading headers");
+            for (var pair of response.headers.entries()) { // accessing the entries
+                console.log(pair[0] + ': ' + pair[1]);
+                if (pair[0] === 'x-xsrf-token') { // key I'm looking for in this instance
+                    console.log("=> Found X-Xsrf-Token: " + pair[1]);
+                    this.setState({
+                        csrf: pair[1] // saving that value where I can use it
+                    })
+                }
+            }
+        }).then(() => {this.createWatchList()});
+
+    }
+
+    createWatchList() {
+        fetch( '/api/watchlist',{
+            method: this.state.edit ? 'POST' : 'PUT',
+            headers: {
+                'Accept': 'application/json, application/xml, text/plain, text/html, */*',
+                'Content-Type': 'application/json',
+                'X-XSRF-TOKEN': this.state.csrf,
+            },
+            credentials: 'same-origin',
+            mode: 'cors',
+            redirect: 'follow',
+            body: JSON.stringify({
+                id: this.state.watchList.id,
+                name: this.state.watchList.name
+            })
+        });
+
+        this.setState({ showModal: false });
+        this.setState({ watchList: {name: ''} });
+    }
+```
+
+The `handleSubmit1` method is called when the form is submitted.
+We then fetch the `/authenticated` endpoint, and extract the `X-Xsrf-Token` from the headers.
+We then call the `createWatchList` method, which does the actual Put or Post call, which now has access to the CSRF token.
+
+And then it still didn't work.
+
+References:
+
+* https://stackoverflow.com/questions/76682586/allow-cors-with-spring-security-6-1-1-with-authenticated-requests
+* https://stevemiller.dev/2019/getting-response-headers-with-javascript-fetch/
+* https://davy.ai/how-to-add-the-csrf-token-to-the-http-header-using-fetch-api-and-vanillajs/
+* https://stackoverflow.com/questions/76047301/working-with-csrf-token-in-javascript-via-fetch-api
+* https://docs.spring.io/spring-security/reference/5.8/migration/servlet/exploits.html#_defer_loading_csrftoken
+* https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html
+* https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-token-request-handler-custom
+* https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-javascript-other
+* https://stackoverflow.com/questions/74447118/csrf-protection-not-working-with-spring-security-6
+* https://github.com/spring-projects/spring-security/issues/14450
+
+### Still Not Working
+
+While I was working on the CSRF token, I disabled the CORS configuration. `cors.disable()` in the `SecurityConfiguration` class.
+
+We have to enable the CORS configuration before the CSRF protection works.
+As I don't want to dive too much into configuring CORS, I looked for the easiest way to enable it.
+Which is as follows:
+
+* add `@CrossOrigin` to the Controller classes.
+* add cors configuration to the `SecurityConfiguration` class.
+
+The end result is this:
+
+```java
+http
+    .cors(Customizer.withDefaults())
+```
+
+Now the CSRF protection works, and we can do Put and Post requests.
+
+### Optimize Authentication Endpoint
+
+Due to how the `/authenticated` endpoint is used, it now always goes to the Database.
+This is a very expensive round trip, especially if we need to do this for every Put/Post request.
+
+To speed things up a bit, I added a HashMap to the Service class, which stores the authenticated users.
+That way, every user we've retrieved once during the run of the application, is usable without going to the Database.
+
+!!! Danger
+    This is a very naive implementation, and should be replaced with a proper caching mechanism.
+
+### Fix Error Page
+
+Due to the structure of the application, we have URLs in the frontend that are not available in the backend, or at least not in the same way.
+So when you go to a URL that is not available in the backend, you get a 404 error, eventhough the Frontend shows you are already on this page.
+
+So, to aid the user, we can add an error page which includes a redirect to the login page.
+While this doesn't solve the problem, it at least reduced the confusion.
+
+To do so, we re-enable the template scanning of the Thymeleaf templates, and add an error page.
+
+We create the page `src/main/resources/templates/error.html`:
+
+```html
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Something went wrong! </h1>
+        <h2>Our Engineers are on it</h2>
+        <p>
+            <a href="/">Go Home</a>
+        </p>
+    </body>
+</html>
+```
+
+References:
+* https://www.baeldung.com/spring-boot-custom-error-page
 
 ## TODO
 
-* upgrade Spring Security to 5.8.x?
-  * handle deprecated methods
-* upgrade Spring Boot to 3.0
 * upgrade Spring Boot to 3.1
 * upgrade Spring Boot to 3.2
 * upgrade Spring Boot to 3.3
@@ -427,3 +695,15 @@ We follow the guidance from the Spring team: https://github.com/spring-projects/
 * re-add Swagger/OpenID docs generation
 * re-do test with Spring + TestContainers
 * re-do Spring Cloud Config server (with encryption)
+
+## Errata
+
+There are some things we won't fix, as the application has always had these issues.
+
+We can assume some of these are now expected behaviour (the app is seven years old), and if we want to resolve those, they should be handled independently.
+
+* never properly implemented the Delete functionality
+  * e.g., it doesn't handle cascade delete / relations
+* there are errors when calling the Shared WatchList
+* there is a race condition when the client calls authenticated too fast in a row, the user is not yet in the Database, so we end up trying to insert it twice
+  * not an issue, but it pollutes the log

@@ -50,7 +50,7 @@ class MoviesWatched extends React.Component {
             const id = this.state.watchList.id;
             let client = rest.wrap(mime);
             client({
-                path: '/watchlist/' + id + '/movies',
+                path: '/api/watchlist/' + id + '/movies',
                 headers: {'Accept': 'application/json'}
             }).then(response => {
                 let moviesCount = 0;
@@ -108,18 +108,29 @@ class DeleteButton extends React.Component {
     }
 
     deleteWatchList() {
-        const id = this.state.watchList.id;
-        const cookies = new Cookies();
-        const xsrfToken = cookies.get('XSRF-TOKEN');
+        fetch('/authenticated', {
+            headers: {'Accept': 'application/json'}
+        }).then(response => {
+            for (var pair of response.headers.entries()) { // accessing the entries
+                if (pair[0] === 'x-xsrf-token') { // key I'm looking for in this instance
+                    this.setState({
+                        csrf: pair[1] // saving that value where I can use it
+                    })
+                }
+            }
+        }).then(() => {this.executeDeleteWatchList()});
+    }
 
+    executeDeleteWatchList() {
+        const id = this.state.watchList.id;
         let client = rest.wrap(mime);
         client({
-            path: '/watchlist/'+id,
+            path: '/api/watchlist/'+id,
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, */*',
                 'Content-Type': 'application/json',
-                'X-XSRF-TOKEN': xsrfToken
+                'X-XSRF-TOKEN': this.state.csrf
             },
             credentials: 'same-origin',
             mode: 'cors',
@@ -145,7 +156,7 @@ export class ShowWatchLists extends React.Component {
 
     componentDidMount() {
         let client = rest.wrap(mime);
-        client({ path: '/watchlist',
+        client({ path: '/api/watchlist',
             headers: {'Accept': 'application/json'}}).then(response => {
             this.setState({watchLists: response.entity});
         });
@@ -153,7 +164,7 @@ export class ShowWatchLists extends React.Component {
 
     fetchData(){
         let client = rest.wrap(mime);
-        client({ path: '/watchlist',
+        client({ path: '/api/watchlist',
             headers: {'Accept': 'application/json'}}).then(response => {
             this.setState({watchLists: response.entity});
         });
@@ -242,15 +253,27 @@ export class ShowWatchListEditModal extends React.Component {
     handleSubmit1(event) {
         event.preventDefault();
 
-        const cookies = new Cookies();
-        const xsrfToken = cookies.get('XSRF-TOKEN');
-        // https://hacks.mozilla.org/2016/03/referrer-and-cache-control-apis-for-fetch/
-        fetch('/watchlist', {
+        fetch('/authenticated', {
+            headers: {'Accept': 'application/json'}
+        }).then(response => {
+            for (var pair of response.headers.entries()) { // accessing the entries
+                if (pair[0] === 'x-xsrf-token') { // key I'm looking for in this instance
+                    this.setState({
+                        csrf: pair[1] // saving that value where I can use it
+                    })
+                }
+            }
+        }).then(() => {this.createWatchList()});
+
+    }
+
+    createWatchList() {
+        fetch( '/api/watchlist',{
             method: this.state.edit ? 'POST' : 'PUT',
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, */*',
                 'Content-Type': 'application/json',
-                'X-XSRF-TOKEN': xsrfToken
+                'X-XSRF-TOKEN': this.state.csrf,
             },
             credentials: 'same-origin',
             mode: 'cors',
@@ -319,7 +342,7 @@ class WatchListSharesView extends React.Component {
             const id = this.state.watchList.id;
             let client = rest.wrap(mime);
             client({
-                path: '/watchlist/' + id + '/shares',
+                path: '/api/watchlist/' + id + '/shares',
                 headers: {'Accept': 'application/json'}
             }).then(response => {
                 if (response) {
@@ -330,7 +353,6 @@ class WatchListSharesView extends React.Component {
     }
 
     render() {
-        console.log(this.state.watchersSharedWith);
         const shareList = this.state.watchersSharedWith;
         const arr = shareList instanceof Array ? shareList : [shareList];
         const shares = arr.map((share) =>
@@ -384,15 +406,26 @@ class ShareWatchListModal extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        const cookies = new Cookies();
-        const xsrfToken = cookies.get('XSRF-TOKEN');
-        // https://hacks.mozilla.org/2016/03/referrer-and-cache-control-apis-for-fetch/
-        fetch('/watchlist/' + this.state.watchListId + '/shares' , {
+        fetch('/authenticated', {
+            headers: {'Accept': 'application/json'}
+        }).then(response => {
+            for (var pair of response.headers.entries()) { // accessing the entries
+                if (pair[0] === 'x-xsrf-token') { // key I'm looking for in this instance
+                    this.setState({
+                        csrf: pair[1] // saving that value where I can use it
+                    })
+                }
+            }
+        }).then(() => {this.updateWatchListSharing()});
+    }
+
+    updateWatchListSharing() {
+        fetch('/api/watchlist/' + this.state.watchListId + '/shares' , {
             method: this.state.edit ? 'POST' : 'PUT',
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, */*',
                 'Content-Type': 'application/json',
-                'X-XSRF-TOKEN': xsrfToken
+                'X-XSRF-TOKEN': this.state.csrf
             },
             credentials: 'same-origin',
             mode: 'cors',
@@ -403,7 +436,6 @@ class ShareWatchListModal extends React.Component {
                 hasWriteAccess: this.state.writeAccess
             })
         });
-
     }
 
     render() {
@@ -451,7 +483,6 @@ class ShareWatchListModal extends React.Component {
 
 function ShowWatchListShared(props) {
     const watchListShare = props.watchListShare;
-    console.log(watchListShare);
     let name = '';
     let writeAccess = false;
     let identifer = '';

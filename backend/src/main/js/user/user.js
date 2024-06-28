@@ -9,7 +9,7 @@ export class User extends React.Component {
 
     componentDidMount() {
         let client = rest.wrap(mime);
-        client({ path: '/movies',
+        client({ path: '/api/movies',
             headers: {'Accept': 'application/json'}}).then(response => {
             this.setState({movies: response.entity});
         });
@@ -17,7 +17,7 @@ export class User extends React.Component {
 
     fetchData(){
         let client = rest.wrap(mime);
-        client({ path: '/movies',
+        client({ path: '/api/movies',
             headers: {'Accept': 'application/json'}}).then(response => {
             this.setState({movies: response.entity});
         });
@@ -44,26 +44,3 @@ export class User extends React.Component {
         );
     }
 }
-
-//
-// <script type="text/javascript" src="/webjars/angularjs/angular.min.js"></script>
-// <script type="text/javascript">
-//     angular.module("app", []).controller("home", function($http) {
-//         var self = this;
-//         $http.get("/user").success(function(data) {
-//             self.user = data.userAuthentication.details.name;
-//             self.authenticated = true;
-//         }).error(function() {
-//             self.user = "N/A";
-//             self.authenticated = false;
-//         });
-//     });
-// </script>
-//
-// <div class="container" ng-show="!home.authenticated">
-//     Login with: <a href="/login">Facebook</a>
-//     </div>
-//     <div class="container" ng-show="home.authenticated">
-//     Logged in as: <span ng-bind="home.user"></span>
-//     </div>
-//

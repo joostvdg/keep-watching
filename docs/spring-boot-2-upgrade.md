@@ -755,7 +755,7 @@ Could it be, we are deleting the watcher accidentally?
 
 * Changed only the parent pom to spring boot to 3.3.1
 
-## Upgarded to Java 21
+## Upgrade to Java 21
 
 * Changed pom to Java 21
 

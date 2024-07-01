@@ -747,12 +747,21 @@ The tests that fail:
 
 Could it be, we are deleting the watcher accidentally?
 
+## Upgrade to Spring Boot 3.2
+
+* Changed only the parent pom to spring boot to 3.2.7
+
+## Upgrade to Spring Boot 3.3
+
+* Changed only the parent pom to spring boot to 3.3.1
+
+## Upgarded to Java 21
+
+* Changed pom to Java 21
+
 
 ## TODO
 
-* upgrade Spring Boot to 3.2
-* upgrade Spring Boot to 3.3
-* upgrade to Java 21
 * re-add Swagger/OpenID docs generation
 * re-do test with Spring + TestContainers
 * re-do Spring Cloud Config server (with encryption)

@@ -25,6 +25,8 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.github.joostvdg.keepwatching.service.impl.WatcherServiceImpl;
+
 @SpringBootTest
 @Transactional
 public class WatchListServiceTest {
@@ -49,6 +51,9 @@ public class WatchListServiceTest {
 
     @BeforeEach
     public void setup() {
+
+        ((WatcherServiceImpl)watcherService).clearCache();
+
         // TODO: Clear the Cache
         watcher = watcherService.getWatcherByIdentifier(watcherIdentifier);
         if (watcher == null) {

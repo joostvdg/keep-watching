@@ -12,7 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.annotation.PostConstruct;
+
+import java.nio.file.WatchService;
 import java.util.List;
+
+import com.github.joostvdg.keepwatching.service.impl.WatcherServiceImpl;
+
 
 @SpringBootTest
 @Transactional
@@ -31,8 +36,12 @@ public class MoviesServiceTest {
 
     @PostConstruct
     public void setup(){
+
+        ((WatcherServiceImpl)watcherService).clearCache();
+
         String identifier = "12345";
         Watcher watcher = watcherService.getWatcherByIdentifier(identifier);
+
         if (watcher == null) {
             watcher = new Watcher();
             watcher.setName("Pietje");
@@ -48,6 +57,8 @@ public class MoviesServiceTest {
             watchList.setOwner(watcher);
             watchList = watchListService.newWatchList(watchList, watcher);
         }
+
+        
     }
 
     @Test

@@ -158,7 +158,7 @@ public class WatcherServiceImpl implements WatcherService {
         return watcher;
     }
 
-    void clearCache() {
+    public void clearCache() {
         cachedWatchers.clear();
     }
 }

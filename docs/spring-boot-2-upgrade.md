@@ -686,9 +686,70 @@ We create the page `src/main/resources/templates/error.html`:
 References:
 * https://www.baeldung.com/spring-boot-custom-error-page
 
+## Upgrade To Spring Boot 3.1
+
+The latest version of Spring Boot 3.1 is 3.1.12.
+
+### Failing Tests
+
+The database tests are failing:
+
+> Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "watchlist" violates foreign key constraint "watchlist_user_id_fkey"
+> Detail: Key (user_id)=(1) is not present in table "watcher".
+
+One of the things we can do, is ensure we have a Watcher with ID 1 in the Database.
+
+We do this, by creating a Database Migration file in the `src/main/resources/db/migration` folder.
+
+To verify we can run a test and not fail, which includes the database migration with Flyway, JOOQ classes creation and compilation, we run this command:
+
+```shell
+mvn test -Dtest="ApplicationTests"  
+```
+
+This works, so let's try a single Database test:
+
+```shell
+mvn test -Dtest="WatchListServiceTest#cannotCreateTwoWatchListWithTheSameName"
+```
+This one succeeds. So let's try the other one:
+
+```shell
+mvn test -Dtest="WatchListServiceTest#shouldCreateAndDeleteWatchList"
+```
+
+Also succeeds, let's run them all:
+
+```shell
+# in the backend folder
+make build-all
+```
+
+>[ERROR] Errors:
+>[ERROR]   MoviesServiceTest.findAllMovies » BeanCreation Error creating bean with name 'com.github.joostvdg.keepwatching.service.MoviesServiceTest.ORIGINAL': Invocation of init method failed
+>[ERROR]   MoviesServiceTest.shouldCreateNewMovie » BeanCreation Error creating bean with name 'com.github.joostvdg.keepwatching.service.MoviesServiceTest.ORIGINAL': Invocation of init method failed
+>[ERROR]   MoviesServiceTest.shouldReturnMoviesForWatchListOne » BeanCreation Error creating bean with name 'com.github.joostvdg.keepwatching.service.MoviesServiceTest.ORIGINAL': Invocation of init method failed
+>[ERROR]   WatchListServiceTest.canOnlyRetrieveOwnedAndSharedWatchLists:98 » DataIntegrityViolation jOOQ; SQL [insert into public.watchlist (name, user_id) values (?, ?) returning public.watchlist.id]; ERROR: insert or update on table "watchlist" violates foreign key constraint "watchlist_user_id_fkey"
+>Detail: Key (user_id)=(1) is not present in table "watcher".
+>[ERROR]   WatchListServiceTest.cannotCreateTwoWatchListWithTheSameName:83 » DataIntegrityViolation jOOQ; SQL [insert into public.watchlist (name, user_id) values (?, ?) returning public.watchlist.id]; ERROR: insert or update on table "watchlist" violates foreign key constraint "watchlist_user_id_fkey"
+>Detail: Key (user_id)=(1) is not present in table "watcher".
+>[ERROR]   WatchListServiceTest.getListOfWatchersSharingTheWatchList:119 » DataIntegrityViolation jOOQ; SQL [insert into public.watchlist (name, user_id) values (?, ?) returning public.watchlist.id]; ERROR: insert or update on table "watchlist" violates foreign key constraint "watchlist_user_id_fkey"
+>Detail: Key (user_id)=(1) is not present in table "watcher".
+
+The tests that fail:
+
+* MoviesServiceTest.findAllMovies
+* MoviesServiceTest.shouldCreateNewMovie
+* MoviesServiceTest.shouldReturnMoviesForWatchListOne
+* WatchListServiceTest.canOnlyRetrieveOwnedAndSharedWatchLists
+* WatchListServiceTest.cannotCreateTwoWatchListWithTheSameName
+* WatchListServiceTest.getListOfWatchersSharingTheWatchList
+
+Could it be, we are deleting the watcher accidentally?
+
+
 ## TODO
 
-* upgrade Spring Boot to 3.1
 * upgrade Spring Boot to 3.2
 * upgrade Spring Boot to 3.3
 * upgrade to Java 21

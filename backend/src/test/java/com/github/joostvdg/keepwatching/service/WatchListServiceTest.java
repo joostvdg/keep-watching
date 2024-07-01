@@ -25,7 +25,6 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
 public class WatchListServiceTest {
@@ -50,6 +49,7 @@ public class WatchListServiceTest {
 
     @BeforeEach
     public void setup() {
+        // TODO: Clear the Cache
         watcher = watcherService.getWatcherByIdentifier(watcherIdentifier);
         if (watcher == null) {
             watcher = new Watcher();

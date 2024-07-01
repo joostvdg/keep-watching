@@ -69,6 +69,8 @@ public class WatcherServiceImpl implements WatcherService {
         if (cachedWatchers.containsKey(watcher.getIdentifier())) {
             logger.info("Watcher found in cache");
             return cachedWatchers.get(watcher.getIdentifier());
+        } else {
+            logger.info("Watcher not found in cache - inserting into DB");
         }
 
         WatcherRecord watcherRecord = dsl.insertInto(WATCHER)
@@ -154,5 +156,9 @@ public class WatcherServiceImpl implements WatcherService {
         watcher.setName(name);
         watcher.setIdentifier(identifier);
         return watcher;
+    }
+
+    void clearCache() {
+        cachedWatchers.clear();
     }
 }

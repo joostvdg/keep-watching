@@ -1,6 +1,8 @@
 spring:
 #    thymeleaf:
 #        check-template-location: false
+    flyway:
+        enabled: true
     sql:
         init:
             continue-on-error: true

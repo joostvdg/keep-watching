@@ -3,6 +3,10 @@ package com.github.joostvdg.keepwatching.controller;
 import com.github.joostvdg.keepwatching.model.UserPrinciple;
 import com.github.joostvdg.keepwatching.service.WatcherService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private WatcherService watcherService;
+    private final WatcherService watcherService;
 
     public UserController(WatcherService watcherService) {
         this.watcherService = watcherService;
     }
 
+    @Operation(summary = "Get user details")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User details"),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content)
+    })
     @RequestMapping("/api/user")
     public ResponseEntity<UserPrinciple> user(@AuthenticationPrincipal OAuth2User principal) {
         logger.info("User::GET");
@@ -41,12 +50,17 @@ public class UserController {
 
     }
 
+    @Operation(summary = "Verifies the current user is authenticated, and returns CSRF token in response headers if authenticated")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User is authenticated", content = {@Content(mediaType = "plain/text")}),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content)
+    })
     @RequestMapping("/authenticated")
-    public boolean authenticated(@AuthenticationPrincipal OAuth2User principal) {
+    public ResponseEntity<Boolean> authenticated(@AuthenticationPrincipal OAuth2User principal) {
         logger.info("Authenticated::GET");
         if (principal != null) {
             if (watcherService.getWatcherByIdentifier(principal.getName()) != null) {
-                return true;
+                return ResponseEntity.ok().body(true);
             }
 
             logger.info("adding new watcher if not exists");
@@ -66,9 +80,9 @@ public class UserController {
             } catch (Exception e) {
                 logger.error("Error adding new watcher", e);
             }
-            return true;
+            return ResponseEntity.ok().body(true);
         }
-        return false;
+        return ResponseEntity.status(401).build();
     }
 
 }

@@ -21,6 +21,7 @@
         <db.user>docker</db.user>
         <db.password>docker</db.password>
         <flyway.schemas>public</flyway.schemas>
+        <springdoc.version>2.6.0</springdoc.version>
     </properties>
 
 
@@ -78,7 +79,6 @@
             <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
-                <!-- <version>${org.jooq.version}</version> -->
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -216,6 +216,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons.lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc.version}</version>
         </dependency>
 
 		<dependency>

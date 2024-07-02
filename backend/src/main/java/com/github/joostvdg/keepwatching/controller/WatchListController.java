@@ -8,7 +8,11 @@ import com.github.joostvdg.keepwatching.model.external.WatchListShareDTO;
 import com.github.joostvdg.keepwatching.service.MovieService;
 import com.github.joostvdg.keepwatching.service.WatchListService;
 import com.github.joostvdg.keepwatching.service.WatcherService;
-//import io.swagger.annotations.ApiParam;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,11 +30,11 @@ public class WatchListController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private WatchListService watchListService;
-    private WatcherService watcherService;
-    private MovieService movieService;
+    private final WatchListService watchListService;
+    private final WatcherService watcherService;
+    private final MovieService movieService;
 
-    private ResponseEntity notAuthorizedResponse;
+    private final ResponseEntity notAuthorizedResponse;
 
     // TODO: maybe I need to many services in one controller?!
     public WatchListController(WatchListService watchListService, WatcherService watcherService, MovieService movieService) {
@@ -40,6 +44,11 @@ public class WatchListController {
         notAuthorizedResponse = ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
+    @Operation(summary = "Create new watchlist")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Watchlist created"),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated")
+    })
     @PutMapping
     @ResponseBody
     public ResponseEntity<WatchList> newWatchList(@AuthenticationPrincipal OAuth2User principal, @RequestBody WatchList watchList) {
@@ -50,6 +59,12 @@ public class WatchListController {
         return  ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @Operation(summary = "Update watchlist")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Watchlist updated"),
+        @ApiResponse(responseCode = "400", description = "Bad request", content = @Content),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content)
+    })
     @PostMapping
     @ResponseBody
     public ResponseEntity<WatchList> updateWatchList(@AuthenticationPrincipal OAuth2User principal, @RequestBody WatchList watchList) {
@@ -63,6 +78,11 @@ public class WatchListController {
         return  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @Operation(summary = "Get all watchlists")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "All watchlists"),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated")
+    })
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Collection<WatchList>> getWatchList(@AuthenticationPrincipal OAuth2User principal){
@@ -72,6 +92,11 @@ public class WatchListController {
         return ResponseEntity.ok().body(watchListService.getAllWatchLists(watcher));
     }
 
+    @Operation(summary = "Get all watchlists shared with the current user")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "All watchlists shared with the current user"),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content)
+    })
     @RequestMapping(
             value = {"/{watchListId}"},
             produces = {"application/json", "text/plain; charset=utf-8"},
@@ -85,6 +110,11 @@ public class WatchListController {
         return ResponseEntity.ok().body(watchListService.getWatchListById(watchListId, watcher));
     }
 
+    @Operation(summary = "Delete watchlist")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Watchlist deleted"),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content)
+    })
     @RequestMapping(
             value = {"/{watchListId}"},
             method = {RequestMethod.DELETE}
@@ -98,6 +128,11 @@ public class WatchListController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Create new movie")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Movie created"),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content)
+    })
     @PutMapping("/{watchListId}/movies")
     @ResponseBody
     public ResponseEntity<Movie> newMovie(@AuthenticationPrincipal OAuth2User principal, @PathVariable("watchListId") long watchListId, @RequestBody Movie movie)  {
@@ -109,6 +144,11 @@ public class WatchListController {
         return  ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @Operation(summary = "Get all movies in watchlist")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "All movies in watchlist"),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content)
+    })
     @RequestMapping(
             value = {"/{watchListId}/movies"},
             produces = {"application/json", "text/plain; charset=utf-8"},
@@ -123,6 +163,11 @@ public class WatchListController {
         return ResponseEntity.ok().body(movieService.getAllMovies(watchList));
     }
 
+    @Operation(summary = "Get list of watchers the Watch List is shared with")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "List of watchers the Watch List is shared with"),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content)
+    })
     @RequestMapping(
         value = {"/{watchListId}/shares"},
         produces = {"application/json", "text/plain; charset=utf-8"},
@@ -148,6 +193,11 @@ public class WatchListController {
         return ResponseEntity.ok().body(shares);
     }
 
+    @Operation(summary = "Share Watch List with another watcher")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "202", description = "Watch List shared"),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content)
+    })
     @RequestMapping(
         value = {"/{watchListId}/shares"},
         produces = {"application/json", "text/plain; charset=utf-8"},
@@ -181,6 +231,11 @@ public class WatchListController {
         return ResponseEntity.accepted().build();
     }
 
+    @Operation(summary = "Delete movie from watchlist")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Movie deleted"),
+        @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content)
+    })
     @RequestMapping(
             value = {"/{watchListId}/movies/{movieId}"},
             produces = {"application/json", "text/plain; charset=utf-8"},

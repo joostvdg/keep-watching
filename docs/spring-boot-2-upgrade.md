@@ -759,12 +759,33 @@ Could it be, we are deleting the watcher accidentally?
 
 * Changed pom to Java 21
 
+## Add Swagger/OpenAPI Docs
+
+* add dependency
+
+* And we're done, we can visit these urls:
+* http://localhost:8080/swagger-ui/index.html
+* http://localhost:8080/v3/api-docs
+
+For completeness, we added the `@Operation` and `@ApiResponses` annotations to the Controllers.
+As described in this [guide](https://www.baeldung.com/spring-rest-openapi-documentation).
+
+### References
+
+* https://spring.io/guides/gs/testing-restdocs
+* https://spring.io/projects/spring-restdocs
+* https://www.baeldung.com/spring-rest-openapi-documentation
 
 ## TODO
 
-* re-add Swagger/OpenID docs generation
 * re-do test with Spring + TestContainers
 * re-do Spring Cloud Config server (with encryption)
+* optimize startup performance
+  * optimize performance with AOT transpilation
+  * optimize performance with CDS/CRAC?
+  * https://www.youtube.com/watch?v=zeY3Wg1ieqI
+  * https://github.com/spring-tips/go-further-and-faster-with-spring-boot-3-3
+* add OTEL for tracing
 
 ## Errata
 
